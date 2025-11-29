@@ -515,7 +515,7 @@
 
             return (
                 <motion.div
-                    className={`fixed inset-0 z-50 overflow-hidden flex flex-col ${mode === 'morning' ? 'bg-morning-bg text-morning-text' : 'bg-midnight-bg text-midnight-text'}`}
+                    className={`fixed inset-0 z-50 overflow-y-auto md:overflow-hidden flex flex-col ${mode === 'morning' ? 'bg-morning-bg text-morning-text' : 'bg-midnight-bg text-midnight-text'}`}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.05 }}
@@ -548,7 +548,7 @@
                     </div>
 
                     {/* Main Content Area (Single Screen) */}
-                    <div className="relative flex-1 w-full h-full flex items-center justify-center p-8 md:p-16">
+                    <div className="relative flex-1 w-full h-full flex items-center justify-center p-8 md:p-16 mt-20 md:mt-0">
 
                         {/* Background Typography (Slow Float) */}
                         <motion.div
@@ -560,15 +560,15 @@
                         </motion.div>
 
                         {/* Composition Container */}
-                        <div className="relative w-full max-w-6xl h-full max-h-[80vh] grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                        <div className="relative w-full max-w-6xl h-auto md:h-full md:max-h-[80vh] grid grid-cols-1 md:grid-cols-12 gap-8 items-center pb-20 md:pb-0">
 
                             {/* Left: Title & Bio */}
                             <motion.div
-                                className="md:col-span-5 flex flex-col justify-center z-10"
+                                className="md:col-span-5 flex flex-col justify-center z-10 order-2 md:order-1"
                                 style={{ x: xText, y: yText }}
                             >
                                 <motion.h2
-                                    className="text-6xl md:text-8xl font-serif italic mb-8 leading-[0.9]"
+                                    className="text-5xl md:text-8xl font-serif italic mb-8 leading-[0.9]"
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 }}
@@ -589,11 +589,11 @@
                             </motion.div>
 
                             {/* Center/Right: Visuals (Parallax) */}
-                            <div className="md:col-span-7 relative h-full flex items-center justify-center">
+                            <div className="md:col-span-7 relative h-full flex items-center justify-center order-1 md:order-2 min-h-[300px] md:min-h-0">
 
                                 {/* Main Portrait - Large Rectangle */}
                                 <motion.div
-                                    className="absolute w-56 h-72 md:w-96 md:h-[32rem] bg-gray-300 overflow-hidden z-10 shadow-2xl"
+                                    className="relative md:absolute w-56 h-72 md:w-96 md:h-[32rem] bg-gray-300 overflow-hidden z-10 shadow-2xl mx-auto md:mx-0"
                                     style={{ x: x2, y: y2 }}
                                     animate={{ y: [0, 15, 0] }}
                                     transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
@@ -757,55 +757,69 @@
                         <h1 className="text-[30vw] font-serif italic whitespace-nowrap">Expertise</h1>
                     </motion.div>
 
-                    {/* Scattered Cards */}
+                    {/* Scattered Cards Container */}
                     <div className="relative w-full h-full">
-                        {cards.map((card) => (
-                            <motion.div
-                                key={card.id}
-                                className={`absolute ${card.pos} w-64 md:w-80 p-6 rounded-xl border border-current/10 backdrop-blur-md cursor-pointer z-10
-                                    ${mode === 'morning' ? 'bg-white/40' : 'bg-black/40'}
-                                    transition-colors duration-500`}
-                                style={{ x: card.x, y: card.y }}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{
-                                    opacity: activeCard && activeCard !== card.id ? 0.3 : 1,
-                                    scale: activeCard === card.id ? 1.1 : 1,
-                                    y: [0, -10, 0]
-                                }}
-                                transition={{
-                                    y: { duration: 6 + card.id, repeat: Infinity, ease: "easeInOut" },
-                                    default: { duration: 0.5 }
-                                }}
-                                onMouseEnter={() => setActiveCard(card.id)}
-                                onMouseLeave={() => setActiveCard(null)}
-                            >
-                                <div className="flex justify-between items-start mb-4">
-                                    <span className="text-xs font-mono opacity-50">0{card.id}</span>
-                                    <motion.div
-                                        className="w-2 h-2 rounded-full bg-current"
-                                        animate={{ scale: activeCard === card.id ? [1, 1.5, 1] : 1 }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                    />
-                                </div>
-                                <h3 className="text-3xl md:text-4xl font-serif italic mb-2 leading-none">{card.title}</h3>
+                        {cards.map((card, index) => {
+                            // Mobile Positions (Manual Grid)
+                            const mobilePositions = [
+                                "top-[15%] left-[2%]",   // 1
+                                "top-[15%] right-[2%]",  // 2
+                                "top-[42%] left-[2%]",   // 3
+                                "top-[42%] right-[2%]",  // 4
+                                "bottom-[20%] left-1/2 -translate-x-1/2" // 5
+                            ];
 
+                            const isMobile = window.innerWidth < 768;
+                            const currentPos = isMobile ? mobilePositions[index] : card.pos;
+
+                            return (
                                 <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
+                                    key={card.id}
+                                    className={`absolute ${currentPos} w-[46vw] md:w-80 p-4 md:p-6 rounded-xl border border-current/10 backdrop-blur-md cursor-pointer z-10
+                                        ${mode === 'morning' ? 'bg-white/40' : 'bg-black/40'}
+                                        transition-colors duration-500`}
+                                    style={{ x: isMobile ? 0 : card.x, y: isMobile ? 0 : card.y }}
+                                    initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{
-                                        height: activeCard === card.id ? 'auto' : 0,
-                                        opacity: activeCard === card.id ? 1 : 0
+                                        opacity: activeCard && activeCard !== card.id ? 0.3 : 1,
+                                        scale: activeCard === card.id ? 1.1 : 1,
+                                        y: isMobile ? 0 : [0, -10, 0]
                                     }}
-                                    className="overflow-hidden"
+                                    transition={{
+                                        y: { duration: 6 + card.id, repeat: Infinity, ease: "easeInOut" },
+                                        default: { duration: 0.5 }
+                                    }}
+                                    onMouseEnter={() => setActiveCard(card.id)}
+                                    onMouseLeave={() => setActiveCard(null)}
                                 >
-                                    <p className="text-sm font-light opacity-80 mt-4 mb-4 leading-relaxed">{card.desc}</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {card.tags.map(tag => (
-                                            <span key={tag} className="text-[10px] uppercase tracking-wider border border-current/20 px-2 py-1 rounded-full">{tag}</span>
-                                        ))}
+                                    <div className="flex justify-between items-start mb-2 md:mb-4">
+                                        <span className="text-[10px] md:text-xs font-mono opacity-50">0{card.id}</span>
+                                        <motion.div
+                                            className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-current"
+                                            animate={{ scale: activeCard === card.id ? [1, 1.5, 1] : 1 }}
+                                            transition={{ duration: 2, repeat: Infinity }}
+                                        />
                                     </div>
+                                    <h3 className="text-xl md:text-4xl font-serif italic mb-2 leading-none">{card.title}</h3>
+
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{
+                                            height: activeCard === card.id ? 'auto' : 0,
+                                            opacity: activeCard === card.id ? 1 : 0
+                                        }}
+                                        className="overflow-hidden"
+                                    >
+                                        <p className="text-[10px] md:text-sm font-light opacity-80 mt-2 md:mt-4 mb-2 md:mb-4 leading-relaxed">{card.desc}</p>
+                                        <div className="flex flex-wrap gap-1 md:gap-2">
+                                            {card.tags.map(tag => (
+                                                <span key={tag} className="text-[8px] md:text-[10px] uppercase tracking-wider border border-current/20 px-1.5 py-0.5 md:px-2 md:py-1 rounded-full">{tag}</span>
+                                            ))}
+                                        </div>
+                                    </motion.div>
                                 </motion.div>
-                            </motion.div>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {/* Footer Marquee */}
@@ -831,6 +845,7 @@
             useEffect(() => {
                 if (scrollRef.current) {
                     scrollRef.current.scrollLeft = 0;
+                    scrollRef.current.scrollTop = 0;
                 }
             }, [project.id]);
 
@@ -868,10 +883,10 @@
                         </div>
                     </div>
 
-                    {/* Horizontal Scroll Container */}
+                    {/* Horizontal/Vertical Scroll Container */}
                     <div
                         ref={scrollRef}
-                        className="w-full h-full overflow-x-auto flex gap-2 scrollbar-hide px-8"
+                        className="w-full h-full scrollbar-hide px-8 flex flex-col gap-4 overflow-y-auto pt-24 pb-10 md:flex-row md:gap-2 md:overflow-x-auto md:overflow-y-hidden md:pt-0 md:pb-0"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
                         {/* Gallery Images */}
@@ -880,31 +895,30 @@
                                 key={index}
                                 src={img}
                                 alt={`${project.title} - Image ${index + 1}`}
-                                className="h-full flex-shrink-0 object-cover"
+                                className="flex-shrink-0 w-full h-auto object-contain rounded-lg shadow-lg md:w-auto md:h-full md:object-cover md:rounded-none md:shadow-none"
                                 loading="lazy"
                                 decoding="async"
                             />
                         ))}
 
                         {/* Next Project Section */}
-                        <div className="min-w-[600px] h-full flex items-center justify-center flex-shrink-0 px-8">
-                            <motion.div
-                                className={`text-center ${project.textColor}`}
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
+                        <div className="min-w-[600px] h-full flex items-center justify-center flex-shrink-0 px-8">                            <motion.div
+                            className={`text-center ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <p className="text-sm uppercase tracking-widest mb-8 opacity-70">Fin du projet</p>
+                            <button
+                                onClick={onNextProject}
+                                className={`group px-8 py-4 rounded-full backdrop-blur-md ${project.textColor} ${footerBtnClass} border ${project.accentColor} transition-all shadow-lg flex items-center gap-4 text-lg font-serif italic`}
                             >
-                                <p className="text-sm uppercase tracking-widest mb-8 opacity-70">Fin du projet</p>
-                                <button
-                                    onClick={onNextProject}
-                                    className={`group px-8 py-4 rounded-full backdrop-blur-md ${project.textColor} ${footerBtnClass} border ${project.accentColor} transition-all shadow-lg flex items-center gap-4 text-lg font-serif italic`}
-                                >
-                                    Projet Suivant
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-2 transition-transform">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                    </svg>
-                                </button>
-                            </motion.div>
+                                Projet Suivant
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-2 transition-transform">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            </button>
+                        </motion.div>
                         </div>
                     </div>
 
@@ -946,20 +960,8 @@
             const y2 = useTransform(smoothY, [0, window.innerHeight], [-15, 15]);
 
             const handleSubmit = (e) => {
-                e.preventDefault();
+                // Ne pas empêcher la soumission par défaut, laisser le formulaire s'envoyer naturellement
                 setSubmitted(true);
-                setTimeout(() => {
-                    setSubmitted(false);
-                    setFormData({
-                        name: '',
-                        email: '',
-                        phone: '',
-                        projectType: '',
-                        budget: '',
-                        timeline: '',
-                        description: ''
-                    });
-                }, 5000);
             };
 
             return (
@@ -1043,17 +1045,24 @@
 
                             {/* Compact Form with Artistic Design */}
                             <motion.form
+                                action="https://formsubmit.co/todedjiemma9@gmail.com"
+                                method="POST"
                                 onSubmit={handleSubmit}
                                 className="max-w-3xl mx-auto"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.3 }}
                             >
+                                {/* Champs cachés pour configurer FormSubmit */}
+                                <input type="hidden" name="_captcha" value="false" />
+                                <input type="hidden" name="_subject" value="Nouvelle demande de devis - Portfolio" />
+                                <input type="hidden" name="_template" value="table" />
                                 {/* Row 1: Name & Email */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mb-5 md:mb-8">
                                     <div className="relative group">
                                         <input
                                             type="text"
+                                            name="name"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             onFocus={() => setFocusedField('name')}
@@ -1068,6 +1077,7 @@
                                     <div className="relative group">
                                         <input
                                             type="email"
+                                            name="email"
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                             onFocus={() => setFocusedField('email')}
@@ -1084,6 +1094,7 @@
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mb-5 md:mb-8">
                                     <div className="relative group">
                                         <select
+                                            name="projectType"
                                             value={formData.projectType}
                                             onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                                             onFocus={() => setFocusedField('projectType')}
@@ -1098,42 +1109,41 @@
                                             required
                                         >
                                             <option value="" disabled>Type de projet</option>
-                                            <option value="web">🎨 Web Design</option>
-                                            <option value="app">📱 Application</option>
-                                            <option value="branding">✨ Branding</option>
-                                            <option value="uiux">🖼️ UI/UX</option>
+                                            <option value="web">Web Design</option>
+                                            <option value="app">Application</option>
+                                            <option value="branding">Branding</option>
+                                            <option value="uiux">UI/UX</option>
                                         </select>
                                         <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Type</label>
                                     </div>
 
                                     <div className="relative group">
-                                        <select
-                                            value={formData.budget}
-                                            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                                            onFocus={() => setFocusedField('budget')}
-                                            onBlur={() => setFocusedField(null)}
-                                            className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all appearance-none cursor-pointer ${focusedField === 'budget' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20 hover:border-morning-text/40' : 'border-midnight-text/20 hover:border-midnight-text/40'}`}`}
-                                            style={{
-                                                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='${mode === 'morning' ? '%233A342D' : '%23E6E8EB'}'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                                                backgroundRepeat: 'no-repeat',
-                                                backgroundPosition: 'right 0.75rem center',
-                                                backgroundSize: '1.25rem'
-                                            }}
-                                            required
-                                        >
-                                            <option value="" disabled>Budget estimé</option>
-                                            <option value="50k-100k">💰 50k - 100k FCFA</option>
-                                            <option value="100k-300k">💎 100k - 300k FCFA</option>
-                                            <option value="300k-500k">✨ 300k - 500k FCFA</option>
-                                            <option value="500k-1M">👑 500k - 1M FCFA</option>
-                                        </select>
-                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Budget</label>
-                                    </div>s
+                                        <label className={`block mb-3 text-xs ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'} opacity-70 uppercase tracking-wider`}>Budget estimé</label>
+                                        <input type="hidden" name="budget" value={formData.budget} required />
+                                        <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
+                                            {['50K', '100K', '300K', '500K', '1M'].map((amount) => (
+                                                <motion.button
+                                                    key={amount}
+                                                    type="button"
+                                                    onClick={() => setFormData({ ...formData, budget: amount })}
+                                                    className={`px-3 py-2 md:px-4 md:py-3 rounded-full text-xs md:text-sm font-medium transition-all border-2 ${formData.budget === amount
+                                                        ? `${mode === 'morning' ? 'bg-morning-secondary border-morning-secondary text-morning-text shadow-lg' : 'bg-midnight-highlight border-midnight-highlight text-midnight-bg shadow-lg'}`
+                                                        : `${mode === 'morning' ? 'border-morning-text/20 hover:border-morning-secondary/50' : 'border-midnight-text/20 hover:border-midnight-highlight/50'}`
+                                                        }`}
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                >
+                                                    {amount}
+                                                </motion.button>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Row 3: Description */}
                                 <div className="relative mb-6">
                                     <textarea
+                                        name="description"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                         onFocus={() => setFocusedField('description')}
@@ -1540,6 +1550,9 @@
                                     <a href="mailto:todedjiemma9@gmail.com" className="block text-2xl md:text-3xl font-light tracking-wide hover:opacity-60 transition-opacity">
                                         todedjiemma9@gmail.com
                                     </a>
+                                    <a href="tel:+22968678025" className="block text-xl md:text-2xl font-light tracking-wide hover:opacity-60 transition-opacity mt-3">
+                                        +229 68 67 80 25
+                                    </a>
                                 </div>
 
                                 {/* LinkedIn */}
@@ -1554,14 +1567,15 @@
                                 {/* CV Download Button */}
                                 <div>
                                     <a
-                                        href="CV_2025-10-26_Emmanuela_TODEDJI-4.pdf"
-                                        download
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-current text-sm font-mono uppercase tracking-widest hover:bg-current hover:text-morning-bg dark:hover:text-midnight-bg transition-all duration-300"
+                                        href="CV_2025-10-26_Emmanuela_TODEDJI-3.pdf"
+                                        download="CV_Emmanuela_TODEDJI.pdf"
+                                        className={`group relative inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-mono uppercase tracking-widest overflow-hidden transition-all duration-300 ${mode === 'morning' ? 'bg-morning-secondary text-morning-text hover:bg-morning-text hover:text-morning-bg' : 'bg-midnight-highlight text-midnight-bg hover:bg-midnight-text hover:text-midnight-bg'} shadow-lg hover:shadow-2xl hover:scale-105`}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 group-hover:animate-bounce">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                         </svg>
-                                        Télécharger mon CV
+                                        <span className="relative z-10">Télécharger mon CV</span>
+                                        <div className={`absolute inset-0 ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300`}></div>
                                     </a>
                                 </div>
                             </div>

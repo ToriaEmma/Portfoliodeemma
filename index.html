@@ -94,6 +94,129 @@
         const { useState, useEffect, useRef } = React;
         const { motion, useMotionValue, useSpring, useTransform, AnimatePresence } = window.Motion;
 
+        // --- Données des Projets (Global) ---
+        const PROJECTS_DATA = [
+            {
+                id: 1,
+                title: "AJK",
+                category: "Association",
+                year: "2025",
+                image: "img/AJK/Accueil.png",
+                bgColor: "from-amber-100/40 to-yellow-200/40",
+                textColor: "text-amber-950",
+                accentColor: "border-amber-900",
+                uiTheme: "light",
+                gallery: [
+                    "img/AJK/A Propos.png",
+                    "img/AJK/Actualité.png",
+                    "img/AJK/Contactez-nous.png",
+                    "img/AJK/Devenir membre.png",
+                    "img/AJK/Faire un don.png",
+                    "img/AJK/Médiatheque.png",
+                    "img/AJK/Project.png"
+                ]
+            },
+            {
+                id: 2,
+                title: "ArbitraChain",
+                category: "Blockchain",
+                year: "2024",
+                image: "img/ArbitraChain/image_1.webp",
+                bgColor: "from-slate-900/60 to-black/60",
+                textColor: "text-white",
+                accentColor: "border-slate-200",
+                uiTheme: "dark",
+                gallery: [
+                    "img/ArbitraChain/image_2.webp",
+                    "img/ArbitraChain/image_3.webp",
+                    "img/ArbitraChain/image_4.webp",
+                    "img/ArbitraChain/image_5.webp",
+                    "img/ArbitraChain/image_6.webp",
+                    "img/ArbitraChain/image_7.webp",
+                    "img/ArbitraChain/image_8.webp"
+                ]
+            },
+            {
+                id: 3,
+                title: "SaConnect",
+                category: "Smart Tech",
+                year: "2024",
+                image: "img/saconnect/Acceuil.png",
+                bgColor: "from-cyan-100/40 to-blue-200/40",
+                textColor: "text-cyan-950",
+                accentColor: "border-cyan-900",
+                uiTheme: "light",
+                gallery: [
+                    "img/saconnect/A propos.png",
+                    "img/saconnect/Actualités.png",
+                    "img/saconnect/Agriculture intelligente.png",
+                    "img/saconnect/Bâtiment intelligent.png",
+                    "img/saconnect/Maison intelligente.png",
+                    "img/saconnect/Ville intelligente.png"
+                ]
+            },
+            {
+                id: 4,
+                title: "Elitrans CI",
+                category: "Logistics",
+                year: "2025",
+                image: "img/elitrans ci/1920w light.png",
+                bgColor: "from-blue-900/60 to-indigo-900/60",
+                textColor: "text-blue-50",
+                accentColor: "border-blue-200",
+                uiTheme: "dark",
+                gallery: [
+                    "img/elitrans ci/1920w light-1.png",
+                    "img/elitrans ci/1920w light-2.png",
+                    "img/elitrans ci/1920w light-3.png",
+                    "img/elitrans ci/1920w light-4.png",
+                    "img/elitrans ci/1920w light-5.png",
+                    "img/elitrans ci/1920w light-6.png",
+                    "img/elitrans ci/1920w light-7.png",
+                    "img/elitrans ci/1920w light-8.png"
+                ]
+            },
+            {
+                id: 5,
+                title: "Tekbot",
+                category: "EdTech",
+                year: "2024",
+                image: "img/Tekbot/Accueil.png",
+                bgColor: "from-emerald-900/60 to-teal-900/60",
+                textColor: "text-emerald-50",
+                accentColor: "border-emerald-200",
+                uiTheme: "dark",
+                gallery: [
+                    "img/Tekbot/Dashboard.png",
+                    "img/Tekbot/Modules_tous.png",
+                    "img/Tekbot/Modules_avancer.png",
+                    "img/Tekbot/mod1_exo1_step1.png",
+                    "img/Tekbot/mod1_exo1_step1_valided.png"
+                ]
+            },
+            {
+                id: 6,
+                title: "Affiches et Autres",
+                category: "Graphic Design",
+                year: "2025",
+                image: "img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post.png",
+                bgColor: "from-violet-900/60 to-fuchsia-900/60",
+                textColor: "text-violet-50",
+                accentColor: "border-violet-200",
+                uiTheme: "dark",
+                gallery: [
+                    "img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post.png",
+                    "img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post(2).png",
+                    "img/Frame 107192.png",
+                    "img/Frame 107193.png",
+                    "img/l-dark (4).png",
+                    "img/MacBook Pro 16_ - 1(1).png",
+                    "img/MacBook Pro 16_ - 2(1).png",
+                    "img/Pink White Modern Pink October Instagram Post.png"
+                ]
+            }
+        ];
+
         // --- Custom Cursor ---
         const CustomCursor = ({ mode, isHovering }) => {
             const cursorX = useMotionValue(-100);
@@ -435,13 +558,15 @@
                                     Je suis <br /> Emmanuela
                                 </motion.h2>
                                 <motion.div
-                                    className="text-sm md:text-base font-light leading-relaxed opacity-80 max-w-sm backdrop-blur-sm p-4 rounded-lg border border-current/5"
+                                    className="text-xs md:text-sm font-light leading-relaxed opacity-80 max-w-lg backdrop-blur-sm p-4 rounded-lg border border-current/5"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.5 }}
                                 >
-                                    <p className="mb-4">Une designer numérique passionnée par le minimalisme et l'émotion. Je conçois des interfaces qui respirent et racontent des histoires.</p>
-                                    <p>Basée à Paris, disponible pour des projets audacieux.</p>
+                                    <p className="mb-2">Et depuis toujours, je navigue entre deux mondes : celui du design, où tout doit être beau, clair et inspirant… et celui de la technique, où chaque idée doit tenir debout, fonctionner et avoir du sens.</p>
+                                    <p className="mb-2">Avec le temps, j'ai compris que je n'avais pas à choisir. J'ai simplement décidé de créer des projets où ces deux univers se rencontrent.</p>
+                                    <p className="mb-2">Aujourd'hui, je conçois des expériences qui racontent quelque chose : des interfaces qui respirent, des solutions qui résolvent de vrais problèmes, des concepts qui deviennent concrets.</p>
+                                    <p>Mon but ? Transformer une idée en un projet à la fois esthétique, intelligent et utile, tout en gardant ma touche : naturelle, fluide et authentique.</p>
                                 </motion.div>
                             </motion.div>
 
@@ -511,29 +636,47 @@
                 {
                     id: 1,
                     title: "UI/UX Design",
-                    desc: "Création d'interfaces intuitives centré utilisateur.",
-                    tags: ["Figma", "User Research", "Prototyping"],
+                    desc: "Création d'interfaces intuitives centrées utilisateur.",
+                    tags: ["Figma", "Canva", "User Research", "Prototyping"],
                     x: x1, y: y1,
                     color: "from-blue-400/20 to-purple-400/20",
-                    pos: "top-[20%] left-[15%] md:left-[20%]"
+                    pos: "top-[15%] left-[10%] md:left-[15%]"
                 },
                 {
                     id: 2,
-                    title: "Creative Dev",
+                    title: "Front-end Dev",
                     desc: "Développement front-end moderne et animé.",
-                    tags: ["React", "Three.js", "Tailwind"],
+                    tags: ["React.js", "Tailwind CSS", "DaisyUI", "GSAP", "JavaScript"],
                     x: x2, y: y2,
                     color: "from-emerald-400/20 to-teal-400/20",
-                    pos: "top-[45%] right-[10%] md:right-[20%]"
+                    pos: "top-[15%] right-[10%] md:right-[15%]"
                 },
                 {
                     id: 3,
-                    title: "Art Direction",
-                    desc: "Identité visuelle et branding impactant.",
-                    tags: ["Branding", "Typography", "Concept"],
+                    title: "Design & Visual",
+                    desc: "Identité visuelle et création de contenu.",
+                    tags: ["Photoshop", "Capcut", "Branding", "Typography"],
                     x: x3, y: y3,
                     color: "from-orange-400/20 to-rose-400/20",
-                    pos: "bottom-[15%] left-[10%] md:left-[30%]"
+                    pos: "top-[45%] left-[15%] md:left-[25%]"
+                },
+                {
+                    id: 4,
+                    title: "Hardware & 3D",
+                    desc: "Robotique et impression 3D.",
+                    tags: ["Arduino", "FreeCAD", "Impression 3D", "SFML"],
+                    x: x1, y: y2,
+                    color: "from-violet-400/20 to-pink-400/20",
+                    pos: "top-[45%] right-[15%] md:right-[25%]"
+                },
+                {
+                    id: 5,
+                    title: "Programming",
+                    desc: "Langages et outils de développement.",
+                    tags: ["C", "C++", "Haskell", "HTML/CSS", "WordPress", "GitHub Actions"],
+                    x: x2, y: y1,
+                    color: "from-cyan-400/20 to-blue-400/20",
+                    pos: "bottom-[15%] left-[20%] md:left-[35%]"
                 }
             ];
 
@@ -660,6 +803,12 @@
             const scrollRef = useRef(null);
             const [showNextProject, setShowNextProject] = useState(false);
 
+            // Determine UI styles based on theme
+            const isDarkUI = project.uiTheme === 'dark';
+            const headerBtnClass = isDarkUI ? "bg-black/20 hover:bg-black/30" : "bg-white/20 hover:bg-white/30";
+            const pillClass = isDarkUI ? "bg-black/20" : "bg-white/20";
+            const footerBtnClass = isDarkUI ? "bg-black/30 hover:bg-black/50" : "bg-white/30 hover:bg-white/50";
+
             // Reset scroll to beginning when project changes
             useEffect(() => {
                 if (scrollRef.current) {
@@ -692,11 +841,11 @@
                 >
                     {/* Close Button */}
                     <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50">
-                        <button onClick={onClose} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${project.textColor} bg-white/20 hover:bg-white/30 border border-current/20`}>
+                        <button onClick={onClose} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${project.textColor} ${headerBtnClass} border border-current/20`}>
                             <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
                             Fermer
                         </button>
-                        <div className={`text-xs font-mono uppercase tracking-widest px-3 py-2 rounded-full backdrop-blur-md ${project.textColor} bg-white/20 border border-current/20`}>
+                        <div className={`text-xs font-mono uppercase tracking-widest px-3 py-2 rounded-full backdrop-blur-md ${project.textColor} ${pillClass} border border-current/20`}>
                             {project.title}
                         </div>
                     </div>
@@ -704,7 +853,7 @@
                     {/* Horizontal Scroll Container */}
                     <div
                         ref={scrollRef}
-                        className="w-full h-full overflow-x-auto flex scrollbar-hide"
+                        className="w-full h-full overflow-x-auto flex gap-8 scrollbar-hide px-8"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
                         {/* Gallery Images */}
@@ -728,7 +877,7 @@
                                 <p className="text-sm uppercase tracking-widest mb-8 opacity-70">Fin du projet</p>
                                 <button
                                     onClick={onNextProject}
-                                    className={`group px-8 py-4 rounded-full backdrop-blur-md ${project.textColor} bg-white/30 hover:bg-white/50 border ${project.accentColor} transition-all shadow-lg flex items-center gap-4 text-lg font-serif italic`}
+                                    className={`group px-8 py-4 rounded-full backdrop-blur-md ${project.textColor} ${footerBtnClass} border ${project.accentColor} transition-all shadow-lg flex items-center gap-4 text-lg font-serif italic`}
                                 >
                                     Projet Suivant
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-2 transition-transform">
@@ -953,9 +1102,10 @@
                                             required
                                         >
                                             <option value="" disabled>Budget estimé</option>
-                                            <option value="1k-5k">💰 1k - 5k€</option>
-                                            <option value="5k-10k">💎 5k - 10k€</option>
-                                            <option value="10k+">👑 10k€+</option>
+                                            <option value="50k-100k">💰 50k - 100k FCFA</option>
+                                            <option value="100k-300k">💎 100k - 300k FCFA</option>
+                                            <option value="300k-500k">✨ 300k - 500k FCFA</option>
+                                            <option value="500k-1M">👑 500k - 1M FCFA</option>
                                         </select>
                                         <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Budget</label>
                                     </div>
@@ -1059,72 +1209,7 @@
             const textX = useTransform(smoothX, [0, window.innerWidth], [20, -20]);
             const textY = useTransform(smoothY, [0, window.innerHeight], [20, -20]);
 
-            const projects = [
-                {
-                    id: 1,
-                    title: "Lumina",
-                    category: "E-commerce",
-                    year: "2025",
-                    image: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1287&auto=format&fit=crop",
-                    bgColor: "from-amber-100/40 to-yellow-200/40",
-                    textColor: "text-amber-950",
-                    accentColor: "border-amber-900",
-                    gallery: [
-                        "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1470&auto=format&fit=crop"
-                    ]
-                },
-                {
-                    id: 2,
-                    title: "Chronos",
-                    category: "Luxury Watch",
-                    year: "2023",
-                    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1480&auto=format&fit=crop",
-                    bgColor: "from-slate-900/60 to-black/60",
-                    textColor: "text-amber-950",
-                    accentColor: "border-slate-200",
-                    gallery: [
-                        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1488&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1509941943102-10c232535736?q=80&w=1471&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1587836374053-f151fa6c71fb?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1471&auto=format&fit=crop"
-                    ]
-                },
-                {
-                    id: 3,
-                    title: "Aura",
-                    category: "Wellness App",
-                    year: "2023",
-                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=1480&auto=format&fit=crop",
-                    bgColor: "from-rose-100/40 to-pink-200/40",
-                    textColor: "text-rose-950",
-                    accentColor: "border-rose-900",
-                    gallery: [
-                        "https://images.unsplash.com/photo-1512941675424-1c700817f813?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1499&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?q=80&w=1493&auto=format&fit=crop"
-                    ]
-                },
-                {
-                    id: 4,
-                    title: "Nebula",
-                    category: "Tech Startup",
-                    year: "2025",
-                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1472&auto=format&fit=crop",
-                    bgColor: "from-indigo-900/60 to-purple-900/60",
-                    textColor: "text-indigo-50",
-                    accentColor: "border-indigo-200",
-                    gallery: [
-                        "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1470&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1534&auto=format&fit=crop",
-                        "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1420&auto=format&fit=crop"
-                    ]
-                }
-            ];
+            const projects = PROJECTS_DATA;
 
             const nextProject = () => {
                 setDirection(1);
@@ -1580,7 +1665,7 @@
 
                                 {/* Footer Marquee */}
                                 <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none">
-                                    <Marquee text="Creative Developer • UI/UX Designer • Art Director • Paris •" mode={mode} />
+                                    <Marquee text="Creative Developer • UI/UX Designer • Art Director • Benin •" mode={mode} />
                                 </div>
 
                                 <PoeticToggle mode={mode} onToggle={toggleTheme} />
@@ -1641,72 +1726,7 @@
                                 mode={mode}
                                 onClose={() => setViewingProject(null)}
                                 onNextProject={() => {
-                                    const projects = [
-                                        {
-                                            id: 1,
-                                            title: "Lumina",
-                                            category: "E-commerce",
-                                            year: "2025",
-                                            image: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1287&auto=format&fit=crop",
-                                            bgColor: "from-amber-100/40 to-yellow-200/40",
-                                            textColor: "text-amber-950",
-                                            accentColor: "border-amber-900",
-                                            gallery: [
-                                                "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1470&auto=format&fit=crop"
-                                            ]
-                                        },
-                                        {
-                                            id: 2,
-                                            title: "Chronos",
-                                            category: "Luxury Watch",
-                                            year: "2023",
-                                            image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1480&auto=format&fit=crop",
-                                            bgColor: "from-slate-900/60 to-black/60",
-                                            textColor: "text-white",
-                                            accentColor: "border-slate-200",
-                                            gallery: [
-                                                "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1488&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1509941943102-10c232535736?q=80&w=1471&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1587836374053-f151fa6c71fb?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1471&auto=format&fit=crop"
-                                            ]
-                                        },
-                                        {
-                                            id: 3,
-                                            title: "Aura",
-                                            category: "Wellness App",
-                                            year: "2023",
-                                            image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=1480&auto=format&fit=crop",
-                                            bgColor: "from-rose-100/40 to-pink-200/40",
-                                            textColor: "text-rose-950",
-                                            accentColor: "border-rose-900",
-                                            gallery: [
-                                                "https://images.unsplash.com/photo-1512941675424-1c700817f813?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1499&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?q=80&w=1493&auto=format&fit=crop"
-                                            ]
-                                        },
-                                        {
-                                            id: 4,
-                                            title: "Nebula",
-                                            category: "Tech Startup",
-                                            year: "2025",
-                                            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1472&auto=format&fit=crop",
-                                            bgColor: "from-indigo-900/60 to-purple-900/60",
-                                            textColor: "text-indigo-50",
-                                            accentColor: "border-indigo-200",
-                                            gallery: [
-                                                "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1470&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1534&auto=format&fit=crop",
-                                                "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1420&auto=format&fit=crop"
-                                            ]
-                                        }
-                                    ];
+                                    const projects = PROJECTS_DATA;
                                     const currentIdx = projects.findIndex(p => p.id === viewingProject.id);
                                     const nextIdx = (currentIdx + 1) % projects.length;
                                     setViewingProject(projects[nextIdx]);

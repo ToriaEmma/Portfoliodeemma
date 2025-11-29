@@ -1,0 +1,142 @@
+/* ========================================
+   CLEAN GIRL AESTHETIC - CSS VARIABLES
+   Day & Night Theme System
+   ======================================== */
+
+:root {
+    /* ===== JOUR (Clean Girl Aesthetic) ===== */
+    --bg-primary: #FDFCFA;
+    --bg-secondary: #F5E6E8;
+    --bg-tertiary: #FFF5F7;
+
+    --accent-primary: #E8B4B8;
+    --accent-secondary: #C8D5B9;
+    --accent-tertiary: #F4D4D4;
+
+    --text-primary: #3D3D3D;
+    --text-secondary: #6B6B6B;
+    --text-light: #9A9A9A;
+
+    /* Éléments décoratifs */
+    --mountain-day-1: #E5D4D4;
+    --mountain-day-2: #D4C4C4;
+    --mountain-day-3: #C4B4B4;
+    --floor-day: #F0E8E8;
+
+    /* Ombres et effets */
+    --shadow-soft: rgba(61, 61, 61, 0.08);
+    --shadow-medium: rgba(61, 61, 61, 0.12);
+    --shadow-strong: rgba(61, 61, 61, 0.18);
+
+    /* Transitions */
+    --transition-smooth: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-quick: 0.3s ease;
+
+    /* Espacements */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 5rem;
+
+    /* Rayons */
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 30px;
+    --radius-xl: 40px;
+}
+
+/* ===== NUIT (Elegant Night Theme) ===== */
+body.night-theme {
+    --bg-primary: #0A0E27;
+    --bg-secondary: #1A1535;
+    --bg-tertiary: #252142;
+
+    --accent-primary: #E8D4E0;
+    --accent-secondary: #FFE5B4;
+    --accent-tertiary: #C5A8D4;
+
+    --text-primary: #F8F8FF;
+    --text-secondary: #D8D8E8;
+    --text-light: #A8A8C8;
+
+    /* Éléments décoratifs */
+    --mountain-night-1: #1A1A35;
+    --mountain-night-2: #252545;
+    --mountain-night-3: #303055;
+    --floor-night: #0F1228;
+
+    /* Ombres et effets (glow) */
+    --shadow-soft: rgba(232, 212, 224, 0.08);
+    --shadow-medium: rgba(232, 212, 224, 0.15);
+    --shadow-strong: rgba(232, 212, 224, 0.25);
+    --glow-soft: 0 0 20px rgba(232, 212, 224, 0.2);
+    --glow-medium: 0 0 40px rgba(232, 212, 224, 0.3);
+}
+
+/* ===== TYPOGRAPHIE ===== */
+:root {
+    --font-display: 'AtelierPaon-ExtraBold', sans-serif;
+    --font-heading: 'AtelierPaon-SemiBold', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
+
+    --font-size-xl: clamp(3rem, 8vw, 6rem);
+    --font-size-lg: clamp(2rem, 5vw, 3.5rem);
+    --font-size-md: clamp(1.5rem, 3vw, 2rem);
+    --font-size-base: clamp(1rem, 2vw, 1.125rem);
+    --font-size-sm: 0.875rem;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ===== UTILITAIRES ===== */
+.soft-shadow {
+    box-shadow: 0 4px 20px var(--shadow-soft);
+}
+
+.medium-shadow {
+    box-shadow: 0 8px 30px var(--shadow-medium);
+}
+
+.strong-shadow {
+    box-shadow: 0 12px 40px var(--shadow-strong);
+}
+
+.night-theme .glow-effect {
+    box-shadow: var(--glow-soft);
+}

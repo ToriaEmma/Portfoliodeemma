@@ -1,0 +1,212 @@
+/* ========================================
+   MENU OVERLAY - Clean Girl Version
+   ======================================== */
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(232, 180, 184, 0.75), rgba(245, 230, 232, 0.75));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 8%;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+body.night-theme .menu-overlay {
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.85), rgba(26, 21, 53, 0.85));
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 9999;
+    padding: 0;
+}
+
+.close-btn::before,
+.close-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 3px;
+    background: #3D3D3D;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+body.night-theme .close-btn::before,
+body.night-theme .close-btn::after {
+    background: #F8F8FF;
+}
+
+.close-btn::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-btn::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.close-btn:hover::before {
+    transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.close-btn:hover::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Navigation Links */
+.menu-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.menu-nav a {
+    font-family: 'AtelierPaon-ExtraBold', 'AtelierPaon-SemiBold', sans-serif;
+    color: #3D3D3D;
+    text-decoration: none;
+    font-size: clamp(2rem, 6vw, 4rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    margin: 15px 0;
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+body.night-theme .menu-nav a {
+    color: #F8F8FF;
+}
+
+.menu-nav a::before {
+    content: attr(data-number) '.';
+    position: absolute;
+    left: -3rem;
+    top: 0;
+    font-size: 0.6em;
+    opacity: 0.5;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+}
+
+.menu-nav a:hover {
+    transform: translateX(20px);
+    color: #E8B4B8;
+}
+
+body.night-theme .menu-nav a:hover {
+    color: #E8D4E0;
+}
+
+/* Contact Info */
+.menu-contact {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(61, 61, 61, 0.2);
+    color: #6B6B6B;
+    font-size: 1rem;
+}
+
+body.night-theme .menu-contact {
+    border-top-color: rgba(248, 248, 255, 0.2);
+    color: #D8D8E8;
+}
+
+.menu-contact p {
+    margin: 8px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+}
+
+/* Social Links */
+.social-links {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(232, 180, 184, 0.2);
+    transition: all 0.3s ease;
+}
+
+body.night-theme .social-links a {
+    background: rgba(232, 212, 224, 0.2);
+}
+
+.social-links a:hover {
+    transform: scale(1.1);
+    background: rgba(232, 180, 184, 0.4);
+}
+
+body.night-theme .social-links a:hover {
+    background: rgba(232, 212, 224, 0.4);
+}
+
+.social-links svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu-overlay {
+        padding: 80px 5%;
+    }
+
+    .menu-nav a {
+        font-size: clamp(1.5rem, 8vw, 3rem);
+        margin: 10px 0;
+    }
+
+    .menu-nav a::before {
+        left: -2rem;
+        font-size: 0.5em;
+    }
+
+    .close-btn {
+        top: 30px;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .menu-contact {
+        margin-top: 40px;
+        font-size: 0.9rem;
+    }
+}

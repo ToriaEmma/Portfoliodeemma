@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Projets - Atelier du Paon</title>
+    <style>
+        /* Définition des polices personnalisées */
+        @font-face {
+            font-family: 'AtelierPaon-ExtraBold';
+            src: url('fonts/atelierpaon_ExtraBold.6a72a55.woff') format('woff');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon-SemiBold';
+            src: url('fonts/atelierpaon_SemiBold.71ef039.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon-Medium';
+            src: url('fonts/atelierpaon_Medium.4d3826b.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* Règle @viewport pour une meilleure compatibilité */
+        @-ms-viewport {
+            width: device-width;
+            initial-scale: 1;
+            user-zoom: fixed;
+        }
+
+        @viewport {
+            width: device-width;
+            initial-scale: 1;
+            user-zoom: fixed;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/menu-overlay.css">
+    <link rel="stylesheet" href="css/bird.css">
+    <style>
+        /* Désactive le défilement vertical par défaut */
+        html,
+        body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Conteneur principal */
+        .horizontal-scroll-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: hidden;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        /* Wrapper pour les sections */
+        .horizontal-scroll-wrapper {
+            display: flex;
+            height: 100vh;
+            width: max-content;
+        }
+
+        /* Style de chaque section */
+        .fullpage-section {
+            width: 100vw;
+            height: 100vh;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .fullpage-section.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Animation pour le contenu */
+        .section-content {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s ease-out 0.3s;
+        }
+
+        .fullpage-section.active .section-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Désactive la barre de défilement */
+        .horizontal-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .horizontal-scroll-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Navigation */
+        .horizontal-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #333;
+            transform: scale(1.2);
+        }
+
+        /* Style pour le mode sombre */
+        body.dark-theme .nav-dot {
+            border-color: #fff;
+        }
+
+        body.dark-theme .nav-dot.active {
+            background: #fff;
+        }
+
+        /* --- 1. CONFIGURATION GÉNÉRALE & FONTS --- */
+        @font-face {
+            font-family: 'AtelierPaon';
+            src: url('fonts/atelierpaon_Regular.0660072.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon';
+            src: url('fonts/atelierpaon_Medium.4d3826b.woff') format('woff');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon';
+            src: url('fonts/atelierpaon_SemiBold.71ef039.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon';
+            src: url('fonts/atelierpaon_Bold.7c96a76.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon';
+            src: url('fonts/atelierpaon_ExtraBold.6a72a55.woff') format('woff');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon';
+            src: url('fonts/atelierpaon_Black.1a8b4b0.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #ff69b4;
+            --secondary-color: #2EC4B6;
+        }
+
+        /* Variables pour le mode sombre */
+        body.dark-theme {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --accent-color: #ff1493;
+            --secondary-color: #1a7a72;
+        }
+
+        body {
+            font-family: 'AtelierPaon', sans-serif;
+            font-weight: 700;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            background-image: url('img/white-bg.58090aa.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
+        }
+
+        body.dark-theme {
+            background-image: none;
+        }
+
+        /* --- 2. ANIMATIONS --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- 3. UI (Logo, Boutons, Menu) --- */
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            width: 200px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.2s forwards;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-light {
+            opacity: 1;
+        }
+
+        .logo-dark {
+            opacity: 0;
+        }
+
+        body.dark-theme .logo-light {
+            opacity: 0;
+        }
+
+        body.dark-theme .logo-dark {
+            opacity: 1;
+        }
+
+        .top-right-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.2s forwards;
+        }
+
+        .hamburger-button {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 4px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .hamburger-button {
+            background: white;
+        }
+
+        body.dark-theme .hamburger-icon span {
+            background-color: #333;
+        }
+
+        .hamburger-button:hover {
+            transform: scale(1.05);
+            filter: brightness(0.9);
+        }
+
+        .hamburger-icon {
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        .theme-toggle-button {
+            background: none;
+            border: none;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        .moon-icon {
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .moon-icon {
+            transform: rotate(180deg);
+        }
+
+        /* --- 5. CONTENU (Skills & Bouton central) --- */
+        /* Styles pour la page expertise */
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'AtelierPaon', sans-serif;
+            font-weight: 400;
+            overflow: hidden;
+        }
+
+        .expertise-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding: 10% 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .expertise-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 90%;
+            padding: 0 5%;
+        }
+
+        .service-item {
+            margin-bottom: 100px;
+            max-width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .service-content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .service-content-wrapper {
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 1600px) {
+            .service-content-wrapper {
+                gap: 30px;
+            }
+        }
+
+        .service-text {
+            flex: 1;
+            min-width: 400px;
+        }
+
+        .service-gif {
+            flex: 0 0 auto;
+            width: 400px;
+            height: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-gif {
+            flex: 0 0 auto;
+            width: 400px;
+            height: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-gif::before {
+            content: '';
+            position: absolute;
+            width: 130%;
+            height: 130%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at center,
+                    rgba(255, 105, 180, 0.35) 0%,
+                    rgba(255, 105, 180, 0.2) 50%,
+                    transparent 70%);
+            border-radius: 50%;
+            filter: blur(35px);
+            z-index: -1;
+            opacity: 0.9;
+            animation: pulse 8s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        .dark-theme .service-gif::before {
+            background: radial-gradient(circle at center,
+                    rgba(64, 224, 208, 0.25) 0%,
+                    rgba(64, 224, 208, 0.1) 50%,
+                    transparent 70%);
+            filter: blur(35px);
+        }
+
+        .dark-theme .service-title,
+        .dark-theme .service-title strong {
+            color: #40e0d0;
+            /* Bleu turquoise */
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 0.6;
+            }
+        }
+
+        .service-gif img {
+            width: 100%;
+            height: auto;
+            display: block;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .service-gif:hover img {
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 1024px) {
+            .service-content-wrapper {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .service-gif {
+                width: 100%;
+                max-width: 300px;
+                margin-top: 20px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .expertise-content {
+                max-width: 1200px;
+                padding: 0 10%;
+            }
+
+            .service-item {
+                margin-left: 50%;
+                margin-bottom: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .expertise-content {
+                width: 100%;
+                padding: 0 10%;
+            }
+
+            .service-item {
+                margin-bottom: 80px;
+            }
+        }
+
+        .service-item {
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .service-item:first-child {
+            margin-top: 5vh;
+        }
+
+        @media (max-width: 768px) {
+            .expertise-container {
+                padding: 15vh 0 10vh;
+            }
+
+            .service-item:first-child {
+                margin-top: 2vh;
+            }
+        }
+
+        .service-item {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-category {
+            font-size: 1.2rem;
+            color: #000000;
+            margin: 0 0 10px 0;
+            font-family: 'AtelierPaon', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        body.dark-theme .service-category {
+            color: #ffffff;
+        }
+
+        .service-title {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin: 0 0 12px 0;
+            font-family: 'AtelierPaon-ExtraBold', sans-serif;
+            font-weight: 800;
+            text-transform: none;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .service-title strong {
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .service-title {
+                font-size: 1.8rem;
+                line-height: 1.3;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-title {
+                font-size: 1.5rem;
+                line-height: 1.3;
+                margin-bottom: 8px;
+            }
+        }
+
+        .service-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0 0 20px 0;
+            max-width: 600px;
+            opacity: 0.9;
+            font-family: 'AtelierPaon-Medium', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-family: 'AtelierPaon-SemiBold', sans-serif;
+            font-size: 1rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding-right: 20px;
+        }
+
+        .project-link::after {
+            content: '→';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--accent-hover);
+        }
+
+        .project-link:hover::after {
+            transform: translate(5px, -50%);
+        }
+
+        @media (max-width: 768px) {
+            .project-link {
+                font-size: 0.95rem;
+                margin-top: 12px;
+            }
+        }
+
+        /* Suppression des styles CSS de la barre de défilement */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .expertise-container {
+                padding: 80px 5% 100px;
+                justify-content: flex-start;
+            }
+
+            .service-item {
+                margin-bottom: 40px;
+                margin-left: 0;
+            }
+
+            .service-category {
+                font-size: 1rem;
+            }
+
+            .service-title {
+                font-size: 1.8rem;
+                margin-bottom: 12px;
+            }
+
+            .service-description {
+                font-size: 1rem;
+                max-width: 100%;
+            }
+        }
+
+        /* --- 6. BACKGROUNDS ANIMÉS (Vidéo & Étoiles) --- */
+        .bird-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .bird-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+        }
+
+        body.dark-theme .bird-video-container {
+            display: none;
+        }
+
+        /* Étoiles */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            display: none;
+        }
+
+        body.dark-theme .stars-container {
+            display: block;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .stars::before,
+        .stars::after,
+        .stars>div {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            opacity: 0.3;
+        }
+
+        .stars::before {
+            background-image: radial-gradient(2px 2px at 10% 20%, #fff, transparent), radial-gradient(2px 2px at 50% 80%, #fff, transparent), radial-gradient(2px 2px at 90% 60%, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 400px 400px;
+            animation: twinkle 4s infinite;
+        }
+
+        .stars::after {
+            background-image: radial-gradient(1.5px 1.5px at 15% 40%, #fff, transparent), radial-gradient(1.5px 1.5px at 75% 90%, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 300px 300px;
+            animation: twinkle 6s infinite 2s;
+        }
+
+        /* Animation de suivi de la souris pour les étoiles */
+        .stars>div {
+            background-image: radial-gradient(1px 1px at 50% 50%, #fff, transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        /* Flèches de navigation */
+        .nav-arrows {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 100;
+        }
+
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.2;
+            }
+        }
+    </style>
+
+    <script>
+        // Gestion du thème
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fonction pour basculer le thème
+            function toggleTheme() {
+                const html = document.documentElement;
+                const isDark = html.classList.toggle('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                updateThemeElements(isDark);
+            }
+
+            // Fonction pour mettre à jour les éléments en fonction du thème
+            function updateThemeElements(isDark) {
+                // Mise à jour du thème
+                document.body.className = isDark ? 'dark-theme' : '';
+
+                // Mise à jour du bouton de thème
+                const themeToggle = document.getElementById('theme-toggle');
+                if (themeToggle) {
+                    themeToggle.innerHTML = isDark ?
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>' :
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+                }
+
+                // Mise à jour du favicon
+                const favicon = document.querySelector('link[rel="icon"]');
+                if (favicon) {
+                    favicon.href = isDark ? 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🌙</text></svg>' : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">☀️</text></svg>';
+                }
+
+                // Mise à jour de la couleur de la barre d'adresse sur mobile
+                const themeColor = document.querySelector('meta[name="theme-color"]');
+                if (themeColor) {
+                    themeColor.content = isDark ? '#1a1a1a' : '#ffffff';
+                }
+
+                // Mise à jour des couleurs des cartes de services
+                document.querySelectorAll('.service-item').forEach(item => {
+                    if (isDark) {
+                        item.style.setProperty('--card-bg', 'rgba(40, 40, 40, 0.6)');
+                        item.style.setProperty('--card-border', 'rgba(255, 255, 255, 0.1)');
+                        item.style.setProperty('--card-shadow', '0 8px 32px rgba(0, 0, 0, 0.3)');
+                    } else {
+                        item.style.setProperty('--card-bg', 'rgba(255, 255, 255, 0.6)');
+                        item.style.setProperty('--card-border', 'rgba(0, 0, 0, 0.1)');
+                        item.style.setProperty('--card-shadow', '0 8px 32px rgba(0, 0, 0, 0.1)');
+                    }
+                });
+            }
+
+            // Initialisation du thème
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+            if (isDark) {
+                document.documentElement.classList.add('dark-theme');
+                updateThemeElements(true);
+            }
+
+            // Gestion du bouton de thème
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+
+            // Gestion du menu mobile
+            const menuButton = document.querySelector('.menu-button');
+            const closeButton = document.querySelector('.close-btn');
+            const menuOverlay = document.querySelector('.menu-overlay');
+
+            if (menuButton && closeButton && menuOverlay) {
+                menuButton.addEventListener('click', function () {
+                    menuOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+
+                closeButton.addEventListener('click', function () {
+                    menuOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+
+                // Fermer le menu en cliquant sur un lien
+                document.querySelectorAll('.menu-nav a').forEach(link => {
+                    link.addEventListener('click', function () {
+                        menuOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+
+            // Animation au défilement
+            const animateOnScroll = function () {
+                const elements = document.querySelectorAll('.service-item, .expertise-intro, .expertise-title');
+                elements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+
+            // Déclencher l'animation au chargement
+            window.addEventListener('load', animateOnScroll);
+
+            // Déclencher l'animation au défilement
+            window.addEventListener('scroll', animateOnScroll);
+
+            // Initialiser l'animation pour les éléments déjà visibles
+            animateOnScroll();
+
+            // Animation des étoiles qui suivent la souris
+            const starsContainer = document.querySelector('.stars');
+
+            // Créer des étoiles plus visibles
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 4 + 2; // Taille entre 2px et 6px
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.position = 'absolute';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+                star.style.background = 'white';
+                star.style.borderRadius = '50%';
+                star.style.pointerEvents = 'none';
+                star.style.transition = 'transform 0.1s ease-out';
+                star.style.willChange = 'transform';
+
+                // Ajouter un effet de lueur
+                star.style.boxShadow = '0 0 5px 1px rgba(255, 255, 255, 0.5)';
+
+                starsContainer.appendChild(star);
+            }
+
+            // Suivi de la souris plus visible
+            document.addEventListener('mousemove', (e) => {
+                if (!document.body.classList.contains('dark-theme')) return;
+
+                const stars = document.querySelectorAll('.stars > div');
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                stars.forEach((star, index) => {
+                    const rect = star.getBoundingClientRect();
+                    const starX = rect.left + rect.width / 2;
+                    const starY = rect.top + rect.height / 2;
+
+                    // Distance entre la souris et l'étoile
+                    const dx = mouseX - starX;
+                    const dy = mouseY - starY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    // Plus l'étoile est proche de la souris, plus elle s'éloigne
+                    const maxDistance = 300; // Distance maximale d'effet
+                    const maxMove = 30; // Déplacement maximal
+
+                    if (distance < maxDistance) {
+                        const ratio = 1 - (distance / maxDistance);
+                        const moveX = (dx / distance) * maxMove * ratio;
+                        const moveY = (dy / distance) * maxMove * ratio;
+
+                        star.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        star.style.opacity = 0.8;
+                    } else {
+                        star.style.transform = 'translate(0, 0)';
+                        star.style.opacity = 0.3 + (Math.random() * 0.5);
+                    }
+                });
+            });
+        });
+
+        // Gestion du défilement horizontal
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.horizontal-scroll-container');
+            const wrapper = document.querySelector('.horizontal-scroll-wrapper');
+            const sections = document.querySelectorAll('.fullpage-section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            // Création des points de navigation si nécessaire
+            if (sections.length > 0 && document.querySelectorAll('.nav-dot').length === 0) {
+                const nav = document.createElement('nav');
+                nav.className = 'horizontal-nav';
+
+                sections.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot';
+                    dot.setAttribute('data-section', `section${index + 1}`);
+                    if (index === 0) dot.classList.add('active');
+                    nav.appendChild(dot);
+                });
+
+                document.body.appendChild(nav);
+            }
+
+            // Navigation au clic sur les points
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const sectionId = dot.getAttribute('data-section');
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        section.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Mise à jour de la section active
+            function updateActiveSection() {
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + containerRect.width / 2;
+
+                sections.forEach((section, index) => {
+                    const sectionRect = section.getBoundingClientRect();
+                    const sectionCenter = sectionRect.left + sectionRect.width / 2;
+                    const distance = Math.abs(sectionCenter - containerCenter);
+
+                    if (distance < containerRect.width / 2) {
+                        section.classList.add('active');
+                        const dots = document.querySelectorAll('.nav-dot');
+                        dots.forEach(dot => dot.classList.remove('active'));
+                        if (dots[index]) dots[index].classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+
+            // Gestion du glissement à la souris
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+                container.style.cursor = 'grabbing';
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+                // Petit délai pour laisser l'animation se terminer
+                setTimeout(updateActiveSection, 100);
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5; // Vitesse de défilement
+                container.scrollLeft = scrollLeft - walk;
+            });
+
+            // Gestion du toucher pour mobile
+            container.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            }, { passive: true });
+
+            container.addEventListener('touchend', () => {
+                isDown = false;
+                setTimeout(updateActiveSection, 100);
+            }, { passive: true });
+
+            container.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                container.scrollLeft = scrollLeft - walk;
+            }, { passive: false });
+
+            // Navigation au clavier
+            document.addEventListener('keydown', (e) => {
+                const activeSection = document.querySelector('.fullpage-section.active');
+                if (!activeSection) return;
+
+                if (e.key === 'ArrowRight') {
+                    const nextSection = activeSection.nextElementSibling;
+                    if (nextSection && nextSection.classList.contains('fullpage-section')) {
+                        nextSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'start'
+                        });
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    const prevSection = activeSection.previousElementSibling;
+                    if (prevSection && prevSection.classList.contains('fullpage-section')) {
+                        prevSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'start'
+                        });
+                    }
+                }
+            });
+
+            // Mise à jour initiale
+            updateActiveSection();
+
+            // Mise à jour pendant le défilement
+            container.addEventListener('scroll', updateActiveSection);
+
+            // Activer la première section au chargement
+            if (sections.length > 0) {
+                sections[0].classList.add('active');
+                sections[0].querySelector('.section-content')?.classList.add('active');
+            }
+        });
+    </script>
+
+    <style>
+        /* Styles pour les cartes de projet */
+        .project-card {
+            max-width: 90vw;
+            height: 85vh;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.2, 1);
+            display: flex;
+            flex-direction: row;
+        }
+
+        .project-card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-image-container {
+            width: 60%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 0;
+            position: relative;
+        }
+
+        .project-card:hover .project-image-container {
+            border-radius: 0;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            width: 40%;
+            height: 100%;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-title {
+            color: #1a1a1a;
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            font-family: 'AtelierPaon-ExtraBold', sans-serif;
+        }
+
+        .project-description {
+            color: #4a4a4a;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            font-weight: 400;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 18px 45px;
+            background-color: #2EC4B6;
+            color: white;
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid transparent;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project-link:hover {
+            background-color: transparent;
+            color: #2EC4B6;
+            border-color: #2EC4B6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 196, 182, 0.2);
+        }
+
+        /* Styles pour le mode sombre */
+        .dark-theme .project-card {
+            background: rgba(30, 30, 30, 0.95);
+        }
+
+        .dark-theme .project-title {
+            color: #ffffff;
+        }
+
+        .dark-theme .project-description {
+            color: #d1d1d1;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .project-card {
+                flex-direction: column;
+                height: auto;
+                min-height: 85vh;
+                max-width: 95vw;
+                border-radius: 30px;
+            }
+
+            .project-image-container {
+                width: 100%;
+                height: 45vh;
+            }
+
+            .project-content {
+                width: 100%;
+                height: auto;
+                padding: 40px 30px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .project-title {
+                font-size: 2.5rem;
+            }
+
+            .project-description {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .project-card {
+                margin: 20px auto;
+            }
+
+            .project-title {
+                font-size: 2rem;
+            }
+
+            .project-link {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Styles pour la galerie modale */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #000;
+            z-index: 1000;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-modal.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Cacher les boutons du header quand la galerie est ouverte */
+        body:has(.gallery-modal.show) .top-right-buttons,
+        body:has(.gallery-modal.show) .logo {
+            display: none !important;
+        }
+
+        .gallery-content {
+            height: 100vh;
+            display: inline-flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .gallery-slides {
+            display: flex;
+            height: 100%;
+        }
+
+        .gallery-slides img {
+            height: 100vh;
+            width: auto;
+            max-width: 100vw;
+            object-fit: contain;
+            display: inline-block;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .close-gallery {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.7);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            border: 2px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .close-gallery:hover {
+            background: rgba(255, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* Bouton de retour en bas à droite */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            border: 2px solid white;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-5px);
+        }
+
+        .prev-gallery,
+        .next-gallery {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            transition: 0.3s;
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .next-gallery {
+            right: 20px;
+        }
+
+        .prev-gallery {
+            left: 20px;
+        }
+
+        .prev-gallery:hover,
+        .next-gallery:hover {
+            background-color: #2EC4B6;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0.4
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .prev-gallery,
+            .next-gallery {
+                font-size: 20px;
+                width: 40px;
+                height: 40px;
+                padding: 0;
+            }
+
+            .close-gallery {
+                top: -50px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fond d'écran et éléments fixes -->
+    <div class="bird-video-container">
+        <video class="bird-video" autoplay loop muted playsinline>
+            <source src="img/birds.mp4" type="video/mp4">
+            <img src="img/white-bg.58090aa.svg" alt="Background" style="width:100%;height:100%;object-fit:cover;">
+        </video>
+    </div>
+
+    <div class="stars-container">
+        <div class="stars">
+            <div></div>
+        </div>
+    </div>
+
+    <div class="logo">
+        <img src="img/logo_long.33c8981.svg" alt="Atelier du Paon" class="logo-light">
+        <img src="img/logo_long_white.e8a3851.svg" alt="Atelier du Paon" class="logo-dark">
+    </div>
+
+    <div class="top-right-buttons">
+        <button class="hamburger-button" aria-label="Menu">
+            <div class="hamburger-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+
+        <button id="theme-toggle" class="theme-toggle-button" aria-label="Basculer le thème">
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Conteneur principal pour le défilement horizontal -->
+    <div class="horizontal-scroll-container">
+        <div class="horizontal-scroll-wrapper">
+            <!-- Projet 1 - ArbitraChain -->
+            <section class="fullpage-section" id="projet1">
+                <div class="section-content">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="img/ArbitraChain/image_1.webp" alt="ArbitraChain - Plateforme Blockchain"
+                                class="project-image">
+                        </div>
+                        <div class="project-content">
+                            <h2 class="project-title">ArbitraChain</h2>
+                            <p class="project-description">Plateforme blockchain innovante offrant des solutions
+                                décentralisées pour la gestion des actifs numériques et l'exécution de contrats
+                                intelligents.</p>
+                            <a href="#gallery-arbitrachain" class="project-link">Voir la galerie</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galerie modale -->
+                <div id="gallery-arbitrachain" class="gallery-modal">
+                    <div class="gallery-content">
+                        <span class="close-gallery" title="Fermer">&times;</span>
+                        <a href="#" class="back-to-top" id="back-to-top" title="Retour en haut">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </a>
+                        <div class="gallery-slides">
+                            <img src="img/ArbitraChain/image_1.webp" alt="ArbitraChain 1">
+                            <img src="img/ArbitraChain/image_2.webp" alt="ArbitraChain 2">
+                            <img src="img/ArbitraChain/image_3.webp" alt="ArbitraChain 3">
+                            <img src="img/ArbitraChain/image_4.webp" alt="ArbitraChain 4">
+                            <img src="img/ArbitraChain/image_5.webp" alt="ArbitraChain 5">
+                            <img src="img/ArbitraChain/image_6.webp" alt="ArbitraChain 6">
+                            <img src="img/ArbitraChain/image_7.webp" alt="ArbitraChain 7">
+                            <img src="img/ArbitraChain/image_8.webp" alt="ArbitraChain 8">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projet 2 -->
+            <section class="fullpage-section" id="projet2">
+                <div class="section-content">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="img/project2.jpg" alt="Projet 2" class="project-image">
+                        </div>
+                        <div class="project-content">
+                            <h2 class="project-title">AJK</h2>
+                            <p class="project-description">Site web moderne et élégant pour une agence de design
+                                intérieur, mettant en valeur les réalisations avec une galerie visuelle épurée.</p>
+                            <a href="#gallery-ajk" class="project-link">Voir la galerie</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galerie modale AJK -->
+                <div id="gallery-ajk" class="gallery-modal">
+                    <div class="gallery-content">
+                        <span class="close-gallery" title="Fermer">&times;</span>
+                        <a href="#" class="back-to-top" title="Retour en haut">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </a>
+                        <div class="gallery-slides">
+                            <img src="img/AJK/Accueil.png" alt="Page d'accueil AJK">
+                            <img src="img/AJK/A Propos.png" alt="Page À propos AJK">
+                            <img src="img/AJK/Project.png" alt="Page Projets AJK">
+                            <img src="img/AJK/Médiatheque.png" alt="Médiathèque AJK">
+                            <img src="img/AJK/Actualité.png" alt="Page Actualités AJK">
+                            <img src="img/AJK/Devenir membre.png" alt="Page Devenir membre AJK">
+                            <img src="img/AJK/Contactez-nous.png" alt="Page Contact AJK">
+                            <img src="img/AJK/Faire un don.png" alt="Page Faire un don AJK">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projet 3 -->
+            <section class="fullpage-section" id="projet3">
+                <div class="section-content">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="img/project3.jpg" alt="Projet 3" class="project-image">
+                        </div>
+                        <div class="project-content">
+                            <h2 class="project-title">SA Connect</h2>
+                            <p class="project-description">Plateforme d'objets connectés intelligents pour les villes,
+                                les bâtiments et les maisons durables de demain.</p>
+                            <a href="#gallery-saconnect" class="project-link">Voir la galerie</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galerie modale SA Connect -->
+                <div id="gallery-saconnect" class="gallery-modal">
+                    <div class="gallery-content">
+                        <span class="close-gallery" title="Fermer">&times;</span>
+                        <a href="#" class="back-to-top" title="Retour en haut">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </a>
+                        <div class="gallery-slides">
+                            <img src="img/saconnect/Acceuil.png" alt="Page d'accueil SA Connect">
+                            <img src="img/saconnect/A propos.png" alt="À propos de SA Connect">
+                            <img src="img/saconnect/Actualités.png" alt="Actualités SA Connect">
+                            <img src="img/saconnect/Ville intelligente.png" alt="Ville intelligente SA Connect">
+                            <img src="img/saconnect/Bâtiment intelligent.png" alt="Bâtiment intelligent SA Connect">
+                            <img src="img/saconnect/Maison intelligente.png" alt="Maison intelligente SA Connect">
+                            <img src="img/saconnect/Agriculture intelligente.png"
+                                alt="Agriculture intelligente SA Connect">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projet 4 -->
+            <section class="fullpage-section" id="projet4">
+                <div class="section-content">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="img/project4.jpg" alt="Projet 4" class="project-image">
+                        </div>
+                        <div class="project-content">
+                            <h2 class="project-title">Elitrans CI</h2>
+                            <p class="project-description">Solution de gestion de transport urbain intelligent pour une
+                                mobilité plus fluide et durable en Côte d'Ivoire.</p>
+                            <a href="#gallery-elitrans" class="project-link">Voir la galerie</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galerie modale Elitrans CI -->
+                <div id="gallery-elitrans" class="gallery-modal">
+                    <div class="gallery-content">
+                        <span class="close-gallery" title="Fermer">&times;</span>
+                        <a href="#" class="back-to-top" title="Retour en haut">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </a>
+                        <div class="gallery-slides">
+                            <img src="img/elitrans%20ci/1920w%20light.png" alt="Page d'accueil Elitrans CI">
+                            <img src="img/elitrans%20ci/1920w%20light-1.png" alt="Services Elitrans CI">
+                            <img src="img/elitrans%20ci/1920w%20light-2.png" alt="Réseau de transport">
+                            <img src="img/elitrans%20ci/1920w%20light-3.png" alt="Application mobile">
+                            <img src="img/elitrans%20ci/1920w%20light-4.png" alt="Plans tarifaires">
+                            <img src="img/elitrans%20ci/1920w%20light-5.png" alt="À propos">
+                            <img src="img/elitrans%20ci/1920w%20light-6.png" alt="Contact">
+                            <img src="img/elitrans%20ci/1920w%20light-7.png" alt="FAQ">
+                            <img src="img/elitrans%20ci/1920w%20light-8.png" alt="Espace client">
+                            <img src="img/elitrans%20ci/Desktop%20-%203.png" alt="Tableau de bord">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projet 5 -->
+            <section class="fullpage-section" id="projet5">
+                <div class="section-content">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="img/project5.jpg" alt="Projet 5" class="project-image">
+                        </div>
+                        <div class="project-content">
+                            <h2 class="project-title">Tekbot</h2>
+                            <p class="project-description">Plateforme interactive d'apprentissage de la programmation
+                                robotique avec des exercices pratiques et progressifs.</p>
+                            <a href="#gallery-tekbot" class="project-link">Voir la galerie</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galerie modale Tekbot -->
+                <div id="gallery-tekbot" class="gallery-modal">
+                    <div class="gallery-content">
+                        <span class="close-gallery" title="Fermer">&times;</span>
+                        <a href="#" class="back-to-top" title="Retour en haut">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </a>
+                        <div class="gallery-slides">
+                            <img src="img/Tekbot/Accueil.png" alt="Page d'accueil Tekbot">
+                            <img src="img/Tekbot/Dashboard.png" alt="Tableau de bord Tekbot">
+                            <img src="img/Tekbot/Modules_tous.png" alt="Tous les modules">
+                            <img src="img/Tekbot/Modules_debutant.png" alt="Modules débutant">
+                            <img src="img/Tekbot/Modules_inter.png" alt="Modules intermédiaires">
+                            <img src="img/Tekbot/Modules_avancer.png" alt="Modules avancés">
+                            <img src="img/Tekbot/mod1_exo1_step1.png" alt="Exercice 1 - Étape 1">
+                            <img src="img/Tekbot/mod1_exo1_step1-1.png" alt="Exercice 1 - Étape 1.1">
+                            <img src="img/Tekbot/mod1_exo1_step1-2.png" alt="Exercice 1 - Étape 1.2">
+                            <img src="img/Tekbot/mod1_exo1_step1-3.png" alt="Exercice 1 - Étape 1.3">
+                            <img src="img/Tekbot/mod1_exo1_step1-4.png" alt="Exercice 1 - Étape 1.4">
+                            <img src="img/Tekbot/mod1_exo1_step1_valided.png" alt="Exercice 1 - Validé">
+                            <img src="img/Tekbot/mod1_exo1_step1_valided-1.png" alt="Exercice 1 - Validation 1">
+                            <img src="img/Tekbot/mod1_exo1_step1_valided-2.png" alt="Exercice 1 - Validation 2">
+                            <img src="img/Tekbot/mod1_exo1_step1_valided-3.png" alt="Exercice 1 - Validation 3">
+                            <img src="img/Tekbot/mod1_exo1_step1_valided-4.png" alt="Exercice 1 - Validation 4">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projet 6 -->
+            <section class="fullpage-section" id="projet6">
+                <div class="section-content">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="img/project6.jpg" alt="Projet 6" class="project-image">
+                        </div>
+                        <div class="project-content">
+                            <h2 class="project-title">Mon Portfolio</h2>
+                            <p class="project-description">Conception et développement de mon portfolio personnel
+                                présentant mes compétences et réalisations en développement web et design.</p>
+                            <a href="#gallery-portfolio" class="project-link">Voir la galerie</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galerie modale Portfolio -->
+                <div id="gallery-portfolio" class="gallery-modal">
+                    <div class="gallery-content">
+                        <span class="close-gallery" title="Fermer">&times;</span>
+                        <a href="#" class="back-to-top" title="Retour en haut">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </a>
+                        <div class="gallery-slides">
+                            <img src="img/MacBook Pro 16_ - 1(1).png" alt="Aperçu du portfolio">
+                            <img src="img/Frame 107192.png" alt="Maquette du portfolio">
+                            <img src="img/Frame 107193.png" alt="Design du portfolio">
+                            <img src="img/Pink White Modern Pink October Instagram Post.png"
+                                alt="Publication Instagram">
+                            <img src="img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post.png"
+                                alt="Atelier de programmation">
+                            <img src="img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post(2).png"
+                                alt="Atelier de programmation 2">
+                            <img src="img/l-dark (4).png" alt="Thème sombre">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay">
+        <button class="close-btn" aria-label="Fermer le menu"></button>
+        <nav class="menu-nav">
+            <a href="index.html" data-number="00">ACCUEIL</a>
+            <a href="quiSuisJe.html" data-number="01">QUI SUIS-JE</a>
+            <a href="expertise.html" data-number="02">EXPERTISE</a>
+            <a href="projets.html" data-number="03">PROJETS</a>
+            <a href="demande-devis.html" data-number="04">DEMANDE DEVIS</a>
+            <a href="demande-devis.html" data-number="05">CONTACT</a>
+        </nav>
+        <div class="menu-contact">
+            <p>todedjiemma9@gmail.com</p>
+            <p>+229 68678025</p>
+            <div class="social-links">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11.75 20h-3.5v-11h3.5v11zm-1.75-12.25c-1.071 0-1.938-.867-1.938-1.938s.866-1.937 1.938-1.937c1.07 0 1.937.866 1.937 1.937s-.867 1.938-1.937 1.938zm14.5 12.25h-3.5v-5.5c0-1.309-.028-2.993-1.825-2.993-1.826 0-2.105 1.427-2.105 2.898v5.595h-3.5v-11h3.36v1.5h.047c.468-.888 1.615-1.825 3.323-1.825 3.555 0 4.208 2.341 4.208 5.377v5.948z"
+                            fill="#2EC4B6" />
+                    </svg>
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <path
+                            d="M23 3.01s-2.018 1.192-3.14 1.53c-1.24-1.58-3.36-1.91-5.13-1.01-1.77.9-2.73 2.84-2.23 4.71-3.24-.16-6.01-1.71-7.9-4.07-.33.57-.51 1.22-.51 1.89 0 1.3.66 2.45 1.67 3.12-.62-.02-1.2-.19-1.7-.48v.05c0 1.83 1.3 3.36 3.03 3.71-.32.09-.65.14-1 .14-.24 0-.48-.02-.71-.06.48 1.5 1.89 2.59 3.56 2.62-1.3 1.02-2.94 1.63-4.73 1.63-.31 0-.62-.02-.92-.06 1.69 1.08 3.69 1.72 5.85 1.72 7.02 0 10.86-5.82 10.86-10.87 0-.17 0-.33-.01-.5.75-.54 1.39-1.21 1.9-1.97z"
+                            fill="#2EC4B6" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flèches de navigation -->
+    <div class="nav-arrows">
+        <div class="nav-arrow up" id="scroll-up">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+            </svg>
+        </div>
+        <div class="nav-arrow down" id="scroll-down">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/menu-overlay.js"></script>
+
+    <script>
+        // Galerie modale
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gestion de l'ouverture de la galerie
+            const galleryLinks = document.querySelectorAll('a[href^="#gallery-"]');
+
+            galleryLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const galleryId = this.getAttribute('href');
+                    const gallery = document.querySelector(galleryId);
+
+                    if (gallery) {
+                        // Afficher la galerie
+                        gallery.classList.add('show');
+                        document.body.style.overflow = 'hidden';
+
+                        // Faire défiler jusqu'au début
+                        gallery.scrollTo(0, 0);
+                    }
+                });
+            });
+
+            // Fermer la galerie
+            const closeButtons = document.querySelectorAll('.close-gallery');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const gallery = this.closest('.gallery-modal');
+                    if (gallery) {
+                        gallery.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Fermer avec la touche Échap
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const gallery = document.querySelector('.gallery-modal.show');
+                    if (gallery) {
+                        gallery.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+
+            // Fermer en cliquant en dehors de l'image
+            document.querySelectorAll('.gallery-modal').forEach(gallery => {
+                gallery.addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        // Navigation par flèches
+        document.getElementById('scroll-up').addEventListener('click', () => {
+            window.scrollBy({
+                top: -window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('scroll-down').addEventListener('click', () => {
+            window.scrollBy({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>

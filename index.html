@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emmanuela TODEDJI | Digital Designer</title>
+
+    <!-- Fonts: Playfair Display & Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        morning: {
+                            bg: '#F9F8F4',
+                            accent: '#EBE5DA',
+                            text: '#3A342D',
+                            secondary: '#8C8680'
+                        },
+                        midnight: {
+                            bg: '#0A0E17',
+                            accent: '#151E2E',
+                            text: '#E6E8EB',
+                            highlight: '#7088A0'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- React & Framer Motion -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            cursor: none;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overscroll-behavior: none;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const React = window.React;
+        const ReactDOM = window.ReactDOM;
+        const { useState, useEffect, useRef } = React;
+        const { motion, useMotionValue, useSpring, useTransform, AnimatePresence } = window.Motion;
+
+        // --- Custom Cursor ---
+        const CustomCursor = ({ mode, isHovering }) => {
+            const cursorX = useMotionValue(-100);
+            const cursorY = useMotionValue(-100);
+
+            const springConfig = { damping: 25, stiffness: 300 };
+            const cursorXSpring = useSpring(cursorX, springConfig);
+            const cursorYSpring = useSpring(cursorY, springConfig);
+
+            useEffect(() => {
+                const moveCursor = (e) => {
+                    cursorX.set(e.clientX - 16);
+                    cursorY.set(e.clientY - 16);
+                };
+                window.addEventListener("mousemove", moveCursor);
+                return () => window.removeEventListener("mousemove", moveCursor);
+            }, []);
+
+            return (
+                <>
+                    {/* Point Central (Toujours visible) */}
+                    <motion.div
+                        className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[100] mix-blend-difference"
+                        style={{
+                            x: cursorX,
+                            y: cursorY,
+                            translateX: 12, // Centrer par rapport au cercle de 32px (16 + 12 = 28? Non. 32/2 = 16. Point 4px. 16 - 2 = 14)
+                            translateY: 12,
+                            backgroundColor: mode === 'morning' ? '#3A342D' : '#E6E8EB'
+                        }}
+                    />
+
+                    {/* Cercle Externe */}
+                    <motion.div
+                        className="fixed top-0 left-0 w-8 h-8 border-[1.5px] rounded-full pointer-events-none z-[100] flex items-center justify-center mix-blend-difference"
+                        style={{
+                            x: cursorXSpring,
+                            y: cursorYSpring,
+                            borderColor: mode === 'morning' ? '#3A342D' : '#E6E8EB',
+                        }}
+                        animate={{
+                            scale: isHovering ? 2.5 : 1,
+                            backgroundColor: isHovering ? (mode === 'morning' ? '#3A342D' : '#E6E8EB') : 'transparent',
+                        }}
+                    >
+                        {isHovering && (
+                            <span className="text-[4px] uppercase tracking-widest text-morning-bg dark:text-midnight-bg font-bold">
+                                View
+                            </span>
+                        )}
+                    </motion.div>
+                </>
+            );
+        };
+
+        // --- Composant: Poetic Toggle (Theme Switcher) ---
+        const PoeticToggle = ({ mode, onToggle }) => {
+            const handleClick = () => {
+                onToggle(mode === 'morning' ? 'midnight' : 'morning');
+            };
+
+            return (
+                <motion.button
+                    onClick={handleClick}
+                    className="fixed bottom-20 right-8 z-50 group cursor-pointer"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                >
+                    <div className="relative flex items-center gap-3">
+                        {/* Shifting Line */}
+                        <motion.div
+                            className={`h-[1px] origin-left ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'}`}
+                            initial={false}
+                            animate={{
+                                width: mode === 'morning' ? '2rem' : '3rem',
+                                scaleX: 1
+                            }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                        />
+
+                        {/* Text Container */}
+                        <div className="relative h-6 w-16 overflow-hidden">
+                            {/* Jour */}
+                            <motion.span
+                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                                initial={false}
+                                animate={{
+                                    opacity: mode === 'morning' ? 1 : 0,
+                                    y: mode === 'morning' ? 0 : -10,
+                                    x: mode === 'morning' ? 0 : 10
+                                }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                Jour
+                            </motion.span>
+
+                            {/* Nuit */}
+                            <motion.span
+                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                                initial={false}
+                                animate={{
+                                    opacity: mode === 'morning' ? 0 : 1,
+                                    y: mode === 'morning' ? 10 : 0,
+                                    x: mode === 'morning' ? -10 : 0
+                                }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                Nuit
+                            </motion.span>
+                        </div>
+
+                        {/* Second Line */}
+                        <motion.div
+                            className={`h-[1px] origin-right ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'}`}
+                            initial={false}
+                            animate={{
+                                width: mode === 'morning' ? '3rem' : '2rem',
+                                scaleX: 1
+                            }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                        />
+                    </div>
+
+                    {/* Hover Indicator */}
+                    <motion.div
+                        className={`absolute -bottom-2 left-0 right-0 h-[1px] origin-center ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`}
+                        initial={{ scaleX: 0 }}
+                        whileHover={{ scaleX: 1 }}
+                        transition={{ duration: 0.3 }}
+                    />
+                </motion.button>
+            );
+        };
+
+        // --- Composant: Illustration de Fond (Topographie) ---
+        const BackgroundIllustration = ({ mode }) => {
+            return (
+                <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <motion.div
+                        className="w-full h-full"
+                        initial={{ opacity: 0 }}
+                        animate={{
+                            opacity: mode === 'morning' ? 0.08 : 0.05,
+                            // En mode jour: normal. En mode nuit: inversion des couleurs pour avoir des lignes blanches
+                            filter: mode === 'morning' ? 'invert(0)' : 'invert(1) hue-rotate(180deg)',
+                        }}
+                        transition={{ duration: 1.5 }}
+                    >
+                        <img
+                            src="Background.jpg"
+                            alt="Texture Topographique"
+                            className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-screen opacity-60"
+                        />
+                    </motion.div>
+                </div>
+            );
+        };
+
+        // --- Composant: Photo de Profil (Gauche) ---
+        const ProfileLeft = ({ mode, mouseX, mouseY }) => {
+            const x = useTransform(mouseX, [0, window.innerWidth], [-10, 10]);
+            const y = useTransform(mouseY, [0, window.innerHeight], [-10, 10]);
+
+            return (
+                <motion.div
+                    className="absolute -bottom-24 left-0 sm:top-[20%] sm:bottom-auto sm:left-[5%] sm:right-auto md:left-[5%] z-10"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                    {/* Halo d'Ombre/Glow */}
+                    <motion.div
+                        className={`absolute -inset-8 w-[calc(100%+4rem)] h-[calc(100%+4rem)] opacity-60 blur-[100px] rounded-full -z-10 transition-colors duration-1000
+                            ${mode === 'morning' ? 'bg-[#EBE5DA]' : 'bg-[#151E2E]'}`}
+                        animate={{ scale: [0.7, 0.8, 0.7] }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    ></motion.div>
+
+                    {/* Conteneur de la Photo */}
+                    <motion.div
+                        className="relative w-[95vw] h-[65vh] sm:w-[50vw] sm:h-[60vh] md:w-[55vw] md:h-[90vh] flex items-end justify-start"
+                        style={{ x, y }}
+                    >
+                        <motion.img
+                            src="Profil.png"
+                            alt="Emmanuela"
+                            className="h-[110%] sm:h-[130%] w-auto object-contain object-bottom sm:object-left-bottom"
+                            animate={{ y: [0, -15, 0] }}
+                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                            style={{
+                                filter: mode === 'morning'
+                                    ? 'drop-shadow(0 20px 30px rgba(58, 52, 45, 0.15))'
+                                    : 'drop-shadow(0 0 20px rgba(112, 136, 160, 0.2)) brightness(0.9)',
+                            }}
+                        />
+                    </motion.div>
+                </motion.div>
+            );
+        };
+
+        // --- Composant: Titre / Nom (À côté de la photo) ---
+        const ProfileTitle = ({ mode }) => {
+            return (
+                // Mobile: centered below photo. Desktop: à droite de la photo
+                <div className="absolute top-[25%] right-[5%] left-auto translate-x-0 sm:top-[35%] sm:left-[28%] md:left-[26%] sm:translate-x-0 z-10 flex flex-col items-end sm:items-start pointer-events-none mix-blend-difference sm:mix-blend-normal w-full sm:w-auto px-4 sm:px-0">
+
+                    {/* Prénom - Serif Italic */}
+                    <div className="overflow-hidden">
+                        <motion.h1
+                            initial={{ y: "120%" }}
+                            animate={{ y: 0 }}
+                            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+                            className={`font-serif italic leading-none tracking-tight ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                            style={{ fontSize: 'clamp(4rem, 12vw, 7.5vw)' }}
+                        >
+                            Emmanuela
+                        </motion.h1>
+                    </div>
+
+                    {/* Ligne + Nom - Sans Serif */}
+                    <div className="overflow-hidden flex items-center gap-2 sm:gap-4 mt-1 ml-0 sm:ml-2 md:ml-4">
+                        <motion.div
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ duration: 1, delay: 1 }}
+                            className={`h-[1px] w-8 sm:w-12 md:w-24 origin-left ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'}`}
+                        />
+                        <motion.h2
+                            initial={{ y: "120%" }}
+                            animate={{ y: 0 }}
+                            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.7 }}
+                            className={`font-sans font-medium tracking-[0.15em] sm:tracking-[0.2em] uppercase ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                            style={{ fontSize: 'clamp(1.2rem, 5vw, 2.5vw)' }}
+                        >
+                            Todedji
+                        </motion.h2>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Composant: Marquee (Texte Défilant) ---
+        const Marquee = ({ text, mode }) => {
+            return (
+                <div className="relative flex overflow-hidden whitespace-nowrap py-4 border-t border-current/10">
+                    <motion.div
+                        className={`flex gap-8 text-xs font-mono uppercase tracking-widest ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                        animate={{ x: "-50%" }}
+                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                    >
+                        {[...Array(10)].map((_, i) => (
+                            <span key={i} className="flex items-center gap-8 opacity-60">
+                                {text} <span className="w-2 h-2 rounded-full bg-current opacity-40"></span>
+                            </span>
+                        ))}
+                    </motion.div>
+                </div>
+            );
+        };
+
+        // --- Composant: About Page (The Living Poster) ---
+        const AboutPage = ({ mode, onBack, onOpenMenu, mouseX, mouseY }) => {
+            // Smooth Mouse for Fluid Parallax
+            const smoothOptions = { damping: 50, stiffness: 400 }; // More damping = smoother/slower follow
+            const smoothX = useSpring(mouseX, smoothOptions);
+            const smoothY = useSpring(mouseY, smoothOptions);
+
+            // Parallax Transforms (using smooth values)
+            const x1 = useTransform(smoothX, [0, window.innerWidth], [15, -15]);
+            const y1 = useTransform(smoothY, [0, window.innerHeight], [15, -15]);
+
+            const x2 = useTransform(smoothX, [0, window.innerWidth], [-30, 30]);
+            const y2 = useTransform(smoothY, [0, window.innerHeight], [-30, 30]);
+
+            const xText = useTransform(smoothX, [0, window.innerWidth], [8, -8]);
+            const yText = useTransform(smoothY, [0, window.innerHeight], [8, -8]);
+
+            return (
+                <motion.div
+                    className={`fixed inset-0 z-50 overflow-hidden flex flex-col ${mode === 'morning' ? 'bg-morning-bg text-morning-text' : 'bg-midnight-bg text-midnight-text'}`}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.05 }}
+                    transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+                >
+                    {/* Header / Back Button & Menu (Fixed) */}
+                    <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50 pointer-events-none">
+                        <div className="pointer-events-auto">
+                            <button
+                                onClick={onBack}
+                                className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                            >
+                                <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
+                                Retour
+                            </button>
+                        </div>
+
+                        <div className="pointer-events-auto">
+                            <button
+                                onClick={onOpenMenu}
+                                className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${mode === 'morning' ? 'text-morning-text hover:text-morning-secondary' : 'text-midnight-text hover:text-midnight-highlight'}`}
+                            >
+                                <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
+                                    <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
+                                    <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0"> Ouvrir</span>
+                                </span>
+                                <div className={`w-6 h-[1px] ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} group-hover:w-8 transition-all duration-300`}></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Main Content Area (Single Screen) */}
+                    <div className="relative flex-1 w-full h-full flex items-center justify-center p-8 md:p-16">
+
+                        {/* Background Typography (Slow Float) */}
+                        <motion.div
+                            className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none overflow-hidden"
+                            animate={{ rotate: [0, 5, 0] }}
+                            transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <h1 className="text-[40vw] font-serif italic whitespace-nowrap">Creative</h1>
+                        </motion.div>
+
+                        {/* Composition Container */}
+                        <div className="relative w-full max-w-6xl h-full max-h-[80vh] grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+
+                            {/* Left: Title & Bio */}
+                            <motion.div
+                                className="md:col-span-5 flex flex-col justify-center z-10"
+                                style={{ x: xText, y: yText }}
+                            >
+                                <motion.h2
+                                    className="text-6xl md:text-8xl font-serif italic mb-8 leading-[0.9]"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.3 }}
+                                >
+                                    Je suis <br /> Emmanuela
+                                </motion.h2>
+                                <motion.div
+                                    className="text-sm md:text-base font-light leading-relaxed opacity-80 max-w-sm backdrop-blur-sm p-4 rounded-lg border border-current/5"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.5 }}
+                                >
+                                    <p className="mb-4">Une designer numérique passionnée par le minimalisme et l'émotion. Je conçois des interfaces qui respirent et racontent des histoires.</p>
+                                    <p>Basée à Paris, disponible pour des projets audacieux.</p>
+                                </motion.div>
+                            </motion.div>
+
+                            {/* Center/Right: Visuals (Parallax) */}
+                            <div className="md:col-span-7 relative h-full flex items-center justify-center">
+
+                                {/* Main Portrait - Large Rectangle */}
+                                <motion.div
+                                    className="absolute w-56 h-72 md:w-96 md:h-[32rem] bg-gray-300 overflow-hidden z-10 shadow-2xl"
+                                    style={{ x: x2, y: y2 }}
+                                    animate={{ y: [0, 15, 0] }}
+                                    transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                                >
+                                    <img
+                                        src="Profil2.png"
+                                        alt="Emmanuela Portrait"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </motion.div>
+
+                                {/* Floating Keywords */}
+                                <motion.div
+                                    className="absolute top-0 left-10 md:left-20 text-xs font-mono uppercase tracking-widest bg-current text-morning-bg dark:text-midnight-bg px-3 py-1 rounded-full"
+                                    animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+                                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    Minimalisme
+                                </motion.div>
+                                <motion.div
+                                    className="absolute bottom-20 right-0 text-xs font-mono uppercase tracking-widest border border-current px-3 py-1 rounded-full backdrop-blur-md"
+                                    animate={{ y: [0, 10, 0], rotate: [0, -5, 0] }}
+                                    transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                                >
+                                    Émotion
+                                </motion.div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer Marquee */}
+                    <div className="absolute bottom-0 left-0 w-full z-20">
+                        <Marquee text="Digital Designer • Creative Developer • Art Director • UI/UX • Branding •" mode={mode} />
+                    </div>
+
+                </motion.div>
+            );
+        };
+
+        // --- Composant: Expertise Page (The Atmospheric Reveal) ---
+        const ExpertisePage = ({ mode, onBack, onOpenMenu, mouseX, mouseY }) => {
+            const [activeCard, setActiveCard] = useState(null);
+
+            const smoothOptions = { damping: 50, stiffness: 400 };
+            const smoothX = useSpring(mouseX, smoothOptions);
+            const smoothY = useSpring(mouseY, smoothOptions);
+
+            // Parallax
+            const x1 = useTransform(smoothX, [0, window.innerWidth], [20, -20]);
+            const y1 = useTransform(smoothY, [0, window.innerHeight], [20, -20]);
+            const x2 = useTransform(smoothX, [0, window.innerWidth], [-30, 30]);
+            const y2 = useTransform(smoothY, [0, window.innerHeight], [-30, 30]);
+            const x3 = useTransform(smoothX, [0, window.innerWidth], [15, -15]);
+            const y3 = useTransform(smoothY, [0, window.innerHeight], [15, -15]);
+
+            const cards = [
+                {
+                    id: 1,
+                    title: "UI/UX Design",
+                    desc: "Création d'interfaces intuitives centré utilisateur.",
+                    tags: ["Figma", "User Research", "Prototyping"],
+                    x: x1, y: y1,
+                    color: "from-blue-400/20 to-purple-400/20",
+                    pos: "top-[20%] left-[15%] md:left-[20%]"
+                },
+                {
+                    id: 2,
+                    title: "Creative Dev",
+                    desc: "Développement front-end moderne et animé.",
+                    tags: ["React", "Three.js", "Tailwind"],
+                    x: x2, y: y2,
+                    color: "from-emerald-400/20 to-teal-400/20",
+                    pos: "top-[45%] right-[10%] md:right-[20%]"
+                },
+                {
+                    id: 3,
+                    title: "Art Direction",
+                    desc: "Identité visuelle et branding impactant.",
+                    tags: ["Branding", "Typography", "Concept"],
+                    x: x3, y: y3,
+                    color: "from-orange-400/20 to-rose-400/20",
+                    pos: "bottom-[15%] left-[10%] md:left-[30%]"
+                }
+            ];
+
+            return (
+                <motion.div
+                    className={`fixed inset-0 z-50 overflow-hidden flex flex-col ${mode === 'morning' ? 'bg-morning-bg text-morning-text' : 'bg-midnight-bg text-midnight-text'}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    {/* Dynamic Atmospheric Background */}
+                    <div className="absolute inset-0 transition-colors duration-1000 ease-in-out">
+                        {/* Default Ambient Light */}
+                        <div className={`absolute inset-0 opacity-30 ${mode === 'morning' ? 'bg-gradient-to-br from-orange-100/50 to-blue-100/50' : 'bg-gradient-to-br from-blue-900/20 to-purple-900/20'}`}></div>
+
+                        {/* Active Card Atmosphere */}
+                        <AnimatePresence>
+                            {activeCard && (
+                                <motion.div
+                                    key={activeCard}
+                                    className={`absolute inset-0 bg-gradient-to-br ${cards.find(c => c.id === activeCard).color} blur-3xl opacity-60`}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.8 }}
+                                />
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Header */}
+                    <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50 pointer-events-none">
+                        <div className="pointer-events-auto">
+                            <button onClick={onBack} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${mode === 'morning' ? 'text-morning-text bg-white/20 hover:bg-white/30 border border-current/20' : 'text-midnight-text bg-black/20 hover:bg-black/30 border border-current/20'}`}>
+                                <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
+                                Retour
+                            </button>
+                        </div>
+                        <div className="pointer-events-auto">
+                            <button onClick={onOpenMenu} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${mode === 'morning' ? 'text-morning-text bg-white/20 hover:bg-white/30 border border-current/20' : 'text-midnight-text bg-black/20 hover:bg-black/30 border border-current/20'}`}>
+                                <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
+                                    <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
+                                    <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">Ouvrir</span>
+                                </span>
+                                <div className={`w-6 h-[1px] ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} group-hover:w-8 transition-all duration-300`}></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Rotating Title (Fades out on hover) */}
+                    <motion.div
+                        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+                        animate={{
+                            rotate: [0, -5, 0],
+                            opacity: activeCard ? 0.05 : 0.1,
+                            scale: activeCard ? 1.1 : 1
+                        }}
+                        transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                        <h1 className="text-[30vw] font-serif italic whitespace-nowrap">Expertise</h1>
+                    </motion.div>
+
+                    {/* Scattered Cards */}
+                    <div className="relative w-full h-full">
+                        {cards.map((card) => (
+                            <motion.div
+                                key={card.id}
+                                className={`absolute ${card.pos} w-64 md:w-80 p-6 rounded-xl border border-current/10 backdrop-blur-md cursor-pointer z-10
+                                    ${mode === 'morning' ? 'bg-white/40' : 'bg-black/40'}
+                                    transition-colors duration-500`}
+                                style={{ x: card.x, y: card.y }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{
+                                    opacity: activeCard && activeCard !== card.id ? 0.3 : 1,
+                                    scale: activeCard === card.id ? 1.1 : 1,
+                                    y: [0, -10, 0]
+                                }}
+                                transition={{
+                                    y: { duration: 6 + card.id, repeat: Infinity, ease: "easeInOut" },
+                                    default: { duration: 0.5 }
+                                }}
+                                onMouseEnter={() => setActiveCard(card.id)}
+                                onMouseLeave={() => setActiveCard(null)}
+                            >
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className="text-xs font-mono opacity-50">0{card.id}</span>
+                                    <motion.div
+                                        className="w-2 h-2 rounded-full bg-current"
+                                        animate={{ scale: activeCard === card.id ? [1, 1.5, 1] : 1 }}
+                                        transition={{ duration: 2, repeat: Infinity }}
+                                    />
+                                </div>
+                                <h3 className="text-3xl md:text-4xl font-serif italic mb-2 leading-none">{card.title}</h3>
+
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{
+                                        height: activeCard === card.id ? 'auto' : 0,
+                                        opacity: activeCard === card.id ? 1 : 0
+                                    }}
+                                    className="overflow-hidden"
+                                >
+                                    <p className="text-sm font-light opacity-80 mt-4 mb-4 leading-relaxed">{card.desc}</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {card.tags.map(tag => (
+                                            <span key={tag} className="text-[10px] uppercase tracking-wider border border-current/20 px-2 py-1 rounded-full">{tag}</span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* Footer Marquee */}
+                    <div className="absolute bottom-0 left-0 w-full z-20">
+                        <Marquee text="Expertise • Passion • Innovation • Créativité • Technique •" mode={mode} />
+                    </div>
+                </motion.div>
+            );
+        };
+
+        // --- Composant: Project Detail Gallery ---
+        const ProjectDetailGallery = ({ project, onClose, onNextProject, mode }) => {
+            const scrollRef = useRef(null);
+            const [showNextProject, setShowNextProject] = useState(false);
+
+            // Reset scroll to beginning when project changes
+            useEffect(() => {
+                if (scrollRef.current) {
+                    scrollRef.current.scrollLeft = 0;
+                }
+            }, [project.id]);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    if (scrollRef.current) {
+                        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+                        const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 50;
+                        setShowNextProject(isAtEnd);
+                    }
+                };
+
+                const container = scrollRef.current;
+                if (container) {
+                    container.addEventListener('scroll', handleScroll);
+                    return () => container.removeEventListener('scroll', handleScroll);
+                }
+            }, []);
+
+            return (
+                <motion.div
+                    className={`fixed inset-0 z-[60] ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    {/* Close Button */}
+                    <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50">
+                        <button onClick={onClose} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${project.textColor} bg-white/20 hover:bg-white/30 border border-current/20`}>
+                            <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
+                            Fermer
+                        </button>
+                        <div className={`text-xs font-mono uppercase tracking-widest px-3 py-2 rounded-full backdrop-blur-md ${project.textColor} bg-white/20 border border-current/20`}>
+                            {project.title}
+                        </div>
+                    </div>
+
+                    {/* Horizontal Scroll Container */}
+                    <div
+                        ref={scrollRef}
+                        className="w-full h-full overflow-x-auto flex scrollbar-hide"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                        {/* Gallery Images */}
+                        {project.gallery.map((img, index) => (
+                            <img
+                                key={index}
+                                src={img}
+                                alt={`${project.title} - Image ${index + 1}`}
+                                className="h-full flex-shrink-0 object-cover"
+                            />
+                        ))}
+
+                        {/* Next Project Section */}
+                        <div className="min-w-[600px] h-full flex items-center justify-center flex-shrink-0 px-8">
+                            <motion.div
+                                className={`text-center ${project.textColor}`}
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <p className="text-sm uppercase tracking-widest mb-8 opacity-70">Fin du projet</p>
+                                <button
+                                    onClick={onNextProject}
+                                    className={`group px-8 py-4 rounded-full backdrop-blur-md ${project.textColor} bg-white/30 hover:bg-white/50 border ${project.accentColor} transition-all shadow-lg flex items-center gap-4 text-lg font-serif italic`}
+                                >
+                                    Projet Suivant
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-2 transition-transform">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </button>
+                            </motion.div>
+                        </div>
+                    </div>
+
+                    {/* Progress Indicator */}
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+                        {[...project.gallery, 'next'].map((_, i) => (
+                            <div
+                                key={i}
+                                className={`h-1 rounded-full transition-all duration-300 ${project.textColor} bg-current opacity-30`}
+                                style={{ width: '2rem' }}
+                            />
+                        ))}
+                    </div>
+                </motion.div>
+            );
+        };
+
+        // --- Composant: Devis Page (The Artistic Form) ---
+        const DevisPage = ({ mode, onBack, onOpenMenu, mouseX, mouseY }) => {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                phone: '',
+                projectType: '',
+                budget: '',
+                timeline: '',
+                description: ''
+            });
+            const [focusedField, setFocusedField] = useState(null);
+            const [submitted, setSubmitted] = useState(false);
+
+            // Parallax
+            const smoothOptions = { damping: 50, stiffness: 400 };
+            const smoothX = useSpring(mouseX, smoothOptions);
+            const smoothY = useSpring(mouseY, smoothOptions);
+            const x1 = useTransform(smoothX, [0, window.innerWidth], [20, -20]);
+            const y1 = useTransform(smoothY, [0, window.innerHeight], [20, -20]);
+            const x2 = useTransform(smoothX, [0, window.innerWidth], [-15, 15]);
+            const y2 = useTransform(smoothY, [0, window.innerHeight], [-15, 15]);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setSubmitted(true);
+                setTimeout(() => {
+                    setSubmitted(false);
+                    setFormData({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        projectType: '',
+                        budget: '',
+                        timeline: '',
+                        description: ''
+                    });
+                }, 5000);
+            };
+
+            return (
+                <motion.div
+                    className={`fixed inset-0 z-40 overflow-hidden ${mode === 'morning' ? 'bg-morning-bg text-morning-text' : 'bg-midnight-bg text-midnight-text'}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    {/* Artistic Background Elements */}
+                    <motion.div
+                        className={`absolute top-20 right-20 w-96 h-96 rounded-full ${mode === 'morning' ? 'bg-morning-secondary/10' : 'bg-midnight-highlight/10'} blur-3xl`}
+                        style={{ x: x1, y: y1 }}
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                        className={`absolute bottom-32 left-20 w-72 h-72 rounded-full ${mode === 'morning' ? 'bg-morning-secondary/5' : 'bg-midnight-highlight/5'} blur-2xl`}
+                        style={{ x: x2, y: y2 }}
+                        animate={{ scale: [1.2, 1, 1.2] }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    />
+
+                    {/* Floating Orbs */}
+                    <motion.div
+                        className={`absolute top-1/4 left-1/4 w-4 h-4 rounded-full ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'} opacity-30`}
+                        animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                        className={`absolute top-1/3 right-1/3 w-3 h-3 rounded-full ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'} opacity-20`}
+                        animate={{ y: [0, 40, 0], x: [0, -15, 0] }}
+                        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    />
+
+                    {/* Header / Back Button & Menu (Fixed) */}
+                    <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50 pointer-events-none">
+                        <div className="pointer-events-auto">
+                            <button
+                                onClick={onBack}
+                                className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                            >
+                                <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
+                                Retour
+                            </button>
+                        </div>
+
+                        <div className="pointer-events-auto">
+                            <button
+                                onClick={onOpenMenu}
+                                className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${mode === 'morning' ? 'text-morning-text hover:text-morning-secondary' : 'text-midnight-text hover:text-midnight-highlight'}`}
+                            >
+                                <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
+                                    <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
+                                    <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0"> Ouvrir</span>
+                                </span>
+                                <div className={`w-6 h-[1px] ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} group-hover:w-8 transition-all duration-300`}></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="w-full h-full flex items-center justify-center p-4 md:p-12 overflow-y-auto pt-24 md:pt-12">
+                        <div className="relative w-full max-w-5xl pb-20 md:pb-0">
+
+                            {/* Title with Creative Typography */}
+                            <motion.div
+                                className="text-center mb-4 md:mb-8"
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                <h1 className="text-3xl md:text-7xl font-serif italic mb-2 md:mb-3">Créons Ensemble</h1>
+                                <motion.div
+                                    className={`h-[2px] w-32 mx-auto ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`}
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: 1 }}
+                                    transition={{ duration: 1, delay: 0.5 }}
+                                />
+                                <p className="mt-4 text-sm opacity-60 tracking-wide">Partagez votre vision</p>
+                            </motion.div>
+
+                            {/* Compact Form with Artistic Design */}
+                            <motion.form
+                                onSubmit={handleSubmit}
+                                className="max-w-3xl mx-auto"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.3 }}
+                            >
+                                {/* Row 1: Name & Email */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mb-5 md:mb-8">
+                                    <div className="relative group">
+                                        <input
+                                            type="text"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            onFocus={() => setFocusedField('name')}
+                                            onBlur={() => setFocusedField(null)}
+                                            className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all ${focusedField === 'name' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20' : 'border-midnight-text/20'}`}`}
+                                            placeholder="Votre nom"
+                                            required
+                                        />
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Nom</label>
+                                    </div>
+
+                                    <div className="relative group">
+                                        <input
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            onFocus={() => setFocusedField('email')}
+                                            onBlur={() => setFocusedField(null)}
+                                            className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all ${focusedField === 'email' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20' : 'border-midnight-text/20'}`}`}
+                                            placeholder="votre@email.com"
+                                            required
+                                        />
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Email</label>
+                                    </div>
+                                </div>
+
+                                {/* Row 2: Project Type & Budget - Artistic Custom Selects */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mb-5 md:mb-8">
+                                    <div className="relative group">
+                                        <select
+                                            value={formData.projectType}
+                                            onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                                            onFocus={() => setFocusedField('projectType')}
+                                            onBlur={() => setFocusedField(null)}
+                                            className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all appearance-none cursor-pointer ${focusedField === 'projectType' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20 hover:border-morning-text/40' : 'border-midnight-text/20 hover:border-midnight-text/40'}`}`}
+                                            style={{
+                                                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='${mode === 'morning' ? '%233A342D' : '%23E6E8EB'}'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition: 'right 0.75rem center',
+                                                backgroundSize: '1.25rem'
+                                            }}
+                                            required
+                                        >
+                                            <option value="" disabled>Type de projet</option>
+                                            <option value="web">🎨 Web Design</option>
+                                            <option value="app">📱 Application</option>
+                                            <option value="branding">✨ Branding</option>
+                                            <option value="uiux">🖼️ UI/UX</option>
+                                        </select>
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Type</label>
+                                    </div>
+
+                                    <div className="relative group">
+                                        <select
+                                            value={formData.budget}
+                                            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                                            onFocus={() => setFocusedField('budget')}
+                                            onBlur={() => setFocusedField(null)}
+                                            className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all appearance-none cursor-pointer ${focusedField === 'budget' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20 hover:border-morning-text/40' : 'border-midnight-text/20 hover:border-midnight-text/40'}`}`}
+                                            style={{
+                                                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='${mode === 'morning' ? '%233A342D' : '%23E6E8EB'}'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition: 'right 0.75rem center',
+                                                backgroundSize: '1.25rem'
+                                            }}
+                                            required
+                                        >
+                                            <option value="" disabled>Budget estimé</option>
+                                            <option value="1k-5k">💰 1k - 5k€</option>
+                                            <option value="5k-10k">💎 5k - 10k€</option>
+                                            <option value="10k+">👑 10k€+</option>
+                                        </select>
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Budget</label>
+                                    </div>
+                                </div>
+
+                                {/* Row 3: Description */}
+                                <div className="relative mb-6">
+                                    <textarea
+                                        value={formData.description}
+                                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                        onFocus={() => setFocusedField('description')}
+                                        onBlur={() => setFocusedField(null)}
+                                        rows="3"
+                                        className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none resize-none transition-all ${focusedField === 'description' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20' : 'border-midnight-text/20'}`}`}
+                                        placeholder="Décrivez votre projet..."
+                                        required
+                                    />
+                                    <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Projet</label>
+                                </div>
+
+                                {/* Submit Button with Creative Design */}
+                                <div className="text-center">
+                                    <motion.button
+                                        type="submit"
+                                        className={`relative px-8 py-3 md:px-12 md:py-4 rounded-full font-serif italic text-base md:text-lg overflow-hidden ${mode === 'morning' ? 'bg-morning-text text-morning-bg' : 'bg-midnight-text text-midnight-bg'}`}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <motion.span
+                                            className={`absolute inset-0 ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`}
+                                            initial={{ x: '-100%' }}
+                                            whileHover={{ x: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                        <span className="relative z-10">Envoyer ma demande</span>
+                                    </motion.button>
+                                </div>
+                            </motion.form>
+                        </div>
+                    </div>
+
+                    {/* Artistic Success Overlay */}
+                    <AnimatePresence>
+                        {submitted && (
+                            <motion.div
+                                className={`absolute inset-0 z-50 flex items-center justify-center p-8 ${mode === 'morning' ? 'bg-morning-bg/95' : 'bg-midnight-bg/95'} backdrop-blur-md`}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                            >
+                                <motion.div
+                                    className="text-center max-w-2xl"
+                                    initial={{ scale: 0.9, y: 20 }}
+                                    animate={{ scale: 1, y: 0 }}
+                                    transition={{ type: "spring", duration: 0.8 }}
+                                >
+                                    <motion.div
+                                        className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center border-2 ${mode === 'morning' ? 'border-morning-secondary text-morning-secondary' : 'border-midnight-highlight text-midnight-highlight'}`}
+                                        initial={{ scale: 0, rotate: -180 }}
+                                        animate={{ scale: 1, rotate: 0 }}
+                                        transition={{ delay: 0.2, type: "spring" }}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </motion.div>
+
+                                    <h2 className="text-4xl md:text-6xl font-serif italic mb-6">Merci {formData.name.split(' ')[0]} !</h2>
+
+                                    <p className={`text-lg md:text-xl leading-relaxed opacity-80 mb-8 ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}>
+                                        Votre demande a bien été reçue. Je reviendrai vers vous au plus vite après avoir examiné votre projet pour en discuter de vive voix.
+                                    </p>
+
+                                    <div className={`h-[1px] w-32 mx-auto ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`} />
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Footer Marquee */}
+                    <div className="absolute bottom-0 left-0 w-full z-20">
+                        <Marquee text="Créons ensemble • Let's create • Demande de devis •" mode={mode} />
+                    </div>
+                </motion.div>
+            );
+        };
+
+        // --- Composant: Projects Page (The Cinematic Journey) ---
+        const ProjectsPage = ({ mode, onBack, onOpenMenu, onViewProject, mouseX, mouseY }) => {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [direction, setDirection] = useState(0);
+
+            // Mouse parallax with spring
+            const smoothOptions = { damping: 50, stiffness: 400 };
+            const smoothX = useSpring(mouseX, smoothOptions);
+            const smoothY = useSpring(mouseY, smoothOptions);
+
+            // Parallax transforms
+            const imageX = useTransform(smoothX, [0, window.innerWidth], [-30, 30]);
+            const imageY = useTransform(smoothY, [0, window.innerHeight], [-30, 30]);
+            const textX = useTransform(smoothX, [0, window.innerWidth], [20, -20]);
+            const textY = useTransform(smoothY, [0, window.innerHeight], [20, -20]);
+
+            const projects = [
+                {
+                    id: 1,
+                    title: "Lumina",
+                    category: "E-commerce",
+                    year: "2025",
+                    image: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1287&auto=format&fit=crop",
+                    bgColor: "from-amber-100/40 to-yellow-200/40",
+                    textColor: "text-amber-950",
+                    accentColor: "border-amber-900",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1470&auto=format&fit=crop"
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Chronos",
+                    category: "Luxury Watch",
+                    year: "2023",
+                    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1480&auto=format&fit=crop",
+                    bgColor: "from-slate-900/60 to-black/60",
+                    textColor: "text-amber-950",
+                    accentColor: "border-slate-200",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1488&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1509941943102-10c232535736?q=80&w=1471&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1587836374053-f151fa6c71fb?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1471&auto=format&fit=crop"
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Aura",
+                    category: "Wellness App",
+                    year: "2023",
+                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=1480&auto=format&fit=crop",
+                    bgColor: "from-rose-100/40 to-pink-200/40",
+                    textColor: "text-rose-950",
+                    accentColor: "border-rose-900",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1512941675424-1c700817f813?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1499&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?q=80&w=1493&auto=format&fit=crop"
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Nebula",
+                    category: "Tech Startup",
+                    year: "2025",
+                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1472&auto=format&fit=crop",
+                    bgColor: "from-indigo-900/60 to-purple-900/60",
+                    textColor: "text-indigo-50",
+                    accentColor: "border-indigo-200",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1470&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1534&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1420&auto=format&fit=crop"
+                    ]
+                }
+            ];
+
+            const nextProject = () => {
+                setDirection(1);
+                setCurrentIndex((prev) => (prev + 1) % projects.length);
+            };
+
+            const prevProject = () => {
+                setDirection(-1);
+                setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+            };
+
+            const variants = {
+                enter: (direction) => ({
+                    x: direction > 0 ? 1000 : -1000,
+                    opacity: 0,
+                    scale: 0.95,
+                    rotateY: direction > 0 ? 10 : -10
+                }),
+                center: {
+                    zIndex: 1,
+                    x: 0,
+                    opacity: 1,
+                    scale: 1,
+                    rotateY: 0
+                },
+                exit: (direction) => ({
+                    zIndex: 0,
+                    x: direction < 0 ? 1000 : -1000,
+                    opacity: 0,
+                    scale: 0.95,
+                    rotateY: direction < 0 ? 10 : -10
+                })
+            };
+
+            const currentProject = projects[currentIndex];
+
+            return (
+                <motion.div
+                    className={`fixed inset-0 z-50 overflow-hidden flex flex-col ${mode === 'morning' ? 'bg-morning-bg text-morning-text' : 'bg-midnight-bg text-midnight-text'}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    {/* Dynamic Background Atmosphere */}
+                    <motion.div
+                        key={currentProject.id + "-bg"}
+                        className={`absolute inset-0 bg-gradient-to-br ${currentProject.bgColor} transition-colors duration-1000`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    />
+
+                    {/* Vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 pointer-events-none"></div>
+
+                    {/* Rotating Background Text */}
+                    <motion.div
+                        className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.04] select-none overflow-hidden"
+                        animate={{ rotate: [0, -3, 0] }}
+                        transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                        <h1 className="text-[35vw] font-serif italic whitespace-nowrap">Portfolio</h1>
+                    </motion.div>
+
+                    {/* Floating Decorative Orbs */}
+                    <motion.div
+                        className={`absolute top-[20%] left-[10%] w-40 h-40 rounded-full ${currentProject.bgColor} blur-3xl opacity-20`}
+                        animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                        className={`absolute bottom-[30%] right-[15%] w-60 h-60 rounded-full ${currentProject.bgColor} blur-3xl opacity-15`}
+                        animate={{ y: [0, 40, 0], x: [0, -30, 0] }}
+                        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    />
+                    <motion.div
+                        className={`absolute top-[50%] right-[5%] w-32 h-32 rounded-full ${currentProject.bgColor} blur-2xl opacity-25`}
+                        animate={{ y: [0, -20, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                    />
+
+                    {/* Header */}
+                    <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50 pointer-events-none">
+                        <div className="pointer-events-auto">
+                            <button onClick={onBack} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${currentProject.textColor} bg-white/20 hover:bg-white/30 border border-current/20`}>
+                                <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
+                                Retour
+                            </button>
+                        </div>
+                        <div className="pointer-events-auto">
+                            <button onClick={onOpenMenu} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${currentProject.textColor} bg-white/20 hover:bg-white/30 border border-current/20`}>
+                                <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
+                                    <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
+                                    <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">Ouvrir</span>
+                                </span>
+                                <div className={`w-6 h-[1px] bg-current group-hover:w-8 transition-all duration-300`}></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Main Slider Area */}
+                    <div className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden">
+                        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+                            <motion.div
+                                key={currentIndex}
+                                custom={direction}
+                                variants={variants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{
+                                    x: { type: "spring", stiffness: 250, damping: 25 },
+                                    opacity: { duration: 0.3 },
+                                    scale: { duration: 0.4 },
+                                    rotateY: { duration: 0.4 }
+                                }}
+                                className="absolute w-full h-full flex items-center justify-center p-4 md:p-12"
+                            >
+                                {/* Project Content Container with organic float */}
+                                <motion.div
+                                    className="relative w-full max-w-7xl h-full max-h-[85vh] grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
+                                    animate={{ y: [0, -8, 0] }}
+                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                                >
+
+                                    {/* Image Area with parallax */}
+                                    <motion.div
+                                        className="md:col-span-8 h-[50vh] md:h-full relative rounded-2xl overflow-hidden shadow-2xl group"
+                                        style={{ x: imageX, y: imageY }}
+                                    >
+                                        <motion.img
+                                            src={currentProject.image}
+                                            alt={currentProject.title}
+                                            className="w-full h-full object-cover transition-all duration-700"
+                                            initial={{ scale: 1.2 }}
+                                            animate={{ scale: 1 }}
+                                            whileHover={{ scale: 1.05 }}
+                                            transition={{ duration: 1.5, ease: "easeOut" }}
+                                        />
+                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500"></div>
+                                        <motion.div
+                                            className={`absolute inset-0 ${currentProject.bgColor} mix-blend-overlay opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
+                                        />
+                                    </motion.div>
+
+                                    {/* Text Area with parallax */}
+                                    <motion.div
+                                        className="md:col-span-4 flex flex-col justify-center z-20 md:-ml-24"
+                                        style={{ x: textX, y: textY }}
+                                    >
+                                        <motion.div
+                                            className={`p-8 rounded-2xl backdrop-blur-xl ${currentProject.textColor} bg-white/30 border border-current/10 shadow-2xl`}
+                                            initial={{ opacity: 0, y: 50 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.3, duration: 0.8 }}
+                                        >
+                                            <div className="flex items-center gap-4 mb-4 opacity-80">
+                                                <span className="text-xs font-mono uppercase tracking-widest">{currentProject.category}</span>
+                                                <span className="w-8 h-[1px] bg-current"></span>
+                                                <span className="text-xs font-mono">{currentProject.year}</span>
+                                            </div>
+                                            <h2 className="text-5xl md:text-7xl font-serif italic mb-6 leading-none">{currentProject.title}</h2>
+                                            <button
+                                                onClick={() => onViewProject(currentProject)}
+                                                className={`text-sm uppercase tracking-widest ${currentProject.accentColor} border-b pb-1 hover:opacity-70 transition-opacity`}
+                                            >
+                                                Voir le projet
+                                            </button>
+                                        </motion.div>
+                                    </motion.div>
+
+                                </motion.div>
+                            </motion.div>
+                        </AnimatePresence>
+
+                        {/* Navigation Controls */}
+                        <div className="absolute bottom-12 right-12 flex gap-4 z-50">
+                            <button onClick={prevProject} className={`w-12 h-12 rounded-full backdrop-blur-md ${currentProject.textColor} ${currentProject.accentColor} border bg-white/20 hover:bg-white/40 flex items-center justify-center transition-all shadow-lg hover:scale-110`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                </svg>
+                            </button>
+                            <button onClick={nextProject} className={`w-12 h-12 rounded-full backdrop-blur-md ${currentProject.textColor} ${currentProject.accentColor} border bg-white/20 hover:bg-white/40 flex items-center justify-center transition-all shadow-lg hover:scale-110`}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Progress Indicator */}
+                        <div className="absolute bottom-12 left-12 flex gap-2 z-50">
+                            {projects.map((_, i) => (
+                                <div
+                                    key={i}
+                                    className={`h-1 rounded-full transition-all duration-300 ${i === currentIndex ? `w-8 ${currentProject.accentColor} bg-current` : `w-2 bg-current opacity-30`} ${currentProject.textColor}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+            );
+        };
+
+        // --- Composant: Menu ---
+        const Menu = ({ isOpen, onClose, mode, onNavigate }) => {
+            const [hoveredSession, setHoveredSession] = useState(null);
+
+            const menuVariants = {
+                hidden: { opacity: 0, y: "-100%" },
+                visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
+                },
+                exit: {
+                    opacity: 0,
+                    y: "-100%",
+                    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
+                }
+            };
+
+            const itemVariants = {
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 }
+            };
+
+            return (
+                <motion.div
+                    className={`fixed inset-0 z-[60] flex items-center justify-center backdrop-blur-3xl ${mode === 'morning' ? 'bg-morning-bg/40 text-morning-text' : 'bg-midnight-bg/40 text-midnight-text'}`}
+                    variants={menuVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                >
+                    {/* Bouton Fermer Créatif (Texte Circulaire) */}
+                    <motion.button
+                        onClick={onClose}
+                        className="absolute top-8 right-8 z-50 group flex items-center justify-center w-24 h-24 rounded-full transition-transform duration-500 hover:scale-110"
+                        whileHover="hover"
+                        initial="initial"
+                    >
+                        {/* Texte Rotatif */}
+                        <motion.div
+                            className="absolute inset-0 w-full h-full"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                            variants={{
+                                hover: { rotate: 360, transition: { duration: 4, repeat: Infinity, ease: "linear" } }
+                            }}
+                        >
+                            <svg viewBox="0 0 100 100" className="w-full h-full fill-current">
+                                <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+                                <text className="text-[13px] font-mono uppercase tracking-[0.15em]">
+                                    <textPath href="#circlePath" startOffset="0%">
+                                        Close • Fermer • Close • Fermer •
+                                    </textPath>
+                                </text>
+                            </svg>
+                        </motion.div>
+
+                        {/* Croix Centrale */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 transition-transform duration-500 group-hover:rotate-90">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                    </motion.button>
+
+                    {/* Conteneur Principal Centré */}
+                    <div className="w-full max-w-[90%] md:max-w-[80%] grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-end pb-12 md:pb-0">
+
+                        {/* Colonne Gauche: Sessions */}
+                        <div className="flex flex-col justify-center">
+                            <div className="mb-6 md:mb-12 opacity-50 text-xs tracking-widest uppercase border-b border-current/20 pb-4 w-max">Sessions</div>
+                            <nav className="flex flex-col space-y-0" onMouseLeave={() => setHoveredSession(null)}>
+                                {['A Propos', 'Expertise', 'Projets', 'Devis'].map((item, i) => (
+                                    <motion.a
+                                        key={item}
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (item === 'A Propos') onNavigate('about');
+                                            else if (item === 'Expertise') onNavigate('expertise');
+                                            else if (item === 'Projets') onNavigate('projects');
+                                            else if (item === 'Devis') onNavigate('devis');
+                                            else onClose(); // Placeholder for other links
+                                        }}
+                                        className={`text-6xl md:text-[8vw] leading-[0.85] font-serif italic transition-all duration-500 origin-left
+                                            ${hoveredSession !== null && hoveredSession !== i ? 'opacity-20 blur-[2px] scale-95' : 'opacity-100 scale-100'}
+                                            ${hoveredSession === i ? 'translate-x-8' : ''}
+                                        `}
+                                        variants={itemVariants}
+                                        transition={{ delay: 0.2 + (i * 0.1) }}
+                                        onMouseEnter={() => setHoveredSession(i)}
+                                    >
+                                        {item}
+                                    </motion.a>
+                                ))}
+                            </nav>
+                        </div>
+
+                        {/* Colonne Droite: Contacts (Aligné en bas) */}
+                        <div className="flex flex-col justify-end h-full pb-2 md:pb-4">
+                            <div className="space-y-12">
+                                {/* Email */}
+                                <div>
+                                    <div className="mb-4 opacity-50 text-xs tracking-widest uppercase">Me Contacter</div>
+                                    <a href="mailto:hello@emmanuela.design" className="block text-2xl md:text-3xl font-light tracking-wide hover:opacity-60 transition-opacity">
+                                        hello@emmanuela.design
+                                    </a>
+                                </div>
+
+                                {/* Réseaux */}
+                                <div>
+                                    <div className="mb-4 opacity-50 text-xs tracking-widest uppercase">Réseaux</div>
+                                    <div className="flex flex-wrap gap-x-8 gap-y-4">
+                                        {['LinkedIn', 'Instagram', 'Behance', 'Twitter'].map((social) => (
+                                            <a key={social} href="#" className="text-lg md:text-xl font-light relative group overflow-hidden">
+                                                <span className="relative z-10">{social}</span>
+                                                <span className="absolute left-0 bottom-0 w-full h-[1px] bg-current transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            );
+        };
+
+        // --- Orbe (Switch Interactif) ---
+        const Orb = ({ mode, toggleTheme, setHovering }) => {
+            const y = useMotionValue(0);
+            const isMorning = mode === 'morning';
+
+            const handleDragEnd = (_, info) => {
+                if (info.offset.y > 40 && isMorning) {
+                    toggleTheme('midnight');
+                } else if (info.offset.y < -40 && !isMorning) {
+                    toggleTheme('morning');
+                }
+            };
+
+            return (
+                <div className="fixed bottom-12 right-12 z-50 flex flex-col items-center">
+                    <div className="absolute w-[1px] h-32 bg-current opacity-20 rounded-full top-1/2 transform -translate-y-1/2 pointer-events-none"
+                        style={{ color: isMorning ? '#3A342D' : '#E6E8EB' }}>
+                    </div>
+
+                    <motion.div
+                        className={`mb-4 text-xs ${!isMorning ? 'opacity-100' : 'opacity-20'}`}
+                        animate={{ y: !isMorning ? -5 : 0 }}
+                        transition={{ repeat: Infinity, duration: 1.5, repeatType: "reverse" }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke={isMorning ? '#3A342D' : '#E6E8EB'} className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                        </svg>
+                    </motion.div>
+
+                    <div className={`absolute -left-24 top-1/2 transform -translate-y-1/2 text-[10px] uppercase tracking-widest font-serif opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap hidden md:block ${isMorning ? 'text-morning-secondary' : 'text-midnight-highlight'}`}>
+                        {isMorning ? 'Tirer vers le bas' : 'Tirer vers le haut'}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- App ---
+        const App = () => {
+            const [mode, setMode] = useState('morning');
+            const [isHovering, setHovering] = useState(false);
+            const [isMenuOpen, setMenuOpen] = useState(false);
+            const [currentPage, setCurrentPage] = useState('home');
+            const [viewingProject, setViewingProject] = useState(null); // 'home' or 'about'
+
+            const mouseX = useMotionValue(0);
+            const mouseY = useMotionValue(0);
+
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    mouseX.set(e.clientX);
+                    mouseY.set(e.clientY);
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+
+            useEffect(() => {
+                if (mode === 'midnight') document.documentElement.classList.add('dark');
+                else document.documentElement.classList.remove('dark');
+            }, [mode]);
+
+            const toggleTheme = (newMode) => setMode(newMode);
+
+            const navigateTo = (page) => {
+                setMenuOpen(false);
+                setTimeout(() => setCurrentPage(page), 800); // Wait for menu exit animation
+            };
+
+            return (
+                <div className={`fixed inset-0 w-full h-full overflow-hidden transition-colors duration-1000 ease-in-out flex items-center justify-center ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'}`}>
+
+                    <div className="noise-overlay"></div>
+                    <CustomCursor mode={mode} isHovering={isHovering} />
+
+                    <AnimatePresence mode="wait">
+                        {currentPage === 'home' && (
+                            <motion.div
+                                key="home"
+                                className="absolute inset-0 w-full h-full"
+                                exit={{ opacity: 0, transition: { duration: 0.5 } }}
+                            >
+                                {/* Background Illustration */}
+                                <BackgroundIllustration mode={mode} />
+
+                                {/* Nav minimaliste */}
+                                <nav className="fixed top-0 left-0 w-full p-8 flex justify-between items-start z-40 pointer-events-none">
+                                    <div className="pointer-events-auto">
+                                        <span className={`text-xs uppercase tracking-widest opacity-50 ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}>
+                                            Portfolio 2025
+                                        </span>
+                                    </div>
+
+                                    {/* Bouton Menu */}
+                                    <div className="pointer-events-auto">
+                                        <button
+                                            onClick={() => setMenuOpen(true)}
+                                            className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${mode === 'morning' ? 'text-morning-text hover:text-morning-secondary' : 'text-midnight-text hover:text-midnight-highlight'}`}
+                                        >
+                                            <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
+                                                <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
+                                                <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">Ouvrir</span>
+                                            </span>
+                                            <div className={`w-6 h-[1px] ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} group-hover:w-8 transition-all duration-300`}></div>
+                                        </button>
+                                    </div>
+                                </nav>
+
+                                {/* Zone Principale */}
+                                <div className="relative w-full h-full">
+                                    <div className="absolute top-1/2 left-[60%] transform -translate-x-1/2 -translate-y-1/2 text-center z-0 pointer-events-none select-none w-full">
+                                        <motion.h2
+                                            className={`text-[15vw] leading-[0.8] font-serif italic opacity-5 whitespace-nowrap ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                                            animate={{ y: [0, 10, 0] }}
+                                            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                                        >
+                                            Créativity
+                                        </motion.h2>
+                                    </div>
+                                    <ProfileLeft mode={mode} mouseX={mouseX} mouseY={mouseY} />
+                                    <ProfileTitle mode={mode} />
+                                </div>
+
+                                {/* Footer Marquee */}
+                                <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none">
+                                    <Marquee text="Creative Developer • UI/UX Designer • Art Director • Paris •" mode={mode} />
+                                </div>
+
+                                <PoeticToggle mode={mode} onToggle={toggleTheme} />
+                            </motion.div>
+                        )}
+
+                        {currentPage === 'about' && (
+                            <AboutPage
+                                key="about"
+                                mode={mode}
+                                onBack={() => setCurrentPage('home')}
+                                onOpenMenu={() => setMenuOpen(true)}
+                                mouseX={mouseX}
+                                mouseY={mouseY}
+                            />
+                        )}
+
+                        {currentPage === 'expertise' && (
+                            <ExpertisePage
+                                key="expertise"
+                                mode={mode}
+                                onBack={() => setCurrentPage('home')}
+                                onOpenMenu={() => setMenuOpen(true)}
+                                mouseX={mouseX}
+                                mouseY={mouseY}
+                            />
+                        )}
+
+                        {currentPage === 'projects' && (
+                            <ProjectsPage
+                                key="projects"
+                                mode={mode}
+                                onBack={() => setCurrentPage('home')}
+                                onOpenMenu={() => setMenuOpen(true)}
+                                onViewProject={(project) => setViewingProject(project)}
+                                mouseX={mouseX}
+                                mouseY={mouseY}
+                            />
+                        )}
+
+                        {currentPage === 'devis' && (
+                            <DevisPage
+                                key="devis"
+                                mode={mode}
+                                onBack={() => setCurrentPage('home')}
+                                onOpenMenu={() => setMenuOpen(true)}
+                                mouseX={mouseX}
+                                mouseY={mouseY}
+                            />
+                        )}
+                    </AnimatePresence>
+
+                    <AnimatePresence>
+                        {viewingProject && (
+                            <ProjectDetailGallery
+                                key="gallery"
+                                project={viewingProject}
+                                mode={mode}
+                                onClose={() => setViewingProject(null)}
+                                onNextProject={() => {
+                                    const projects = [
+                                        {
+                                            id: 1,
+                                            title: "Lumina",
+                                            category: "E-commerce",
+                                            year: "2025",
+                                            image: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1287&auto=format&fit=crop",
+                                            bgColor: "from-amber-100/40 to-yellow-200/40",
+                                            textColor: "text-amber-950",
+                                            accentColor: "border-amber-900",
+                                            gallery: [
+                                                "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1470&auto=format&fit=crop"
+                                            ]
+                                        },
+                                        {
+                                            id: 2,
+                                            title: "Chronos",
+                                            category: "Luxury Watch",
+                                            year: "2023",
+                                            image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=1480&auto=format&fit=crop",
+                                            bgColor: "from-slate-900/60 to-black/60",
+                                            textColor: "text-white",
+                                            accentColor: "border-slate-200",
+                                            gallery: [
+                                                "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1488&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1509941943102-10c232535736?q=80&w=1471&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1587836374053-f151fa6c71fb?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1471&auto=format&fit=crop"
+                                            ]
+                                        },
+                                        {
+                                            id: 3,
+                                            title: "Aura",
+                                            category: "Wellness App",
+                                            year: "2023",
+                                            image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=1480&auto=format&fit=crop",
+                                            bgColor: "from-rose-100/40 to-pink-200/40",
+                                            textColor: "text-rose-950",
+                                            accentColor: "border-rose-900",
+                                            gallery: [
+                                                "https://images.unsplash.com/photo-1512941675424-1c700817f813?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1499&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?q=80&w=1493&auto=format&fit=crop"
+                                            ]
+                                        },
+                                        {
+                                            id: 4,
+                                            title: "Nebula",
+                                            category: "Tech Startup",
+                                            year: "2025",
+                                            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1472&auto=format&fit=crop",
+                                            bgColor: "from-indigo-900/60 to-purple-900/60",
+                                            textColor: "text-indigo-50",
+                                            accentColor: "border-indigo-200",
+                                            gallery: [
+                                                "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1470&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1534&auto=format&fit=crop",
+                                                "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1420&auto=format&fit=crop"
+                                            ]
+                                        }
+                                    ];
+                                    const currentIdx = projects.findIndex(p => p.id === viewingProject.id);
+                                    const nextIdx = (currentIdx + 1) % projects.length;
+                                    setViewingProject(projects[nextIdx]);
+                                }}
+                            />
+                        )}
+                    </AnimatePresence>
+
+                    <AnimatePresence>
+                        {isMenuOpen && (
+                            <Menu
+                                isOpen={isMenuOpen}
+                                onClose={() => setMenuOpen(false)}
+                                mode={mode}
+                                onNavigate={navigateTo}
+                            />
+                        )}
+                    </AnimatePresence>
+
+                    <AnimatePresence>
+                        {mode === 'midnight' && (
+                            <motion.div
+                                initial={{ clipPath: 'circle(0% at 100% 100%)' }}
+                                animate={{ clipPath: 'circle(150% at 100% 100%)' }}
+                                exit={{ clipPath: 'circle(0% at 100% 100%)' }}
+                                transition={{ duration: 1.2, ease: "easeInOut" }}
+                                className="fixed inset-0 bg-midnight-bg z-[-1] pointer-events-none"
+                            />
+                        )}
+                    </AnimatePresence>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

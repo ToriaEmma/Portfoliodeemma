@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qui Suis-Je - Atelier du Paon</title>
+
+    <!-- Fonts -->
+    <style>
+        @font-face {
+            font-family: 'AtelierPaon-ExtraBold';
+            src: url('fonts/atelierpaon_ExtraBold.6a72a55.woff') format('woff');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AtelierPaon-SemiBold';
+            src: url('fonts/atelierpaon_SemiBold.71ef039.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/clean-variables.css">
+    <link rel="stylesheet" href="css/book-navigation.css">
+    <link rel="stylesheet" href="css/custom-cursor.css">
+
+    <style>
+        /* Page specific styles */
+        .page-content {
+            padding: 2rem;
+        }
+
+        .content-image {
+            width: 100%;
+            max-width: 400px;
+            border-radius: var(--radius-lg);
+            margin: 2rem auto;
+            display: block;
+            box-shadow: 0 8px 24px var(--shadow-medium);
+        }
+
+        .quote {
+            font-style: italic;
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Back button */
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px var(--shadow-soft);
+            transition: all var(--transition-quick);
+            z-index: 101;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px var(--shadow-medium);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Back button -->
+    <button class="back-btn" onclick="PageTransition.navigate('index.html')" aria-label="Retour">←</button>
+
+    <!-- Book Navigation Container -->
+    <div class="book-container">
+        <div class="book">
+            <!-- Page: Introduction -->
+            <div class="page-spread active" data-page="0">
+                <div class="page">
+                    <h1
+                        style="font-family: var(--font-display); font-size: var(--font-size-lg); color: var(--accent-primary); margin-bottom: 2rem;">
+                        Qui Suis-Je?</h1>
+                    <p
+                        style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        Je suis <strong>Emmanuela TODEDJI</strong>, designer graphique passionnée par la création
+                        d'identités visuelles uniques.
+                    </p>
+                    <p style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary);">
+                        Mon approche se distingue par un univers <em>clean girl</em> : doux, épuré, lumineux et
+                        intemporel.
+                    </p>
+                    <div class="page-number left">1</div>
+                </div>
+                <div class="page">
+                    <img src="img/placeholder-portrait.jpg" alt="Portrait Emmanuela" class="content-image"
+                        onerror="this.style.display='none'">
+                    <p class="quote">
+                        "Créer des univers visuels qui racontent une histoire"
+                    </p>
+                    <div class="page-number right">2</div>
+                </div>
+            </div>
+
+            <!-- Page: Mon Parcours -->
+            <div class="page-spread" data-page="1">
+                <div class="page">
+                    <h2
+                        style="font-family: var(--font-heading); font-size: var(--font-size-md); color: var(--accent-primary); margin-bottom: 1.5rem;">
+                        Mon Parcours</h2>
+                    <p
+                        style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Diplômée en design graphique, j'ai développé une expertise pointue dans la création d'identités
+                        visuelles cohérentes et mémorables.
+                    </p>
+                    <p style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary);">
+                        Chaque projet est une opportunité de fusionner esthétique et stratégie de marque.
+                    </p>
+                    <div class="page-number left">3</div>
+                </div>
+                <div class="page">
+                    <h3
+                        style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-secondary); margin-bottom: 1rem;">
+                        Mes Valeurs</h3>
+                    <ul style="list-style: none; padding: 0; font-size: var(--font-size-base); line-height: 2;">
+                        <li>✦ Authenticité</li>
+                        <li>✦ Élégance minimaliste</li>
+                        <li>✦ Attention aux détails</li>
+                        <li>✦ Collaboration étroite</li>
+                    </ul>
+                    <div class="page-number right">4</div>
+                </div>
+            </div>
+
+            <!-- Page: Ma Philosophie -->
+            <div class="page-spread" data-page="2">
+                <div class="page">
+                    <h2
+                        style="font-family: var(--font-heading); font-size: var(--font-size-md); color: var(--accent-primary); margin-bottom: 1.5rem;">
+                        Ma Philosophie</h2>
+                    <p
+                        style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Je crois en la puissance d'un design épuré qui laisse respirer l'essence de chaque marque.
+                    </p>
+                    <p style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary);">
+                        Mon style "clean girl" se traduit par des palettes douces, des typographies raffinées et une
+                        approche minimaliste qui met en valeur l'essentiel.
+                    </p>
+                    <div class="page-number left">5</div>
+                </div>
+                <div class="page">
+                    <p
+                        style="font-size: var(--font-size-base); line-height: 1.8; color: var(--text-secondary); margin-bottom: 2rem;">
+                        Chaque création est pensée pour être intemporelle, élégante et parfaitement alignée avec
+                        l'identité de mes clients.
+                    </p>
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="expertise.html"
+                            onclick="event.preventDefault(); PageTransition.navigate('expertise.html');"
+                            style="display: inline-block; padding: 1rem 2.5rem; background: var(--accent-primary); color: white; text-decoration: none; border-radius: 50px; transition: all var(--transition-quick);">
+                            Découvrir mon expertise →
+                        </a>
+                    </div>
+                    <div class="page-number right">6</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <nav class="book-nav" aria-label="Navigation du livre">
+            <button id="prev-btn" class="nav-btn" aria-label="Page précédente">←</button>
+            <div class="page-indicator"></div>
+            <button id="next-btn" class="nav-btn" aria-label="Page suivante">→</button>
+        </nav>
+
+        <div class="swipe-hint">Swipez pour naviguer</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/page-transition.js"></script>
+    <script src="js/book-navigation.js"></script>
+    <script src="js/custom-cursor.js"></script>
+    <script src="js/theme-controller.js"></script>
+</body>
+
+</html>

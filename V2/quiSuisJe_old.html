@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qui Suis-je - Atelier du Paon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/menu-overlay.css">
+    <link rel="stylesheet" href="css/bird.css">
+    <style>
+        /* --- 1. CONFIGURATION GÉNÉRALE & FONTS --- */
+        @font-face {
+            font-family: 'AtelierPaonSemiBold';
+            src: url('fonts/atelierpaon_SemiBold.71ef039.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #ff69b4;  /* Rose en mode jour */
+            --secondary-color: #ff69b4;
+        }
+
+        /* Variables pour le mode sombre */
+        body.dark-theme {
+            --bg-color: #000000;  /* Fond noir en mode nuit */
+            --text-color: #ffffff;
+            --accent-color: #2EC4B6;  /* Bleu turquoise en mode nuit */
+            --secondary-color: #0d9488;
+        }
+
+        body {
+            font-family: "AtelierPaonSemiBold", Arial, sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-color);
+            transition: all 0.5s ease;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        body.dark-theme {
+            background: #000000;
+        }
+
+        /* Fond étoilé pour le mode nuit */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background: 
+                radial-gradient(1px 1px at 10% 20%, #fff 0%, transparent 50%),
+                radial-gradient(1px 1px at 15% 35%, #fff 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 50%, #fff 0%, transparent 50%),
+                radial-gradient(1px 1px at 25% 65%, #fff 0%, transparent 50%),
+                radial-gradient(1px 1px at 30% 80%, #fff 0%, transparent 50%);
+            background-size: 200px 200px;
+        }
+
+        body.dark-theme .stars {
+            opacity: 0.8;
+            animation: twinkle 8s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        .stars::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 15% 40%, #fff 0%, transparent 50%),
+                radial-gradient(1.5px 1.5px at 30% 70%, #fff 0%, transparent 50%),
+                radial-gradient(1.5px 1.5px at 75% 90%, #fff 0%, transparent 50%);
+            background-repeat: repeat;
+            background-size: 300px 300px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        body.dark-theme .stars::after {
+            opacity: 0.7;
+            animation: twinkle 6s infinite reverse;
+        }
+        
+        .stars > div {
+            background-image: radial-gradient(1px 1px at 5% 30%, #fff, transparent), 
+                            radial-gradient(1px 1px at 85% 70%, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite 1s;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .page-container {
+            max-width: 900px;
+            margin: 120px auto 80px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .top-right-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .theme-toggle-button {
+            background: transparent;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .theme-toggle-button:hover {
+            opacity: 0.8;
+        }
+
+        .hamburger-button {
+            background: var(--accent-color);
+            border: none;
+            border-radius: 4px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        /* Style pour le bouton en mode nuit */
+        body.dark-theme .hamburger-button {
+            background: white;
+        }
+
+        .hamburger-button:hover {
+            transform: scale(1.05);
+            filter: brightness(0.9);
+        }
+
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+        }
+
+        .hamburger-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .hamburger-icon span {
+            background-color: #333;
+        }
+
+        .moon-icon {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-dark {
+            display: none;
+        }
+
+        .dark-theme .logo-light {
+            display: none;
+        }
+
+        .dark-theme .logo-dark {
+            display: block;
+        }
+
+        .bird-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bird-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+        }
+
+        body.dark-theme .bird-video-container {
+            display: none;
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: none;
+        }
+
+        .stars {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .stars > div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 10% 20%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 20% 30%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 30% 40%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 40% 50%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 50% 60%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 60% 70%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 70% 80%, #fff 1%, transparent 1%),
+                radial-gradient(1px 1px at 80% 90%, #fff 1%, transparent 1%);
+            background-size: 200px 200px;
+            animation: twinkle 8s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Styles pour la section héro */
+        .hero-section {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 2rem;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-subtitle {
+            color: var(--accent-color);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .hero-title .highlight {
+            color: var(--accent-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-role {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #typed-text {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid var(--accent-color);
+            padding-right: 5px;
+        }
+
+        .cursor {
+            display: inline-block;
+            animation: blink 0.7s infinite;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-image {
+            position: relative;
+            height: 500px;
+        }
+
+        .profile-image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px dashed var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                max-width: 100%;
+                margin: 0 auto;
+            }
+
+            .hero-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .hero-image {
+                max-width: 400px;
+                margin: 0 auto;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-role {
+                font-size: 1.25rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Styles généraux */
+        .main-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            color: var(--text-color);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .section {
+            padding: 3rem 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Réduire les marges des titres */
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0.5em;
+            margin-bottom: 0.75em;
+        }
+
+        /* Ajuster les espacements des sections */
+        section {
+            margin-bottom: 2rem;
+        }
+
+        /* Section Hero */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 1.5rem;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            z-index: 2;
+            padding: 20px 0;
+        }
+
+        .hero-header {
+            display: flex;
+            gap: 4rem;
+            align-items: flex-start;
+            margin-top: 2rem;
+        }
+
+        .hero-titles {
+            flex: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .description-container {
+            flex: 0 0 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            opacity: 0.9;
+            padding: 1rem;
+            border-left: 2px solid var(--accent-color);
+            margin: 0;
+        }
+
+        .cta-button {
+            align-self: flex-start;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 900px) {
+            .hero-header {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .hero-description {
+                border-left: none;
+                border-top: 2px solid var(--accent-color);
+                padding: 1rem 0 0 0;
+                flex: 1;
+                max-width: 100%;
+            }
+        }
+
+        /* Grille de compétences */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .skill-card p {
+            color: var(--text-color);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* Section Expérience */
+        .experience-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent-color);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+        }
+
+        .timeline-date {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .timeline-description {
+            color: var(--text-color);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 6rem 1.5rem;
+                text-align: center;
+            }
+
+            .main-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .hero-description {
+                font-size: 1.1rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 3rem 1.5rem;
+            }
+        }
+
+        .description-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .qualities {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .qualities ul {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .qualities li {
+            margin-bottom: 0.5rem;
+        }
+
+        .signature {
+            font-style: italic;
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .photos-section {
+            display: none;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .photos-grid img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photos-grid img:hover {
+            transform: translateY(-5px);
+        }
+
+        .arrow {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .arrow:hover {
+            background: rgba(0, 0, 0, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .arrow svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2.5px;
+            color: var(--text-color);
+        }
+
+        /* Styles pour la section de profil */
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-content {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.6s ease-out forwards;
+            animation-delay: var(--delay);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-card h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .values-section {
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-item {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-item h3 {
+            color: var(--accent-color);
+            margin: 1rem 0;
+        }
+
+        /* Styles pour la galerie de photos */
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-item:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        /* Style pour le bouton de fermeture du menu */
+        .close-btn {
+            position: fixed;
+            top: 80px; /* Augmenté de 40px à 80px pour déplacer vers le bas */
+            right: 40px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(-20px);
+            background: none;
+            border: none;
+            padding: 0;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-overlay.active .close-btn {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.5s;
+        }
+
+        .close-btn::before,
+        .close-btn::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background-color: currentColor;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn::before {
+            transform: rotate(45deg);
+        }
+
+        .close-btn::after {
+            transform: rotate(-45deg);
+        }
+
+        .close-btn:hover::before,
+        .close-btn:hover::after {
+            background-color: #ff77aa;
+            transform: rotate(0);
+        }
+
+        .close-btn:hover::after {
+            transform: rotate(0) translateY(0);
+        }
+
+        body.dark-theme .close-btn {
+            color: #ffffff;
+        }
+
+        body.dark-theme .close-btn:hover::before,
+        body.dark-theme .close-btn:hover::after {
+            background-color: #ff77aa;
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover .project-overlay {
+            transform: translateY(0);
+        }
+
+        .project-overlay h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .project-overlay p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .animate-slide-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8rem;
+                text-align: center;
+            }
+
+            .profile-grid, .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card, .value-item {
+                text-align: center;
+            }
+
+            .photos-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bird-video-container">
+        <video class="bird-video" autoplay loop muted playsinline>
+            <source src="img/birds.mp4" type="video/mp4">
+            <img src="img/white-bg.58090aa.svg" alt="Background" style="width:100%;height:100%;object-fit:cover;">
+        </video>
+    </div>
+
+    <div class="stars-container">
+        <div class="stars">
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay">
+        <button class="close-btn" aria-label="Fermer le menu"></button>
+        <nav class="menu-nav">
+            <a href="index.html" data-number="00">ACCUEIL</a>
+            <a href="#" data-number="01">QUI SUIS-JE</a>
+            <a href="#" data-number="02">MES PROJETS</a>
+            <a href="#" data-number="03">MES COMPÉTENCES</a>
+            <a href="#" data-number="04">CONTACT</a>
+        </nav>
+        <div class="menu-contact">
+            <p>Disponible pour de nouvelles opportunités</p>
+            <a href="mailto:contact@exemple.com" class="contact-email">contact@exemple.com</a>
+        </div>
+    </div>
+    
+    <div class="top-right-buttons">
+        <button class="hamburger-button" aria-label="Menu">
+            <div class="hamburger-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+
+        <button class="theme-toggle-button" aria-label="Basculer le thème">
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="logo">
+        <img src="img/logo_long.33c8981.svg" alt="Atelier du Paon" class="logo-light">
+        <img src="img/logo_long_white.e8a3851.svg" alt="Atelier du Paon" class="logo-dark">
+    </div>
+
+    <main class="page-container">
+        <!-- Nouvelle section d'en-tête -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="hero-subtitle">Développeuse Créative</p>
+                    <div class="hero-header">
+                        <div class="hero-titles">
+                            <h1 class="hero-title">Bonjour, je suis<br><span class="highlight">Emmanuela TODEDJI</span></h1>
+                            <h2 class="hero-role">
+                                <span id="typed-text"></span>
+                                <span class="cursor">|</span>
+                            </h2>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">3+</span>
+                                    <span class="stat-label">Années d'expérience</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">20+</span>
+                                    <span class="stat-label">Projets réalisés</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">100%</span>
+                                    <span class="stat-label">Clients satisfaits</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="description-container">
+                            <p class="hero-description">
+                                Passionnée par l'innovation numérique, je transforme vos idées en expériences digitales exceptionnelles. 
+                                De la conception à la réalisation, je crée des solutions modernes, performantes et centrées sur l'utilisateur.
+                            </p>
+                            <button class="cta-button">Découvrir mes projets</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="photos-section" aria-label="Photos">
+            <div class="arrow left" role="button" tabindex="0" aria-label="Retour à la description">←</div>
+            <div class="photos-grid">
+                <div class="photo-item">
+                    <img src="img/galilee_atelierpaon.61c25b5.png" alt="Projet 1" class="project-image">
+                    <div class="project-overlay">
+                        <h3>Projet Galilée</h3>
+                        <p>Design & Développement</p>
+                    </div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/tiny_atelierpaon.55be0c1.png" alt="Projet 2" class="project-image">
+                    <div class="project-overlay">
+                        <h3>Projet Tiny</h3>
+                        <p>Identité visuelle</p>
+                    </div>
+                </div>
+                <div class="photo-item">
+                    <img src="img/ILLUSTRATION.929adae.gif" alt="Projet 3" class="project-image">
+                    <div class="project-overlay">
+                        <h3>Illustrations</h3>
+                        <p>Création graphique</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Flèche de navigation -->
+    <button id="profile-toggle" class="arrow" aria-label="Afficher le profil">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+        </svg>
+    </button>
+    
+    <!-- Vue simplifiée -->
+    <div id="simple-view" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 90; background: var(--bg-color); opacity: 0; transition: opacity 0.5s ease; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <img id="profile-photo" src="img/photo-profil.jpg" alt="Photo de profil" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+        <h1 style="color: var(--text-color); font-size: 3rem; margin: 0;">Emma</h1>
+    </div>
+    
+    <script>
+    // Code simplifié pour la flèche
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('profile-toggle');
+        const mainContent = document.querySelector('main');
+        const simpleView = document.getElementById('simple-view');
+        
+        if (!toggleButton || !mainContent || !simpleView) {
+            console.error('Erreur: Éléments manquants');
+            return;
+        }
+        
+        let isSimpleView = false;
+        
+        toggleButton.addEventListener('click', function() {
+            console.log('Bouton cliqué !');
+            
+            if (!isSimpleView) {
+                // Aller vers la vue simplifiée
+                mainContent.style.opacity = '0';
+                setTimeout(() => {
+                    mainContent.style.display = 'none';
+                    simpleView.style.display = 'flex';
+                    setTimeout(() => simpleView.style.opacity = '1', 50);
+                    
+                    // Changer l'icône
+                    this.innerHTML = `
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>`;
+                }, 300);
+            } else {
+                // Revenir à la vue normale
+                simpleView.style.opacity = '0';
+                setTimeout(() => {
+                    simpleView.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50);
+                    
+                    // Remettre l'icône d'origine
+                    this.innerHTML = `
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>`;
+                }, 300);
+            }
+            
+            isSimpleView = !isSimpleView;
+        });
+    });
+    </script>
+
+    <script>
+        // Gestion du thème
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fonction pour basculer le thème
+            function toggleTheme() {
+                const body = document.body;
+                const isDark = body.classList.toggle('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                updateThemeElements(isDark);
+            }
+            
+            // Fonction pour mettre à jour les éléments en fonction du thème
+            function updateThemeElements(isDark) {
+                const elements = {
+                    birdVideo: document.querySelector('.bird-video-container'),
+                    stars: document.querySelector('.stars-container'),
+                    logoLight: document.querySelector('.logo-light'),
+                    logoDark: document.querySelector('.logo-dark'),
+                    moonIcon: document.querySelector('.moon-icon')
+                };
+                
+                if (isDark) {
+                    if (elements.birdVideo) elements.birdVideo.style.display = 'none';
+                    if (elements.stars) elements.stars.style.display = 'block';
+                    if (elements.logoLight) elements.logoLight.style.display = 'none';
+                    if (elements.logoDark) elements.logoDark.style.display = 'block';
+                    if (elements.moonIcon) elements.moonIcon.innerHTML = `
+                        <circle cx="12" cy="12" r="5" fill="currentColor"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    `;
+                } else {
+                    if (elements.birdVideo) elements.birdVideo.style.display = 'block';
+                    if (elements.stars) elements.stars.style.display = 'none';
+                    if (elements.logoLight) elements.logoLight.style.display = 'block';
+                    if (elements.logoDark) elements.logoDark.style.display = 'none';
+                    if (elements.moonIcon) elements.moonIcon.innerHTML = `
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    `;
+                }
+            }
+            
+            // Initialisation du thème
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            
+            if (isDark) document.body.classList.add('dark-theme');
+            updateThemeElements(isDark);
+            
+            // Gestion du bouton de thème
+            const toggleButton = document.querySelector('.theme-toggle-button');
+            if (toggleButton) toggleButton.addEventListener('click', toggleTheme);
+
+            // Gestion du menu overlay
+            const menuButton = document.querySelector('.hamburger-button');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const closeButton = document.querySelector('.close-btn');
+            
+            // Fonction pour ouvrir le menu
+            function openMenu() {
+                menuOverlay.style.visibility = 'visible';
+                menuOverlay.style.opacity = '1';
+                menuOverlay.style.clipPath = 'circle(150% at 95% 5%)';
+                document.body.style.overflow = 'hidden';
+                
+                // Afficher le bouton de fermeture
+                if (closeButton) {
+                    closeButton.style.opacity = '1';
+                    closeButton.style.transform = 'translateY(0)';
+                }
+            }
+            
+            // Fonction pour fermer le menu
+            function closeMenu() {
+                menuOverlay.style.opacity = '0';
+                menuOverlay.style.clipPath = 'circle(0% at 95% 5%)';
+                document.body.style.overflow = 'auto';
+                
+                // Cacher le bouton de fermeture
+                if (closeButton) {
+                    closeButton.style.opacity = '0';
+                    closeButton.style.transform = 'translateY(-20px)';
+                }
+                
+                // Cacher le menu après l'animation
+                setTimeout(() => {
+                    menuOverlay.style.visibility = 'hidden';
+                }, 800);
+            }
+            
+            // Écouteurs d'événements
+            if (menuButton && menuOverlay) {
+                menuButton.addEventListener('click', openMenu);
+            }
+            
+            if (closeButton && menuOverlay) {
+                closeButton.addEventListener('click', closeMenu);
+            }
+            
+            // Fermer le menu en cliquant en dehors du contenu
+            menuOverlay.addEventListener('click', function(e) {
+                if (e.target === menuOverlay) {
+                    closeMenu();
+                }
+            });
+
+            // Gestion de la navigation entre les sections
+            const rightArrow = document.querySelector('.arrow');
+            const mainContent = document.querySelector('main');
+            
+            // Créer la version simplifiée
+            const simpleView = document.createElement('div');
+            simpleView.className = 'simple-view';
+            simpleView.style.display = 'none';
+            simpleView.style.position = 'fixed';
+            simpleView.style.top = '0';
+            simpleView.style.left = '0';
+            simpleView.style.width = '100%';
+            simpleView.style.height = '100%';
+            simpleView.style.display = 'flex';
+            simpleView.style.flexDirection = 'column';
+            simpleView.style.justifyContent = 'center';
+            simpleView.style.alignItems = 'center';
+            simpleView.style.background = 'var(--bg-color)';
+            simpleView.style.zIndex = '90';
+            simpleView.style.opacity = '0';
+            simpleView.style.transition = 'opacity 0.5s ease';
+            
+            // Ajouter l'image
+            const profileImage = document.createElement('img');
+            profileImage.src = 'img/photo-profil.jpg'; // Remplacez par le chemin de votre photo
+            profileImage.alt = 'Photo de profil';
+            profileImage.style.width = '300px';
+            profileImage.style.height = '300px';
+            profileImage.style.borderRadius = '50%';
+            profileImage.style.objectFit = 'cover';
+            profileImage.style.marginBottom = '2rem';
+            simpleView.appendChild(profileImage);
+            
+            // Ajouter le nom
+            const nameElement = document.createElement('h1');
+            nameElement.textContent = 'Emma';
+            nameElement.style.color = 'var(--text-color)';
+            nameElement.style.fontSize = '3rem';
+            nameElement.style.margin = '0';
+            simpleView.appendChild(nameElement);
+            
+            // Ajouter la vue simplifiée au body
+            document.body.appendChild(simpleView);
+            
+            // Gestion du clic sur la flèche
+            if (rightArrow && mainContent) {
+                rightArrow.addEventListener('click', () => {
+                    if (mainContent.style.display !== 'none') {
+                        // Aller vers la vue simplifiée
+                        mainContent.style.opacity = '0';
+                        mainContent.style.transform = 'translateX(-20px)';
+                        
+                        setTimeout(() => {
+                            mainContent.style.display = 'none';
+                            simpleView.style.display = 'flex';
+                            
+                            // Animation d'apparition
+                            setTimeout(() => {
+                                simpleView.style.opacity = '1';
+                            }, 50);
+                            
+                            // Changer l'icône de la flèche
+                            rightArrow.innerHTML = `
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 18l-6-6 6-6"/>
+                                </svg>`;
+                        }, 300);
+                    } else {
+                        // Revenir à la vue normale
+                        simpleView.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            simpleView.style.display = 'none';
+                            mainContent.style.display = 'block';
+                            
+                            // Animation d'apparition
+                            setTimeout(() => {
+                                mainContent.style.opacity = '1';
+                                mainContent.style.transform = 'translateX(0)';
+                            }, 50);
+                            
+                            // Remettre l'icône de la flèche
+                            rightArrow.innerHTML = `
+                                <button id="profile-toggle" class="arrow" aria-label="Afficher le profil">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </button>
+                            
+                            <div id="simple-view" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 90; background: var(--bg-color); opacity: 0; transition: opacity 0.5s ease; justify-content: center; align-items: center; flex-direction: column;">
+                                <img id="profile-photo" src="img/photo-profil.jpg" alt="Photo de profil" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+                                <h1 style="color: var(--text-color); font-size: 3rem; margin: 0;">Emma</h1>
+                            </div>
+                            `;
+                        }, 300);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Animation de frappe pour le texte du rôle
+        document.addEventListener('DOMContentLoaded', function() {
+            const text = "Développeuse Full-Stack & Designer UX/UI";
+            const typedText = document.getElementById('typed-text');
+            const cursor = document.querySelector('.cursor');
+            
+            let charIndex = 0;
+            const typeSpeed = 100; // Vitesse de frappe (en ms)
+            
+            function type() {
+                if (charIndex < text.length) {
+                    typedText.textContent += text.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(type, typeSpeed);
+                } else {
+                    // Arrêter le clignotement du curseur une fois l'animation terminée
+                    cursor.style.animation = 'none';
+                    cursor.style.opacity = '1';
+                }
+            }
+            
+            // Démarrer l'animation
+            setTimeout(type, 1000); // Délai avant le début de l'animation
+        });
+    </script>
+
+    <script>
+        // Gestion du menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const closeMenu = document.querySelector('.close-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    menuOverlay.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            if (closeMenu) {
+                closeMenu.addEventListener('click', () => {
+                    menuOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Gestion du mode sombre
+            const toggleTheme = document.getElementById('theme-toggle');
+            if (toggleTheme) {
+                toggleTheme.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-theme');
+                    // Sauvegarder la préférence
+                    const isDark = document.body.classList.contains('dark-theme');
+                    localStorage.setItem('darkMode', isDark);
+                });
+            }
+
+            // Vérifier la préférence de thème au chargement
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-theme');
+            }
+
+            // Animation au défilement
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.animate');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+
+            // Animation de frappe pour le sous-titre
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            if (heroSubtitle) {
+                const text = heroSubtitle.textContent;
+                heroSubtitle.textContent = '';
+                let charIndex = 0;
+                
+                const typeWriter = () => {
+                    if (charIndex < text.length) {
+                        heroSubtitle.textContent += text.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeWriter, 50);
+                    }
+                };
+                
+                // Démarrer l'animation après un court délai
+                setTimeout(typeWriter, 1000);
+            }
+
+            // Gestion du défilement fluide pour les ancres
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Animation des compétences au survol
+            const skillCards = document.querySelectorAll('.skill-card');
+            skillCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px)';
+                    card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.2)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.1)';
+                });
+            });
+
+            window.addEventListener('scroll', animateOnScroll);
+            // Déclencher une première fois au chargement
+            animateOnScroll();
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/menu-overlay.js"></script>
+    
+    <!-- Vue simplifiée -->
+    <div id="simple-view" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 90; background: var(--bg-color); opacity: 0; transition: opacity 0.5s ease; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <img id="profile-photo" src="img/photo-profil.jpg" alt="Photo de profil" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; margin-bottom: 2rem;">
+        <h1 style="color: var(--text-color); font-size: 3rem; margin: 0;">Emma</h1>
+    </div>
+    
+    <script>
+    // Attendre que le DOM soit chargé
+    document.addEventListener('DOMContentLoaded', function() {
+        // Récupérer les éléments
+        const toggleButton = document.getElementById('profile-toggle');
+        const mainContent = document.querySelector('main');
+        const simpleView = document.getElementById('simple-view');
+        
+        // Vérifier que les éléments existent
+        if (!toggleButton || !mainContent || !simpleView) {
+            console.error('Erreur: Éléments manquants');
+            return;
+        }
+        
+        // État initial
+        let isSimpleView = false;
+        
+        // Fonction pour basculer entre les vues
+        function toggleView() {
+            console.log('Bouton cliqué !'); // Pour le débogage
+            
+            if (!isSimpleView) {
+                // Aller vers la vue simplifiée
+                mainContent.style.opacity = '0';
+                mainContent.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    mainContent.style.display = 'none';
+                    simpleView.style.display = 'flex';
+                    
+                    // Animation d'apparition
+                    setTimeout(() => {
+                        simpleView.style.opacity = '1';
+                    }, 50);
+                    
+                    // Changer l'icône
+                    toggleButton.innerHTML = `
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>`;
+                }, 300);
+            } else {
+                // Revenir à la vue normale
+                simpleView.style.opacity = '0';
+                
+                setTimeout(() => {
+                    simpleView.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    
+                    // Animation d'apparition
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                        mainContent.style.transform = 'translateX(0)';
+                    }, 50);
+                    
+                    // Remettre l'icône d'origine
+                    toggleButton.innerHTML = `
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>`;
+                }, 300);
+            }
+            
+            // Inverser l'état
+            isSimpleView = !isSimpleView;
+        }
+        
+        // Ajouter l'écouteur d'événement
+        toggleButton.addEventListener('click', toggleView);
+        
+        // Pour le débogage
+        console.log('Script chargé');
+        console.log('Bouton:', toggleButton);
+        console.log('Contenu principal:', mainContent);
+        console.log('Vue simplifiée:', simpleView);
+    });
+    </script>
+</body>
+</html>

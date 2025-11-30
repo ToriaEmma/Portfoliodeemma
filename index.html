@@ -560,32 +560,15 @@
                         </motion.div>
 
                         {/* Composition Container */}
-                        <div className="relative w-full max-w-6xl flex flex-col md:grid md:grid-cols-12 gap-6 md:gap-8 items-start md:items-center py-4 md:py-0">
+                        <div className="relative w-full max-w-6xl flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-8 items-start md:items-center py-4 md:py-0">
 
-                            {/* Mobile: Photo moved to bottom */}
-                            <div className="w-full md:col-span-7 flex items-center justify-center order-2 mb-4 md:mb-0">
-                                {/* Main Portrait */}
-                                <motion.div
-                                    className="relative w-36 h-48 md:w-96 md:h-[32rem] bg-gray-300 overflow-hidden shadow-2xl"
-                                    style={{ x: window.innerWidth >= 768 ? x2 : 0, y: window.innerWidth >= 768 ? y2 : 0 }}
-                                    animate={{ y: window.innerWidth >= 768 ? [0, 15, 0] : 0 }}
-                                    transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                                >
-                                    <img
-                                        src="Profil2.png"
-                                        alt="Emmanuela Portrait"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </motion.div>
-                            </div>
-
-                            {/* Mobile: Text First */}
+                            {/* Text Content - First on mobile, left on desktop */}
                             <motion.div
                                 className="w-full md:col-span-5 flex flex-col justify-center z-10 order-1"
                                 style={{ x: window.innerWidth >= 768 ? xText : 0, y: window.innerWidth >= 768 ? yText : 0 }}
                             >
                                 <motion.h2
-                                    className="text-3xl md:text-8xl font-serif italic mb-4 md:mb-8 leading-[0.9]"
+                                    className="text-3xl md:text-8xl font-serif italic mb-3 md:mb-8 leading-[0.9]"
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 }}
@@ -598,12 +581,29 @@
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.5 }}
                                 >
-                                    <p className="mb-3">Et depuis toujours, je navigue entre deux mondes : celui du design, où tout doit être beau, clair et inspirant… et celui de la technique, où chaque idée doit tenir debout, fonctionner et avoir du sens.</p>
-                                    <p className="mb-3">Avec le temps, j'ai compris que je n'avais pas à choisir. J'ai simplement décidé de créer des projets où ces deux univers se rencontrent.</p>
-                                    <p className="mb-3">Aujourd'hui, je conçois des expériences qui racontent quelque chose : des interfaces qui respirent, des solutions qui résolvent de vrais problèmes, des concepts qui deviennent concrets.</p>
+                                    <p className="mb-2 md:mb-3">Et depuis toujours, je navigue entre deux mondes : celui du design, où tout doit être beau, clair et inspirant… et celui de la technique, où chaque idée doit tenir debout, fonctionner et avoir du sens.</p>
+                                    <p className="mb-2 md:mb-3">Avec le temps, j'ai compris que je n'avais pas à choisir. J'ai simplement décidé de créer des projets où ces deux univers se rencontrent.</p>
+                                    <p className="mb-2 md:mb-3">Aujourd'hui, je conçois des expériences qui racontent quelque chose : des interfaces qui respirent, des solutions qui résolvent de vrais problèmes, des concepts qui deviennent concrets.</p>
                                     <p>Mon but ? Transformer une idée en un projet à la fois esthétique, intelligent et utile, tout en gardant ma touche : naturelle, fluide et authentique.</p>
                                 </motion.div>
                             </motion.div>
+
+                            {/* Photo - Second on mobile, right on desktop */}
+                            <div className="w-full md:col-span-7 flex items-center justify-center order-2">
+                                {/* Main Portrait */}
+                                <motion.div
+                                    className="relative w-40 h-52 md:w-96 md:h-[32rem] bg-gray-300 overflow-hidden shadow-2xl"
+                                    style={{ x: window.innerWidth >= 768 ? x2 : 0, y: window.innerWidth >= 768 ? y2 : 0 }}
+                                    animate={{ y: window.innerWidth >= 768 ? [0, 15, 0] : 0 }}
+                                    transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                                >
+                                    <img
+                                        src="Profil2.png"
+                                        alt="Emmanuela Portrait"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </motion.div>
+                            </div>
 
                             {/* Floating Keywords - Hide on mobile for simplicity */}
                             <motion.div

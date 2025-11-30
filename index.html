@@ -562,9 +562,9 @@
                         {/* Composition Container */}
                         <div className="relative w-full max-w-6xl flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-8 items-start md:items-center py-4 md:py-0">
 
-                            {/* Text Content - First on mobile, left on desktop */}
+                            {/* Text Content - Second on mobile, left on desktop */}
                             <motion.div
-                                className="w-full md:col-span-5 flex flex-col justify-center z-10 order-1"
+                                className="w-full md:col-span-5 flex flex-col justify-center z-10 order-2 md:order-1"
                                 style={{ x: window.innerWidth >= 768 ? xText : 0, y: window.innerWidth >= 768 ? yText : 0 }}
                             >
                                 <motion.h2
@@ -589,8 +589,8 @@
                                 </motion.div>
                             </motion.div>
 
-                            {/* Photo - Second on mobile, right on desktop */}
-                            <div className="w-full md:col-span-7 flex items-center justify-center order-2">
+                            {/* Photo - First on mobile, right on desktop */}
+                            <div className="w-full md:col-span-7 flex items-center justify-center order-1 md:order-2">
                                 {/* Main Portrait */}
                                 <motion.div
                                     className="relative w-32 h-40 md:w-96 md:h-[32rem] bg-gray-300 overflow-hidden shadow-2xl"

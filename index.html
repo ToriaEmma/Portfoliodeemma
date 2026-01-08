@@ -254,8 +254,236 @@
             }
         ];
 
+        // --- Translations Dictionary ---
+        const TRANSLATIONS = {
+            fr: {
+                // Navigation
+                nav: {
+                    portfolio: "Portfolio 2025",
+                    menu: "Menu",
+                    open: "Ouvrir",
+                    back: "Retour",
+                    close: "Fermer"
+                },
+                // Theme toggle
+                theme: {
+                    day: "Jour",
+                    night: "Nuit"
+                },
+                // Cursor
+                cursor: {
+                    view: "View"
+                },
+                // Home page
+                home: {
+                    marquee: "Creative Developer • UI/UX Designer • Art Director • Benin •"
+                },
+                // About page
+                about: {
+                    title1: "Je suis",
+                    title2: "Emmanuela",
+                    paragraph1: "Et depuis toujours, je navigue entre deux mondes : celui du design, où tout doit être beau, clair et inspirant… et celui de la technique, où chaque idée doit tenir debout, fonctionner et avoir du sens.",
+                    paragraph2: "Avec le temps, j'ai compris que je n'avais pas à choisir. J'ai simplement décidé de créer des projets où ces deux univers se rencontrent.",
+                    paragraph3: "Aujourd'hui, je conçois des expériences qui racontent quelque chose : des interfaces qui respirent, des solutions qui résolvent de vrais problèmes, des concepts qui deviennent concrets.",
+                    paragraph4: "Mon but ? Transformer une idée en un projet à la fois esthétique, intelligent et utile, tout en gardant ma touche : naturelle, fluide et authentique.",
+                    keyword1: "Minimalisme",
+                    marquee: "Digital Designer • Creative Developer • Art Director • UI/UX • Branding •"
+                },
+                // Expertise page
+                expertise: {
+                    cards: [
+                        {
+                            title: "UI/UX Design",
+                            desc: "Création d'interfaces intuitives centrées utilisateur.",
+                            tags: ["Figma", "Canva", "User Research", "Prototyping"]
+                        },
+                        {
+                            title: "Front-end Dev",
+                            desc: "Développement front-end moderne et animé.",
+                            tags: ["React.js", "Tailwind CSS", "DaisyUI", "GSAP", "JavaScript"]
+                        },
+                        {
+                            title: "Design & Visual",
+                            desc: "Identité visuelle et création de contenu.",
+                            tags: ["Photoshop", "Capcut", "Branding", "Typography"]
+                        },
+                        {
+                            title: "Hardware & 3D",
+                            desc: "Robotique et impression 3D.",
+                            tags: ["Arduino", "FreeCAD", "Impression 3D", "SFML"]
+                        },
+                        {
+                            title: "Programming",
+                            desc: "Langages et outils de développement.",
+                            tags: ["C", "C++", "Haskell", "HTML/CSS", "WordPress", "GitHub Actions"]
+                        }
+                    ],
+                    marquee: "Expertise • Passion • Innovation • Créativité • Technique •"
+                },
+                // Projects page
+                projects: {
+                    viewProject: "Voir le projet",
+                    endProject: "Fin du projet",
+                    nextProject: "Projet Suivant"
+                },
+                // Devis page
+                devis: {
+                    title: "Créons Ensemble",
+                    subtitle: "Partagez votre vision",
+                    form: {
+                        name: "Nom",
+                        namePlaceholder: "Votre nom",
+                        email: "Email",
+                        emailPlaceholder: "votre@email.com",
+                        type: "Type",
+                        typePlaceholder: "Type de projet",
+                        budget: "Budget estimé",
+                        project: "Projet",
+                        projectPlaceholder: "Décrivez votre projet...",
+                        submit: "Envoyer ma demande",
+                        options: {
+                            web: "Web Design",
+                            app: "Application",
+                            branding: "Branding",
+                            uiux: "UI/UX"
+                        }
+                    },
+                    success: {
+                        thanks: "Merci",
+                        message: "Votre demande a bien été reçue. Je reviendrai vers vous au plus vite après avoir examiné votre projet pour en discuter de vive voix."
+                    },
+                    marquee: "Créons ensemble • Let's create • Demande de devis •"
+                },
+                // Menu
+                menu: {
+                    items: {
+                        about: "A Propos",
+                        expertise: "Expertise",
+                        projects: "Projets",
+                        devis: "Devis"
+                    },
+                    contact: "Me Contacter",
+                    networks: "Réseaux",
+                    downloadCV: "Télécharger mon CV",
+                    closeText: "Close • Fermer • Close • Fermer •"
+                }
+            },
+            en: {
+                // Navigation
+                nav: {
+                    portfolio: "Portfolio 2025",
+                    menu: "Menu",
+                    open: "Open",
+                    back: "Back",
+                    close: "Close"
+                },
+                // Theme toggle
+                theme: {
+                    day: "Day",
+                    night: "Night"
+                },
+                // Cursor
+                cursor: {
+                    view: "View"
+                },
+                // Home page
+                home: {
+                    marquee: "Creative Developer • UI/UX Designer • Art Director • Benin •"
+                },
+                // About page
+                about: {
+                    title1: "I am",
+                    title2: "Emmanuela",
+                    paragraph1: "And I've always navigated between two worlds: that of design, where everything must be beautiful, clear and inspiring... and that of technology, where every idea must stand up, work and make sense.",
+                    paragraph2: "Over time, I understood that I didn't have to choose. I simply decided to create projects where these two universes meet.",
+                    paragraph3: "Today, I design experiences that tell a story: interfaces that breathe, solutions that solve real problems, concepts that become concrete.",
+                    paragraph4: "My goal? Transform an idea into a project that is both aesthetic, intelligent and useful, while keeping my touch: natural, fluid and authentic.",
+                    keyword1: "Minimalism",
+                    marquee: "Digital Designer • Creative Developer • Art Director • UI/UX • Branding •"
+                },
+                // Expertise page
+                expertise: {
+                    cards: [
+                        {
+                            title: "UI/UX Design",
+                            desc: "Creating user-centered intuitive interfaces.",
+                            tags: ["Figma", "Canva", "User Research", "Prototyping"]
+                        },
+                        {
+                            title: "Front-end Dev",
+                            desc: "Modern and animated front-end development.",
+                            tags: ["React.js", "Tailwind CSS", "DaisyUI", "GSAP", "JavaScript"]
+                        },
+                        {
+                            title: "Design & Visual",
+                            desc: "Visual identity and content creation.",
+                            tags: ["Photoshop", "Capcut", "Branding", "Typography"]
+                        },
+                        {
+                            title: "Hardware & 3D",
+                            desc: "Robotics and 3D printing.",
+                            tags: ["Arduino", "FreeCAD", "3D Printing", "SFML"]
+                        },
+                        {
+                            title: "Programming",
+                            desc: "Development languages and tools.",
+                            tags: ["C", "C++", "Haskell", "HTML/CSS", "WordPress", "GitHub Actions"]
+                        }
+                    ],
+                    marquee: "Expertise • Passion • Innovation • Creativity • Technology •"
+                },
+                // Projects page
+                projects: {
+                    viewProject: "View project",
+                    endProject: "End of project",
+                    nextProject: "Next Project"
+                },
+                // Devis page
+                devis: {
+                    title: "Let's Create Together",
+                    subtitle: "Share your vision",
+                    form: {
+                        name: "Name",
+                        namePlaceholder: "Your name",
+                        email: "Email",
+                        emailPlaceholder: "your@email.com",
+                        type: "Type",
+                        typePlaceholder: "Project type",
+                        budget: "Estimated budget",
+                        project: "Project",
+                        projectPlaceholder: "Describe your project...",
+                        submit: "Send my request",
+                        options: {
+                            web: "Web Design",
+                            app: "Application",
+                            branding: "Branding",
+                            uiux: "UI/UX"
+                        }
+                    },
+                    success: {
+                        thanks: "Thank you",
+                        message: "Your request has been received. I will get back to you as soon as possible after reviewing your project to discuss it in person."
+                    },
+                    marquee: "Let's create together • Créons ensemble • Quote request •"
+                },
+                // Menu
+                menu: {
+                    items: {
+                        about: "About",
+                        expertise: "Expertise",
+                        projects: "Projects",
+                        devis: "Quote"
+                    },
+                    contact: "Contact Me",
+                    networks: "Networks",
+                    downloadCV: "Download my CV",
+                    closeText: "Close • Fermer • Close • Fermer •"
+                }
+            }
+        };
+
         // --- Custom Cursor ---
-        const CustomCursor = ({ mode, isHovering }) => {
+        const CustomCursor = ({ mode, isHovering, t }) => {
             const cursorX = useMotionValue(-100);
             const cursorY = useMotionValue(-100);
 
@@ -301,7 +529,7 @@
                     >
                         {isHovering && (
                             <span className="text-[4px] uppercase tracking-widest text-morning-bg dark:text-midnight-bg font-bold">
-                                View
+                                {t('cursor.view')}
                             </span>
                         )}
                     </motion.div>
@@ -310,7 +538,7 @@
         };
 
         // --- Composant: Poetic Toggle (Theme Switcher) ---
-        const PoeticToggle = ({ mode, onToggle }) => {
+        const PoeticToggle = ({ mode, onToggle, t }) => {
             const handleClick = () => {
                 onToggle(mode === 'morning' ? 'midnight' : 'morning');
             };
@@ -348,7 +576,7 @@
                                 }}
                                 transition={{ duration: 0.4 }}
                             >
-                                Jour
+                                {t('theme.day')}
                             </motion.span>
 
                             {/* Nuit */}
@@ -362,7 +590,7 @@
                                 }}
                                 transition={{ duration: 0.4 }}
                             >
-                                Nuit
+                                {t('theme.night')}
                             </motion.span>
                         </div>
 
@@ -381,6 +609,86 @@
                     {/* Hover Indicator */}
                     <motion.div
                         className={`absolute -bottom-2 left-0 right-0 h-[1px] origin-center ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`}
+                        initial={{ scaleX: 0 }}
+                        whileHover={{ scaleX: 1 }}
+                        transition={{ duration: 0.3 }}
+                    />
+                </motion.button>
+            );
+        };
+
+        // --- Composant: Language Toggle (FR/EN Switcher) ---
+        const LanguageToggle = ({ language, onToggle }) => {
+            const handleClick = () => {
+                onToggle(language === 'fr' ? 'en' : 'fr');
+            };
+
+            return (
+                <motion.button
+                    onClick={handleClick}
+                    className="fixed bottom-20 left-8 z-50 group cursor-pointer"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                >
+                    <div className="relative flex items-center gap-3">
+                        {/* Shifting Line */}
+                        <motion.div
+                            className={`h-[1px] origin-left bg-current`}
+                            initial={false}
+                            animate={{
+                                width: language === 'fr' ? '2rem' : '3rem',
+                                scaleX: 1
+                            }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                        />
+
+                        {/* Text Container */}
+                        <div className="relative h-6 w-12 overflow-hidden">
+                            {/* FR */}
+                            <motion.span
+                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest`}
+                                initial={false}
+                                animate={{
+                                    opacity: language === 'fr' ? 1 : 0,
+                                    y: language === 'fr' ? 0 : -10,
+                                    x: language === 'fr' ? 0 : 10
+                                }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                FR
+                            </motion.span>
+
+                            {/* EN */}
+                            <motion.span
+                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest`}
+                                initial={false}
+                                animate={{
+                                    opacity: language === 'fr' ? 0 : 1,
+                                    y: language === 'fr' ? 10 : 0,
+                                    x: language === 'fr' ? -10 : 0
+                                }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                EN
+                            </motion.span>
+                        </div>
+
+                        {/* Second Line */}
+                        <motion.div
+                            className={`h-[1px] origin-right bg-current`}
+                            initial={false}
+                            animate={{
+                                width: language === 'fr' ? '3rem' : '2rem',
+                                scaleX: 1
+                            }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                        />
+                    </div>
+
+                    {/* Hover Indicator */}
+                    <motion.div
+                        className={`absolute -bottom-2 left-0 right-0 h-[1px] origin-center bg-current opacity-50`}
                         initial={{ scaleX: 0 }}
                         whileHover={{ scaleX: 1 }}
                         transition={{ duration: 0.3 }}
@@ -516,7 +824,7 @@
         };
 
         // --- Composant: About Page (The Living Poster) ---
-        const AboutPage = ({ mode, onBack, onOpenMenu, mouseX, mouseY }) => {
+        const AboutPage = ({ mode, onBack, onOpenMenu, mouseX, mouseY, t }) => {
             // Safe mobile detection
             const [isMobile, setIsMobile] = useState(false);
 
@@ -558,7 +866,7 @@
                                 className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
                             >
                                 <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
-                                Retour
+                                {t('nav.back')}
                             </button>
                         </div>
 
@@ -602,7 +910,7 @@
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 }}
                                 >
-                                    Je suis <br /> Emmanuela
+                                    {t('about.title1')} <br /> {t('about.title2')}
                                 </motion.h2>
                                 <motion.div
                                     className="text-[11px] md:text-sm font-light leading-relaxed opacity-80 max-w-lg backdrop-blur-sm p-2 md:p-6 rounded-lg border border-current/5"
@@ -610,10 +918,10 @@
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.5 }}
                                 >
-                                    <p className="mb-2 md:mb-3">Et depuis toujours, je navigue entre deux mondes : celui du design, où tout doit être beau, clair et inspirant… et celui de la technique, où chaque idée doit tenir debout, fonctionner et avoir du sens.</p>
-                                    <p className="mb-2 md:mb-3">Avec le temps, j'ai compris que je n'avais pas à choisir. J'ai simplement décidé de créer des projets où ces deux univers se rencontrent.</p>
-                                    <p className="mb-2 md:mb-3">Aujourd'hui, je conçois des expériences qui racontent quelque chose : des interfaces qui respirent, des solutions qui résolvent de vrais problèmes, des concepts qui deviennent concrets.</p>
-                                    <p>Mon but ? Transformer une idée en un projet à la fois esthétique, intelligent et utile, tout en gardant ma touche : naturelle, fluide et authentique.</p>
+                                    <p className="mb-2 md:mb-3">{t('about.paragraph1')}</p>
+                                    <p className="mb-2 md:mb-3">{t('about.paragraph2')}</p>
+                                    <p className="mb-2 md:mb-3">{t('about.paragraph3')}</p>
+                                    <p>{t('about.paragraph4')}</p>
                                 </motion.div>
                             </motion.div>
 
@@ -640,7 +948,7 @@
                                 animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
                                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                Minimalisme
+                                {t('about.keyword1')}
                             </motion.div>
                             <motion.div
                                 className="hidden md:block absolute bottom-20 right-0 text-xs font-mono uppercase tracking-widest border border-current px-3 py-1 rounded-full backdrop-blur-md"
@@ -653,14 +961,14 @@
                     </div>
                     {/* Footer Marquee */}
                     <div className="absolute bottom-0 left-0 w-full z-20">
-                        <Marquee text="Digital Designer • Creative Developer • Art Director • UI/UX • Branding •" mode={mode} />
+                        <Marquee text={t('about.marquee')} mode={mode} />
                     </div>
                 </motion.div >
             );
         };
 
         // --- Composant: Expertise Page (The Atmospheric Reveal) ---
-        const ExpertisePage = ({ mode, onBack, onOpenMenu, mouseX, mouseY }) => {
+        const ExpertisePage = ({ mode, onBack, onOpenMenu, mouseX, mouseY, t }) => {
             const [activeCard, setActiveCard] = useState(null);
 
             const smoothOptions = { damping: 50, stiffness: 400 };
@@ -675,53 +983,27 @@
             const x3 = useTransform(smoothX, [0, window.innerWidth], [15, -15]);
             const y3 = useTransform(smoothY, [0, window.innerHeight], [15, -15]);
 
-            const cards = [
-                {
-                    id: 1,
-                    title: "UI/UX Design",
-                    desc: "Création d'interfaces intuitives centrées utilisateur.",
-                    tags: ["Figma", "Canva", "User Research", "Prototyping"],
-                    x: x1, y: y1,
-                    color: "from-blue-400/20 to-purple-400/20",
-                    pos: "top-[15%] left-[10%] md:left-[15%]"
-                },
-                {
-                    id: 2,
-                    title: "Front-end Dev",
-                    desc: "Développement front-end moderne et animé.",
-                    tags: ["React.js", "Tailwind CSS", "DaisyUI", "GSAP", "JavaScript"],
-                    x: x2, y: y2,
-                    color: "from-emerald-400/20 to-teal-400/20",
-                    pos: "top-[15%] right-[10%] md:right-[15%]"
-                },
-                {
-                    id: 3,
-                    title: "Design & Visual",
-                    desc: "Identité visuelle et création de contenu.",
-                    tags: ["Photoshop", "Capcut", "Branding", "Typography"],
-                    x: x3, y: y3,
-                    color: "from-orange-400/20 to-rose-400/20",
-                    pos: "top-[45%] left-[15%] md:left-[25%]"
-                },
-                {
-                    id: 4,
-                    title: "Hardware & 3D",
-                    desc: "Robotique et impression 3D.",
-                    tags: ["Arduino", "FreeCAD", "Impression 3D", "SFML"],
-                    x: x1, y: y2,
-                    color: "from-violet-400/20 to-pink-400/20",
-                    pos: "top-[45%] right-[15%] md:right-[25%]"
-                },
-                {
-                    id: 5,
-                    title: "Programming",
-                    desc: "Langages et outils de développement.",
-                    tags: ["C", "C++", "Haskell", "HTML/CSS", "WordPress", "GitHub Actions"],
-                    x: x2, y: y1,
-                    color: "from-cyan-400/20 to-blue-400/20",
-                    pos: "bottom-[15%] left-[20%] md:left-[35%]"
-                }
-            ];
+            // Get translated expertise cards
+            const cards = t('expertise.cards').map((card, idx) => ({
+                ...card,
+                id: idx + 1,
+                x: [x1, x2, x3, x1, x2][idx],
+                y: [y1, y2, y3, y2, y1][idx],
+                color: [
+                    "from-blue-400/20 to-purple-400/20",
+                    "from-emerald-400/20 to-teal-400/20",
+                    "from-orange-400/20 to-rose-400/20",
+                    "from-violet-400/20 to-pink-400/20",
+                    "from-cyan-400/20 to-blue-400/20"
+                ][idx],
+                pos: [
+                    "top-[15%] left-[10%] md:left-[15%]",
+                    "top-[15%] right-[10%] md:right-[15%]",
+                    "top-[45%] left-[15%] md:left-[25%]",
+                    "top-[45%] right-[15%] md:right-[25%]",
+                    "bottom-[15%] left-[20%] md:left-[35%]"
+                ][idx]
+            }));
 
             return (
                 <motion.div
@@ -755,7 +1037,7 @@
                         <div className="pointer-events-auto">
                             <button onClick={onBack} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${mode === 'morning' ? 'text-morning-text bg-white/20 hover:bg-white/30 border border-current/20' : 'text-midnight-text bg-black/20 hover:bg-black/30 border border-current/20'}`}>
                                 <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
-                                Retour
+                                {t('nav.back')}
                             </button>
                         </div>
                         <div className="pointer-events-auto">
@@ -849,7 +1131,7 @@
 
                     {/* Footer Marquee */}
                     <div className="absolute bottom-0 left-0 w-full z-20">
-                        <Marquee text="Expertise • Passion • Innovation • Créativité • Technique •" mode={mode} />
+                        <Marquee text={t('expertise.marquee')} mode={mode} />
                     </div>
                 </motion.div>
             );
@@ -933,12 +1215,12 @@
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
                         >
-                            <p className="text-sm uppercase tracking-widest mb-8 opacity-70">Fin du projet</p>
+                            <p className="text-sm uppercase tracking-widest mb-8 opacity-70">{t('projects.endProject')}</p>
                             <button
                                 onClick={onNextProject}
                                 className={`group px-8 py-4 rounded-full backdrop-blur-md ${project.textColor} ${footerBtnClass} border ${project.accentColor} transition-all shadow-lg flex items-center gap-4 text-lg font-serif italic`}
                             >
-                                Projet Suivant
+                                {t('projects.nextProject')}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 group-hover:translate-x-2 transition-transform">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                 </svg>
@@ -962,7 +1244,7 @@
         };
 
         // --- Composant: Devis Page (The Artistic Form) ---
-        const DevisPage = ({ mode, onBack, onOpenMenu, mouseX, mouseY }) => {
+        const DevisPage = ({ mode, onBack, onOpenMenu, mouseX, mouseY, t }) => {
             const [formData, setFormData] = useState({
                 name: '',
                 email: '',
@@ -1030,7 +1312,7 @@
                                 className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
                             >
                                 <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
-                                Retour
+                                {t('nav.back')}
                             </button>
                         </div>
 
@@ -1058,14 +1340,14 @@
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8 }}
                             >
-                                <h1 className="text-2xl md:text-7xl font-serif italic mb-1.5 md:mb-3">Créons Ensemble</h1>
+                                <h1 className="text-2xl md:text-7xl font-serif italic mb-1.5 md:mb-3">{t('devis.title')}</h1>
                                 <motion.div
                                     className={`h-[1.5px] md:h-[2px] w-24 md:w-32 mx-auto ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`}
                                     initial={{ scaleX: 0 }}
                                     animate={{ scaleX: 1 }}
                                     transition={{ duration: 1, delay: 0.5 }}
                                 />
-                                <p className="mt-2 md:mt-4 text-xs md:text-sm opacity-60 tracking-wide">Partagez votre vision</p>
+                                <p className="mt-2 md:mt-4 text-xs md:text-sm opacity-60 tracking-wide">{t('devis.subtitle')}</p>
                             </motion.div>
 
                             {/* Compact Form with Artistic Design */}
@@ -1093,10 +1375,10 @@
                                             onFocus={() => setFocusedField('name')}
                                             onBlur={() => setFocusedField(null)}
                                             className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all ${focusedField === 'name' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20' : 'border-midnight-text/20'}`}`}
-                                            placeholder="Votre nom"
+                                            placeholder={t('devis.form.namePlaceholder')}
                                             required
                                         />
-                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Nom</label>
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>{t('devis.form.name')}</label>
                                     </div>
 
                                     <div className="relative group">
@@ -1108,10 +1390,10 @@
                                             onFocus={() => setFocusedField('email')}
                                             onBlur={() => setFocusedField(null)}
                                             className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none transition-all ${focusedField === 'email' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20' : 'border-midnight-text/20'}`}`}
-                                            placeholder="votre@email.com"
+                                            placeholder={t('devis.form.emailPlaceholder')}
                                             required
                                         />
-                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Email</label>
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>{t('devis.form.email')}</label>
                                     </div>
                                 </div>
 
@@ -1133,17 +1415,17 @@
                                             }}
                                             required
                                         >
-                                            <option value="" disabled>Type de projet</option>
-                                            <option value="web">Web Design</option>
-                                            <option value="app">Application</option>
-                                            <option value="branding">Branding</option>
-                                            <option value="uiux">UI/UX</option>
+                                            <option value="" disabled>{t('devis.form.typePlaceholder')}</option>
+                                            <option value="web">{t('devis.form.options.web')}</option>
+                                            <option value="app">{t('devis.form.options.app')}</option>
+                                            <option value="branding">{t('devis.form.options.branding')}</option>
+                                            <option value="uiux">{t('devis.form.options.uiux')}</option>
                                         </select>
-                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Type</label>
+                                        <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>{t('devis.form.type')}</label>
                                     </div>
 
                                     <div className="relative group">
-                                        <label className={`block mb-2 md:mb-3 text-[10px] md:text-xs ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'} opacity-70 uppercase tracking-wider`}>Budget estimé</label>
+                                        <label className={`block mb-2 md:mb-3 text-[10px] md:text-xs ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'} opacity-70 uppercase tracking-wider`}>{t('devis.form.budget')}</label>
                                         <input type="hidden" name="budget" value={formData.budget} required />
                                         <div className="grid grid-cols-3 md:grid-cols-5 gap-1.5 md:gap-3">
                                             {['50K', '100K', '300K', '500K', '1M'].map((amount) => (
@@ -1175,10 +1457,10 @@
                                         onBlur={() => setFocusedField(null)}
                                         rows="2"
                                         className={`w-full bg-transparent border-2 rounded-lg px-3 py-2 md:px-4 md:py-3 outline-none resize-none transition-all ${focusedField === 'description' ? `${mode === 'morning' ? 'border-morning-secondary shadow-lg shadow-morning-secondary/20' : 'border-midnight-highlight shadow-lg shadow-midnight-highlight/20'}` : `${mode === 'morning' ? 'border-morning-text/20' : 'border-midnight-text/20'}`}`}
-                                        placeholder="Décrivez votre projet..."
+                                        placeholder={t('devis.form.projectPlaceholder')}
                                         required
                                     />
-                                    <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>Projet</label>
+                                    <label className={`absolute -top-2.5 left-3 px-2 text-xs ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'} opacity-70`}>{t('devis.form.project')}</label>
                                 </div>
 
                                 {/* Submit Button with Creative Design */}
@@ -1195,7 +1477,7 @@
                                             whileHover={{ x: 0 }}
                                             transition={{ duration: 0.3 }}
                                         />
-                                        <span className="relative z-10">Envoyer ma demande</span>
+                                        <span className="relative z-10">{t('devis.form.submit')}</span>
                                     </motion.button>
                                 </div>
                             </motion.form>
@@ -1228,10 +1510,10 @@
                                         </svg>
                                     </motion.div>
 
-                                    <h2 className="text-4xl md:text-6xl font-serif italic mb-6">Merci {formData.name.split(' ')[0]} !</h2>
+                                    <h2 className="text-4xl md:text-6xl font-serif italic mb-6">{t('devis.success.thanks')} {formData.name.split(' ')[0]} !</h2>
 
                                     <p className={`text-lg md:text-xl leading-relaxed opacity-80 mb-8 ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}>
-                                        Votre demande a bien été reçue. Je reviendrai vers vous au plus vite après avoir examiné votre projet pour en discuter de vive voix.
+                                        {t('devis.success.message')}
                                     </p>
 
                                     <div className={`h-[1px] w-32 mx-auto ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`} />
@@ -1242,14 +1524,14 @@
 
                     {/* Footer Marquee */}
                     <div className="absolute bottom-0 left-0 w-full z-20">
-                        <Marquee text="Créons ensemble • Let's create • Demande de devis •" mode={mode} />
+                        <Marquee text={t('devis.marquee')} mode={mode} />
                     </div>
                 </motion.div>
             );
         };
 
         // --- Composant: Projects Page (The Cinematic Journey) ---
-        const ProjectsPage = ({ mode, onBack, onOpenMenu, onViewProject, mouseX, mouseY }) => {
+        const ProjectsPage = ({ mode, onBack, onOpenMenu, onViewProject, mouseX, mouseY, t }) => {
             const [currentIndex, setCurrentIndex] = useState(0);
             const [direction, setDirection] = useState(0);
 
@@ -1351,14 +1633,14 @@
                         <div className="pointer-events-auto">
                             <button onClick={onBack} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${currentProject.textColor} bg-white/20 hover:bg-white/30 border border-current/20`}>
                                 <span className="block w-2 h-2 rounded-full bg-current group-hover:scale-150 transition-transform"></span>
-                                Retour
+                                {t('nav.back')}
                             </button>
                         </div>
                         <div className="pointer-events-auto">
                             <button onClick={onOpenMenu} className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-all px-3 py-2 rounded-full backdrop-blur-md ${currentProject.textColor} bg-white/20 hover:bg-white/30 border border-current/20`}>
                                 <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
-                                    <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
-                                    <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">Ouvrir</span>
+                                    <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">{t('nav.menu')}</span>
+                                    <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">{t('nav.open')}</span>
                                 </span>
                                 <div className={`w-6 h-[1px] bg-current group-hover:w-8 transition-all duration-300`}></div>
                             </button>
@@ -1431,7 +1713,7 @@
                                                 onClick={() => onViewProject(currentProject)}
                                                 className={`text-sm uppercase tracking-widest ${currentProject.accentColor} border-b pb-1 hover:opacity-70 transition-opacity`}
                                             >
-                                                Voir le projet
+                                                {t('projects.viewProject')}
                                             </button>
                                         </motion.div>
                                     </motion.div>
@@ -1469,7 +1751,7 @@
         };
 
         // --- Composant: Menu ---
-        const Menu = ({ isOpen, onClose, mode, onNavigate }) => {
+        const Menu = ({ isOpen, onClose, mode, onNavigate, t }) => {
             const [hoveredSession, setHoveredSession] = useState(null);
 
             const menuVariants = {
@@ -1519,7 +1801,7 @@
                                 <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
                                 <text className="text-[10px] md:text-[13px] font-mono uppercase tracking-[0.15em]">
                                     <textPath href="#circlePath" startOffset="0%">
-                                        Close • Fermer • Close • Fermer •
+                                        {t('menu.closeText')}
                                     </textPath>
                                 </text>
                             </svg>
@@ -1539,29 +1821,29 @@
                         {/* Colonne Gauche: Navigation */}
                         <div className="flex flex-col justify-center">
                             <nav className="flex flex-col space-y-0" onMouseLeave={() => setHoveredSession(null)}>
-                                {['A Propos', 'Expertise', 'Projets', 'Devis'].map((item, i) => (
-                                    <motion.a
-                                        key={item}
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (item === 'A Propos') onNavigate('about');
-                                            else if (item === 'Expertise') onNavigate('expertise');
-                                            else if (item === 'Projets') onNavigate('projects');
-                                            else if (item === 'Devis') onNavigate('devis');
-                                            else onClose();
-                                        }}
-                                        className={`text-5xl md:text-[8vw] leading-[0.9] md:leading-[0.85] font-serif italic transition-all duration-500 origin-left
+                                {[t('menu.items.about'), t('menu.items.expertise'), t('menu.items.projects'), t('menu.items.devis')].map((item, i) => {
+                                    const routes = ['about', 'expertise', 'projects', 'devis'];
+                                    return (
+                                        <motion.a
+                                            key={item}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                const routes = ['about', 'expertise', 'projects', 'devis'];
+                                                onNavigate(routes[i]);
+                                            }}
+                                            className={`text-5xl md:text-[8vw] leading-[0.9] md:leading-[0.85] font-serif italic transition-all duration-500 origin-left
                                             ${hoveredSession !== null && hoveredSession !== i ? 'opacity-20 blur-[2px] scale-95' : 'opacity-100 scale-100'}
                                             ${hoveredSession === i ? 'translate-x-8' : ''}
                                         `}
-                                        variants={itemVariants}
-                                        transition={{ delay: 0.2 + (i * 0.1) }}
-                                        onMouseEnter={() => setHoveredSession(i)}
-                                    >
-                                        {item}
-                                    </motion.a>
-                                ))}
+                                            variants={itemVariants}
+                                            transition={{ delay: 0.2 + (i * 0.1) }}
+                                            onMouseEnter={() => setHoveredSession(i)}
+                                        >
+                                            {item}
+                                        </motion.a>
+                                    );
+                                })}
                             </nav>
                         </div>
 
@@ -1570,7 +1852,7 @@
                             <div className="space-y-6 md:space-y-12">
                                 {/* Email */}
                                 <div>
-                                    <div className="mb-2 md:mb-4 opacity-50 text-[10px] md:text-xs tracking-widest uppercase">Me Contacter</div>
+                                    <div className="mb-2 md:mb-4 opacity-50 text-[10px] md:text-xs tracking-widest uppercase">{t('menu.contact')}</div>
                                     <a href="mailto:todedjiemma9@gmail.com" className="block text-lg md:text-3xl font-light tracking-wide hover:opacity-60 transition-opacity">
                                         todedjiemma9@gmail.com
                                     </a>
@@ -1581,7 +1863,7 @@
 
                                 {/* LinkedIn */}
                                 <div>
-                                    <div className="mb-2 md:mb-4 opacity-50 text-[10px] md:text-xs tracking-widest uppercase">Réseaux</div>
+                                    <div className="mb-2 md:mb-4 opacity-50 text-[10px] md:text-xs tracking-widest uppercase">{t('menu.networks')}</div>
                                     <a href="https://www.linkedin.com/in/emmanuela-todedji-b6937b303?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer" className="text-base md:text-xl font-light relative group overflow-hidden inline-block">
                                         <span className="relative z-10">LinkedIn</span>
                                         <span className="absolute left-0 bottom-0 w-full h-[1px] bg-current transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></span>
@@ -1598,7 +1880,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 md:w-5 md:h-5 group-hover:animate-bounce">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                         </svg>
-                                        <span className="relative z-10">Télécharger mon CV</span>
+                                        <span className="relative z-10">{t('menu.downloadCV')}</span>
                                         <div className={`absolute inset-0 ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300`}></div>
                                     </a>
                                 </div>
@@ -1648,13 +1930,28 @@
         // --- App ---
         const App = () => {
             const [mode, setMode] = useState('morning');
+            const [language, setLanguage] = useState(() => {
+                // Load language preference from localStorage
+                const saved = localStorage.getItem('portfolio-language');
+                return saved || 'fr';
+            });
             const [isHovering, setHovering] = useState(false);
             const [isMenuOpen, setMenuOpen] = useState(false);
             const [currentPage, setCurrentPage] = useState('home');
-            const [viewingProject, setViewingProject] = useState(null); // 'home' or 'about'
+            const [viewingProject, setViewingProject] = useState(null);
 
             const mouseX = useMotionValue(0);
             const mouseY = useMotionValue(0);
+
+            // Translation helper function
+            const t = (key) => {
+                const keys = key.split('.');
+                let value = TRANSLATIONS[language];
+                for (const k of keys) {
+                    value = value?.[k];
+                }
+                return value || key;
+            };
 
             useEffect(() => {
                 const handleMouseMove = (e) => {
@@ -1670,18 +1967,24 @@
                 else document.documentElement.classList.remove('dark');
             }, [mode]);
 
+            // Save language preference to localStorage
+            useEffect(() => {
+                localStorage.setItem('portfolio-language', language);
+            }, [language]);
+
             const toggleTheme = (newMode) => setMode(newMode);
+            const toggleLanguage = (newLang) => setLanguage(newLang);
 
             const navigateTo = (page) => {
                 setMenuOpen(false);
-                setTimeout(() => setCurrentPage(page), 800); // Wait for menu exit animation
+                setTimeout(() => setCurrentPage(page), 800);
             };
 
             return (
                 <div className={`fixed inset-0 w-full h-full overflow-hidden transition-colors duration-1000 ease-in-out flex items-center justify-center ${mode === 'morning' ? 'bg-morning-bg' : 'bg-midnight-bg'}`}>
 
                     <div className="noise-overlay"></div>
-                    <CustomCursor mode={mode} isHovering={isHovering} />
+                    <CustomCursor mode={mode} isHovering={isHovering} t={t} />
 
                     <AnimatePresence mode="wait">
                         {currentPage === 'home' && (
@@ -1697,7 +2000,7 @@
                                 <nav className="fixed top-0 left-0 w-full p-8 flex justify-between items-start z-40 pointer-events-none">
                                     <div className="pointer-events-auto">
                                         <span className={`text-xs uppercase tracking-widest opacity-50 ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}>
-                                            Portfolio 2025
+                                            {t('nav.portfolio')}
                                         </span>
                                     </div>
 
@@ -1708,8 +2011,8 @@
                                             className={`group flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${mode === 'morning' ? 'text-morning-text hover:text-morning-secondary' : 'text-midnight-text hover:text-midnight-highlight'}`}
                                         >
                                             <span className="relative overflow-hidden h-4 w-12 flex items-center justify-end">
-                                                <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">Menu</span>
-                                                <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">Ouvrir</span>
+                                                <span className="absolute right-0 transition-transform duration-300 group-hover:-translate-x-full">{t('nav.menu')}</span>
+                                                <span className="absolute right-0 translate-x-full transition-transform duration-300 group-hover:translate-x-0">{t('nav.open')}</span>
                                             </span>
                                             <div className={`w-6 h-[1px] ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'} group-hover:w-8 transition-all duration-300`}></div>
                                         </button>
@@ -1733,10 +2036,11 @@
 
                                 {/* Footer Marquee */}
                                 <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none">
-                                    <Marquee text="Creative Developer • UI/UX Designer • Art Director • Benin •" mode={mode} />
+                                    <Marquee text={t('home.marquee')} mode={mode} />
                                 </div>
 
-                                <PoeticToggle mode={mode} onToggle={toggleTheme} />
+                                <LanguageToggle language={language} onToggle={toggleLanguage} />
+                                <PoeticToggle mode={mode} onToggle={toggleTheme} t={t} />
                             </motion.div>
                         )}
 
@@ -1748,6 +2052,7 @@
                                 onOpenMenu={() => setMenuOpen(true)}
                                 mouseX={mouseX}
                                 mouseY={mouseY}
+                                t={t}
                             />
                         )}
 
@@ -1759,6 +2064,7 @@
                                 onOpenMenu={() => setMenuOpen(true)}
                                 mouseX={mouseX}
                                 mouseY={mouseY}
+                                t={t}
                             />
                         )}
 
@@ -1771,6 +2077,7 @@
                                 onViewProject={(project) => setViewingProject(project)}
                                 mouseX={mouseX}
                                 mouseY={mouseY}
+                                t={t}
                             />
                         )}
 
@@ -1782,6 +2089,7 @@
                                 onOpenMenu={() => setMenuOpen(true)}
                                 mouseX={mouseX}
                                 mouseY={mouseY}
+                                t={t}
                             />
                         )}
                     </AnimatePresence>
@@ -1810,6 +2118,7 @@
                                 onClose={() => setMenuOpen(false)}
                                 mode={mode}
                                 onNavigate={navigateTo}
+                                t={t}
                             />
                         )}
                     </AnimatePresence>

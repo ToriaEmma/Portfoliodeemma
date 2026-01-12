@@ -1138,7 +1138,7 @@
         };
 
         // --- Composant: Project Detail Gallery ---
-        const ProjectDetailGallery = ({ project, onClose, onNextProject, mode }) => {
+        const ProjectDetailGallery = ({ project, onClose, onNextProject, mode, t }) => {
             const scrollRef = useRef(null);
             const [showNextProject, setShowNextProject] = useState(false);
 
@@ -1535,18 +1535,23 @@
             const [currentIndex, setCurrentIndex] = useState(0);
             const [direction, setDirection] = useState(0);
 
-            // Mouse parallax with spring
-            const smoothOptions = { damping: 50, stiffness: 400 };
-            const smoothX = useSpring(mouseX, smoothOptions);
-            const smoothY = useSpring(mouseY, smoothOptions);
-
-            // Parallax transforms
-            const imageX = useTransform(smoothX, [0, window.innerWidth], [-30, 30]);
-            const imageY = useTransform(smoothY, [0, window.innerHeight], [-30, 30]);
-            const textX = useTransform(smoothX, [0, window.innerWidth], [20, -20]);
-            const textY = useTransform(smoothY, [0, window.innerHeight], [20, -20]);
-
             const projects = PROJECTS_DATA;
+
+            // Preload images for smooth transitions
+            useEffect(() => {
+                const preloadImage = (src) => {
+                    const img = new Image();
+                    img.src = src;
+                };
+
+                const len = projects.length;
+                // Preload current image
+                preloadImage(projects[currentIndex].image);
+                // Preload next image
+                preloadImage(projects[(currentIndex + 1) % len].image);
+                // Preload previous image
+                preloadImage(projects[(currentIndex - 1 + len) % len].image);
+            }, [currentIndex, projects]);
 
             const nextProject = () => {
                 setDirection(1);
@@ -1560,24 +1565,18 @@
 
             const variants = {
                 enter: (direction) => ({
-                    x: direction > 0 ? 1000 : -1000,
-                    opacity: 0,
-                    scale: 0.95,
-                    rotateY: direction > 0 ? 10 : -10
+                    x: direction > 0 ? 200 : -200,
+                    opacity: 0
                 }),
                 center: {
                     zIndex: 1,
                     x: 0,
-                    opacity: 1,
-                    scale: 1,
-                    rotateY: 0
+                    opacity: 1
                 },
                 exit: (direction) => ({
                     zIndex: 0,
-                    x: direction < 0 ? 1000 : -1000,
-                    opacity: 0,
-                    scale: 0.95,
-                    rotateY: direction < 0 ? 10 : -10
+                    x: direction < 0 ? 200 : -200,
+                    opacity: 0
                 })
             };
 
@@ -1611,22 +1610,11 @@
                         <h1 className="text-[35vw] font-serif italic whitespace-nowrap">Portfolio</h1>
                     </motion.div>
 
-                    {/* Floating Decorative Orbs */}
-                    <motion.div
-                        className={`absolute top-[20%] left-[10%] w-40 h-40 rounded-full ${currentProject.bgColor} blur-3xl opacity-20`}
-                        animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
-                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    <motion.div
-                        className={`absolute bottom-[30%] right-[15%] w-60 h-60 rounded-full ${currentProject.bgColor} blur-3xl opacity-15`}
-                        animate={{ y: [0, 40, 0], x: [0, -30, 0] }}
-                        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    />
-                    <motion.div
-                        className={`absolute top-[50%] right-[5%] w-32 h-32 rounded-full ${currentProject.bgColor} blur-2xl opacity-25`}
-                        animate={{ y: [0, -20, 0], x: [0, 15, 0], scale: [1, 1.2, 1] }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    />
+                    {/* Decorative Orbs - animations removed for performance */}
+                    <div className={`absolute top-[20%] left-[10%] w-40 h-40 rounded-full ${currentProject.bgColor} blur-3xl opacity-20`} />
+                    <div className={`absolute bottom-[30%] right-[15%] w-60 h-60 rounded-full ${currentProject.bgColor} blur-3xl opacity-15`} />
+                    <div className={`absolute top-[50%] right-[5%] w-32 h-32 rounded-full ${currentProject.bgColor} blur-2xl opacity-25`} />
+
 
                     {/* Header */}
                     <div className="absolute top-0 left-0 w-full p-8 flex justify-between items-start z-50 pointer-events-none">
@@ -1658,33 +1646,25 @@
                                 animate="center"
                                 exit="exit"
                                 transition={{
-                                    x: { type: "spring", stiffness: 250, damping: 25 },
-                                    opacity: { duration: 0.3 },
-                                    scale: { duration: 0.4 },
-                                    rotateY: { duration: 0.4 }
+                                    x: { type: "spring", stiffness: 400, damping: 35 },
+                                    opacity: { duration: 0.2 }
                                 }}
                                 className="absolute w-full h-full flex items-center justify-center p-4 md:p-12"
                             >
-                                {/* Project Content Container with organic float */}
+                                {/* Project Content Container - removed floating animation */}
                                 <motion.div
                                     className="relative w-full max-w-7xl h-full max-h-[85vh] grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
-                                    animate={{ y: [0, -8, 0] }}
-                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                                 >
 
-                                    {/* Image Area with parallax */}
+                                    {/* Image Area - parallax removed */}
                                     <motion.div
                                         className="md:col-span-8 h-[50vh] md:h-full relative rounded-2xl overflow-hidden shadow-2xl group"
-                                        style={{ x: imageX, y: imageY }}
                                     >
                                         <motion.img
                                             src={currentProject.image}
                                             alt={currentProject.title}
-                                            className="w-full h-full object-cover transition-all duration-700"
-                                            initial={{ scale: 1.2 }}
-                                            animate={{ scale: 1 }}
-                                            whileHover={{ scale: 1.05 }}
-                                            transition={{ duration: 1.5, ease: "easeOut" }}
+                                            className="w-full h-full object-cover"
+                                            loading="eager"
                                         />
                                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500"></div>
                                         <motion.div
@@ -1692,10 +1672,9 @@
                                         />
                                     </motion.div>
 
-                                    {/* Text Area with parallax */}
+                                    {/* Text Area - parallax removed */}
                                     <motion.div
                                         className="md:col-span-4 flex flex-col justify-center z-20 md:-ml-24"
-                                        style={{ x: textX, y: textY }}
                                     >
                                         <motion.div
                                             className={`p-8 rounded-2xl backdrop-blur-xl ${currentProject.textColor} bg-white/30 border border-current/10 shadow-2xl`}
@@ -2107,6 +2086,7 @@
                                     const nextIdx = (currentIdx + 1) % projects.length;
                                     setViewingProject(projects[nextIdx]);
                                 }}
+                                t={t}
                             />
                         )}
                     </AnimatePresence>

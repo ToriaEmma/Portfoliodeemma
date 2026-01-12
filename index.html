@@ -618,7 +618,7 @@
         };
 
         // --- Composant: Language Toggle (FR/EN Switcher) ---
-        const LanguageToggle = ({ language, onToggle }) => {
+        const LanguageToggle = ({ language, onToggle, mode }) => {
             const handleClick = () => {
                 onToggle(language === 'fr' ? 'en' : 'fr');
             };
@@ -626,7 +626,7 @@
             return (
                 <motion.button
                     onClick={handleClick}
-                    className="fixed bottom-20 left-8 z-50 group cursor-pointer"
+                    className={`fixed bottom-28 right-8 z-50 group cursor-pointer ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
@@ -2018,7 +2018,7 @@
                                     <Marquee text={t('home.marquee')} mode={mode} />
                                 </div>
 
-                                <LanguageToggle language={language} onToggle={toggleLanguage} />
+                                <LanguageToggle language={language} onToggle={toggleLanguage} mode={mode} />
                                 <PoeticToggle mode={mode} onToggle={toggleTheme} t={t} />
                             </motion.div>
                         )}

@@ -225,12 +225,16 @@
                 gallery: [
                     "img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post.webp",
                     "img/Copie de Blue and White Modern Technology Coding Workshop Instagram Post(2).webp",
-                    "img/Frame 107192.webp",
                     "img/Frame 107193.webp",
                     "img/l-dark (4).webp",
                     "img/MacBook Pro 16_ - 1(1).webp",
                     "img/affiche_macbook_2.webp",
-                    "img/Pink White Modern Pink October Instagram Post.webp"
+                    "img/Pink White Modern Pink October Instagram Post.webp",
+                    "ah mon cher/3.png",
+                    "ah mon cher/4.png",
+                    "ah mon cher/appel.png",
+                    "ah mon cher/cold.png",
+                    "ah mon cher/HUB.png"
                 ]
             },
             {
@@ -542,77 +546,45 @@
             const handleClick = () => {
                 onToggle(mode === 'morning' ? 'midnight' : 'morning');
             };
+            const isMorning = mode === 'morning';
 
             return (
                 <motion.button
                     onClick={handleClick}
-                    className="fixed bottom-20 right-8 z-50 group cursor-pointer"
+                    aria-label={isMorning ? t('theme.night') : t('theme.day')}
+                    title={isMorning ? t('theme.night') : t('theme.day')}
+                    className="fixed bottom-20 right-8 z-50 cursor-pointer focus:outline-none"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                    <div className="relative flex items-center gap-3">
-                        {/* Shifting Line */}
+                    {/* Pill Track */}
+                    <div
+                        className="relative flex items-center w-16 h-8 rounded-full transition-colors duration-500 shadow-inner"
+                        style={{
+                            backgroundColor: isMorning ? '#D4C9B8' : '#1E2A3A',
+                            border: isMorning ? '1px solid #A8997E' : '1px solid #3A5068',
+                        }}
+                    >
+                        {/* Icons inside track */}
+                        <span className="absolute left-1.5 text-[13px] select-none" style={{ opacity: isMorning ? 0.3 : 1 }}>🌙</span>
+                        <span className="absolute right-1.5 text-[13px] select-none" style={{ opacity: isMorning ? 1 : 0.3 }}>☀️</span>
+
+                        {/* Sliding Thumb */}
                         <motion.div
-                            className={`h-[1px] origin-left ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'}`}
+                            className="absolute w-6 h-6 rounded-full shadow-md flex items-center justify-center text-[14px]"
                             initial={false}
                             animate={{
-                                width: mode === 'morning' ? '2rem' : '3rem',
-                                scaleX: 1
+                                x: isMorning ? 32 : 2,
+                                backgroundColor: isMorning ? '#F5EDD8' : '#0D1623',
                             }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
-                        />
-
-                        {/* Text Container */}
-                        <div className="relative h-6 w-16 overflow-hidden">
-                            {/* Jour */}
-                            <motion.span
-                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
-                                initial={false}
-                                animate={{
-                                    opacity: mode === 'morning' ? 1 : 0,
-                                    y: mode === 'morning' ? 0 : -10,
-                                    x: mode === 'morning' ? 0 : 10
-                                }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                {t('theme.day')}
-                            </motion.span>
-
-                            {/* Nuit */}
-                            <motion.span
-                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
-                                initial={false}
-                                animate={{
-                                    opacity: mode === 'morning' ? 0 : 1,
-                                    y: mode === 'morning' ? 10 : 0,
-                                    x: mode === 'morning' ? -10 : 0
-                                }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                {t('theme.night')}
-                            </motion.span>
-                        </div>
-
-                        {/* Second Line */}
-                        <motion.div
-                            className={`h-[1px] origin-right ${mode === 'morning' ? 'bg-morning-text' : 'bg-midnight-text'}`}
-                            initial={false}
-                            animate={{
-                                width: mode === 'morning' ? '3rem' : '2rem',
-                                scaleX: 1
-                            }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
-                        />
+                            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                        >
+                            {isMorning ? '☀️' : '🌙'}
+                        </motion.div>
                     </div>
-
-                    {/* Hover Indicator */}
-                    <motion.div
-                        className={`absolute -bottom-2 left-0 right-0 h-[1px] origin-center ${mode === 'morning' ? 'bg-morning-secondary' : 'bg-midnight-highlight'}`}
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.3 }}
-                    />
                 </motion.button>
             );
         };
@@ -622,77 +594,63 @@
             const handleClick = () => {
                 onToggle(language === 'fr' ? 'en' : 'fr');
             };
+            const isFr = language === 'fr';
+            const isMorning = mode === 'morning';
 
             return (
                 <motion.button
                     onClick={handleClick}
-                    className={`fixed bottom-28 right-8 z-50 group cursor-pointer ${mode === 'morning' ? 'text-morning-text' : 'text-midnight-text'}`}
+                    aria-label={isFr ? 'Switch to English' : 'Passer en Français'}
+                    title={isFr ? 'Switch to English' : 'Passer en Français'}
+                    className="fixed bottom-36 right-8 z-50 cursor-pointer focus:outline-none"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                    <div className="relative flex items-center gap-3">
-                        {/* Shifting Line */}
+                    {/* Pill Track */}
+                    <div
+                        className="relative flex items-center w-16 h-8 rounded-full transition-colors duration-500 shadow-inner"
+                        style={{
+                            backgroundColor: isMorning ? '#D4C9B8' : '#1E2A3A',
+                            border: isMorning ? '1px solid #A8997E' : '1px solid #3A5068',
+                        }}
+                    >
+                        {/* Labels inside track */}
+                        <span
+                            className="absolute left-1.5 text-[10px] font-mono font-bold select-none uppercase"
+                            style={{
+                                color: isMorning ? '#6B5E4E' : '#7A9BB5',
+                                opacity: isFr ? 0.35 : 1
+                            }}
+                        >EN</span>
+                        <span
+                            className="absolute right-1.5 text-[10px] font-mono font-bold select-none uppercase"
+                            style={{
+                                color: isMorning ? '#6B5E4E' : '#7A9BB5',
+                                opacity: isFr ? 1 : 0.35
+                            }}
+                        >FR</span>
+
+                        {/* Sliding Thumb */}
                         <motion.div
-                            className={`h-[1px] origin-left bg-current`}
+                            className="absolute w-6 h-6 rounded-full shadow-md flex items-center justify-center"
                             initial={false}
                             animate={{
-                                width: language === 'fr' ? '2rem' : '3rem',
-                                scaleX: 1
+                                x: isFr ? 32 : 2,
+                                backgroundColor: isMorning ? '#F5EDD8' : '#0D1623',
                             }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
-                        />
-
-                        {/* Text Container */}
-                        <div className="relative h-6 w-12 overflow-hidden">
-                            {/* FR */}
-                            <motion.span
-                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest`}
-                                initial={false}
-                                animate={{
-                                    opacity: language === 'fr' ? 1 : 0,
-                                    y: language === 'fr' ? 0 : -10,
-                                    x: language === 'fr' ? 0 : 10
-                                }}
-                                transition={{ duration: 0.4 }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                        >
+                            <span
+                                className="text-[9px] font-mono font-bold uppercase"
+                                style={{ color: isMorning ? '#3A2E22' : '#A0BDD4' }}
                             >
-                                FR
-                            </motion.span>
-
-                            {/* EN */}
-                            <motion.span
-                                className={`absolute inset-0 flex items-center justify-start text-sm font-mono uppercase tracking-widest`}
-                                initial={false}
-                                animate={{
-                                    opacity: language === 'fr' ? 0 : 1,
-                                    y: language === 'fr' ? 10 : 0,
-                                    x: language === 'fr' ? -10 : 0
-                                }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                EN
-                            </motion.span>
-                        </div>
-
-                        {/* Second Line */}
-                        <motion.div
-                            className={`h-[1px] origin-right bg-current`}
-                            initial={false}
-                            animate={{
-                                width: language === 'fr' ? '3rem' : '2rem',
-                                scaleX: 1
-                            }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
-                        />
+                                {isFr ? 'FR' : 'EN'}
+                            </span>
+                        </motion.div>
                     </div>
-
-                    {/* Hover Indicator */}
-                    <motion.div
-                        className={`absolute -bottom-2 left-0 right-0 h-[1px] origin-center bg-current opacity-50`}
-                        initial={{ scaleX: 0 }}
-                        whileHover={{ scaleX: 1 }}
-                        transition={{ duration: 0.3 }}
-                    />
                 </motion.button>
             );
         };
